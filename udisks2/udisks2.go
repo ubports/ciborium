@@ -135,13 +135,11 @@ func (u *UDisks2) Init() (err error) {
 
 func (s *Storage) desiredEvent(validFS sort.StringSlice) bool {
 	if _, ok := s.Props[dbusFilesystemInterface]; !ok {
-		log.Println(s.Path, "doesn't hold Filesystem interface")
 		return false
 	}
 
 	propBlock, ok := s.Props[dbusBlockInterface]
 	if !ok {
-		log.Println(s.Path, "doesn't hold block interface")
 		return false
 	}
 	id, ok := propBlock["IdType"]

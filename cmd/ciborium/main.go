@@ -20,7 +20,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"time"
 
@@ -68,13 +67,13 @@ func main() {
 
 	go func() {
 		for a := range udisks2.DriveAdded {
-			log.Println("Adding device on", a.Path)
 			if mountpoint, err := a.Mount(systemBus); err != nil {
+				log.Println("Cannot mount", a.Path, "due to:", err)
 				if err := n.SimpleNotify(msgStorageFail.Summary, msgStorageFail.Body); err != nil {
 					log.Println(err)
 				}
 			} else {
-				fmt.Println("Mounted", mountpoint)
+				log.Println("Mounted", a.Path, "as", mountpoint)
 				if err := n.SimpleNotify(msgStorageSucces.Summary, msgStorageSucces.Body); err != nil {
 					log.Println(err)
 				}
