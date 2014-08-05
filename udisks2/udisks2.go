@@ -110,17 +110,14 @@ func (u *UDisks2) emitExistingDevices() {
 	}
 }
 
-func NewStorageWatcher(conn *dbus.Connection, filesystems ...string) (u *UDisks2, err error) {
+func NewStorageWatcher(conn *dbus.Connection, filesystems ...string) (u *UDisks2) {
 	u = &UDisks2{
 		conn:       conn,
 		validFS:    sort.StringSlice(filesystems),
 		DriveAdded: make(chan *Storage),
 	}
-	if err := u.initDriveWatch(); err != nil {
-		return &UDisks2{}, err
-	}
 	runtime.SetFinalizer(u, cleanDriveWatch)
-	return u, nil
+	return u
 }
 
 func cleanDriveWatch(u *UDisks2) {
@@ -128,7 +125,7 @@ func cleanDriveWatch(u *UDisks2) {
 	u.driveAdded.Cancel()
 }
 
-func (u *UDisks2) initDriveWatch() (err error) {
+func (u *UDisks2) Init() (err error) {
 	if u.driveAdded, err = u.connectToSignalInterfacesAdded(); err != nil {
 		return err
 	}
@@ -138,24 +135,25 @@ func (u *UDisks2) initDriveWatch() (err error) {
 
 func (s *Storage) desiredEvent(validFS sort.StringSlice) bool {
 	if _, ok := s.Props[dbusFilesystemInterface]; !ok {
+		log.Println(s.Path, "doesn't hold Filesystem interface")
 		return false
 	}
 
 	propBlock, ok := s.Props[dbusBlockInterface]
 	if !ok {
-		log.Println("Doesn't hold block interface")
+		log.Println(s.Path, "doesn't hold block interface")
 		return false
 	}
 	id, ok := propBlock["IdType"]
 	if !ok {
-		log.Println("Doesn't hold IdType")
+		log.Println(s.Path, "doesn't hold IdType")
 		return false
 	}
 
 	fs := reflect.ValueOf(id.Value).String()
 	i := validFS.Search(fs)
 	if i >= validFS.Len() || validFS[i] != fs {
-		log.Println(fs, "not in:", validFS)
+		log.Println(fs, "not in:", validFS, "for", s.Path)
 		return false
 	}
 

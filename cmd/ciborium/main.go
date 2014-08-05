@@ -61,16 +61,14 @@ func main() {
 	}
 	log.Print("Using session bus on ", sessionBus.UniqueName)
 
-	udisks2, err := udisks2.NewStorageWatcher(systemBus, supportedFS...)
-	if err != nil {
-		log.Fatal(err)
-	}
+	udisks2 := udisks2.NewStorageWatcher(systemBus, supportedFS...)
 
 	timeout := time.Second * 4
 	n := notifications.NewNotificationHandler(sessionBus, "ciborium", "system-settings", timeout)
 
 	go func() {
 		for a := range udisks2.DriveAdded {
+			log.Println("Adding device on", a.Path)
 			if mountpoint, err := a.Mount(systemBus); err != nil {
 				if err := n.SimpleNotify(msgStorageFail.Summary, msgStorageFail.Body); err != nil {
 					log.Println(err)
@@ -83,6 +81,10 @@ func main() {
 			}
 		}
 	}()
+
+	if err := udisks2.Init(); err != nil {
+		log.Fatal("Cannot monitor storage devices:", err)
+	}
 
 	done := make(chan bool)
 	<-done
