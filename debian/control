@@ -6,8 +6,7 @@ Build-Depends:
  debhelper (>= 9),
  dh-golang,
  dh-translations,
- gccgo,
- gccgo-go,
+ golang-go,
  golang-go-dbus-dev,
 Standards-Version: 3.9.5
 Homepage: https://launchpad.net/ciborium
