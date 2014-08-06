@@ -23,6 +23,7 @@ import (
 	"log"
 	"time"
 
+	"launchpad.net/ciborium/gettext"
 	"launchpad.net/ciborium/notifications"
 	"launchpad.net/ciborium/udisks2"
 	"launchpad.net/go-dbus/v1"
@@ -32,13 +33,21 @@ type message struct{ Summary, Body string }
 
 var (
 	msgStorageSucces message = message{
-		Summary: "Storage device detected",
-		Body:    "This device will be scanned for new content",
+		// TRANSLATORS: This is the summary of a notification bubble with a short message of
+		// success when addding a storage device.
+		Summary: gettext.Gettext("Storage device detected"),
+		// TRANSLATORS: This is the body of a notification bubble with a short message about content
+		// being scanned when addding a storage device.
+		Body: gettext.Gettext("This device will be scanned for new content"),
 	}
 
 	msgStorageFail message = message{
-		Summary: "Failed to add storage device",
-		Body:    "Make sure the storage device is correctly formated",
+		// TRANSLATORS: This is the summary of a notification bubble with a short message of
+		// failure when adding a storage device.
+		Summary: gettext.Gettext("Failed to add storage device"),
+		// TRANSLATORS: This is the body of a notification bubble with a short message with hints
+		// with regards to the failure when adding a storage device.
+		Body: gettext.Gettext("Make sure the storage device is correctly formated"),
 	}
 )
 
