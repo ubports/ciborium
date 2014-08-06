@@ -5,6 +5,7 @@ Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
 Build-Depends:
  debhelper (>= 9),
  dh-golang,
+ dh-translations,
  gccgo,
  gccgo-go,
  golang-go-dbus-dev,
