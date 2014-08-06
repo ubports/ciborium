@@ -31,6 +31,13 @@ import (
 
 type message struct{ Summary, Body string }
 
+func init() {
+	// Initialize i18n
+	gettext.SetLocale(gettext.LC_ALL, "")
+	gettext.Textdomain("account-polld")
+	gettext.BindTextdomain("ciborium", "/usr/share/locale")
+}
+
 var (
 	msgStorageSucces message = message{
 		// TRANSLATORS: This is the summary of a notification bubble with a short message of
