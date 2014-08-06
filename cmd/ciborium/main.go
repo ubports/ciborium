@@ -34,7 +34,7 @@ type message struct{ Summary, Body string }
 func init() {
 	// Initialize i18n
 	gettext.SetLocale(gettext.LC_ALL, "")
-	gettext.Textdomain("account-polld")
+	gettext.Textdomain("ciborium")
 	gettext.BindTextdomain("ciborium", "/usr/share/locale")
 }
 
