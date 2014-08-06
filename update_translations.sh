@@ -3,8 +3,6 @@
 sources=$(find . -name '*.go' | xargs)
 domain='ciborium'
 pot_file=po/$domain.pot
-desktop=data/$domain.desktop
-online_accounts_application=data/$domain.application
 
 xgettext -o $pot_file \
  --add-comments \
