@@ -14,15 +14,9 @@ DEB_HOST_ARCH := $(shell dpkg-architecture -qDEB_HOST_ARCH)
 
 override_dh_auto_install:
 	dh_auto_install -O--buildsystem=golang
-	mkdir -p ${CURDIR}/debian/ciborium/usr/lib/ciborium
-	mv \
-		${CURDIR}/debian/ciborium/usr/bin/ciborium \
-		${CURDIR}/debian/ciborium/usr/lib/ciborium
 	# all our libs are private
 	rm -r \
 		${CURDIR}/debian/ciborium/usr/share/gocode
-	rmdir \
-		${CURDIR}/debian/ciborium/usr/bin
 
 override_dh_strip:
 	echo "Skipping strip (LP: #1318027)"
