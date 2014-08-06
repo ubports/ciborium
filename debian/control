@@ -5,8 +5,8 @@ Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
 Build-Depends:
  debhelper (>= 9),
  dh-golang,
- gccgo,
- gccgo-go,
+ dh-translations,
+ golang-go,
  golang-go-dbus-dev,
 Standards-Version: 3.9.5
 Homepage: https://launchpad.net/ciborium
