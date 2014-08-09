@@ -1,20 +1,21 @@
-# Copyright (C) YEAR Canonical Ltd.
-# This file is distributed under the same license as the PACKAGE package.
+# Spanish translation for ciborium
+# Copyright (c) 2014 Rosetta Contributors and Canonical Ltd 2014
+# This file is distributed under the same license as the ciborium package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2014.
 #
-# , 2014.
 msgid ""
 msgstr ""
 "Project-Id-Version: ciborium\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2014-08-06 14:40-0300\n"
-"PO-Revision-Date: 2014-08-06 15:40-0300\n"
-"Last-Translator: Sergio Schvezov <sergiusens@gmail.com>\n"
-"Language-Team: \n"
+"PO-Revision-Date: 2014-08-08 18:04+0000\n"
+"Last-Translator: Jose Luis Tirado <Unknown>\n"
+"Language-Team: Spanish <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 1.5\n"
+"X-Launchpad-Export-Date: 2014-08-09 06:25+0000\n"
+"X-Generator: Launchpad (build 17156)\n"
 
 #. TRANSLATORS: This is the summary of a notification bubble with a short message of
 #. success when addding a storage device.
@@ -26,19 +27,18 @@ msgstr "Dispositivo de almacenamiento detectado"
 #. being scanned when addding a storage device.
 #: cmd/ciborium/main.go:48
 msgid "This device will be scanned for new content"
-msgstr "Este dispositivo será analizado para descubrir nuevo contenido"
+msgstr "Se analizará este dispositivo en busca de nuevo contenido"
 
 #. TRANSLATORS: This is the summary of a notification bubble with a short message of
 #. failure when adding a storage device.
 #: cmd/ciborium/main.go:54
 msgid "Failed to add storage device"
-msgstr "Problemas detectados con nuevo dispositivo de almacenamiento"
+msgstr "Falló al añadir el dispositivo de almacenamiento"
 
 #. TRANSLATORS: This is the body of a notification bubble with a short message with hints
 #. with regards to the failure when adding a storage device.
 #: cmd/ciborium/main.go:57
 msgid "Make sure the storage device is correctly formated"
 msgstr ""
-"Han ocurrido problemas al tratar de agregar el dispositivo de almacenamiento, "
-"aseguresé de que esté correctamente formateado"
-
+"Asegúrese de que el dispositivo de almacenamiento está correctamente "
+"formateado"
