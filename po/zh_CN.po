@@ -1,4 +1,4 @@
-# Amharic translation for ciborium
+# Chinese (Simplified) translation for ciborium
 # Copyright (c) 2014 Rosetta Contributors and Canonical Ltd 2014
 # This file is distributed under the same license as the ciborium package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2014.
@@ -8,9 +8,9 @@ msgstr ""
 "Project-Id-Version: ciborium\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2014-08-06 14:40-0300\n"
-"PO-Revision-Date: 2014-08-09 01:37+0000\n"
-"Last-Translator: samson <Unknown>\n"
-"Language-Team: Amharic <am@li.org>\n"
+"PO-Revision-Date: 2014-08-09 08:21+0000\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: Chinese (Simplified) <zh_CN@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -21,19 +21,19 @@ msgstr ""
 #. success when addding a storage device.
 #: cmd/ciborium/main.go:45
 msgid "Storage device detected"
-msgstr "የማጠራቀሚያ አካል ተገኝቷል"
+msgstr ""
 
 #. TRANSLATORS: This is the body of a notification bubble with a short message about content
 #. being scanned when addding a storage device.
 #: cmd/ciborium/main.go:48
 msgid "This device will be scanned for new content"
-msgstr "አካሉ ለ አዲስ ይዞታዎች ይታሰሳል"
+msgstr ""
 
 #. TRANSLATORS: This is the summary of a notification bubble with a short message of
 #. failure when adding a storage device.
 #: cmd/ciborium/main.go:54
 msgid "Failed to add storage device"
-msgstr "የማጠራቀሚያ አካል መጨመር አልተቻለም"
+msgstr ""
 
 #. TRANSLATORS: This is the body of a notification bubble with a short message with hints
 #. with regards to the failure when adding a storage device.
