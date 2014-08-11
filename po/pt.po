@@ -8,13 +8,13 @@ msgstr ""
 "Project-Id-Version: ciborium\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2014-08-06 14:40-0300\n"
-"PO-Revision-Date: 2014-08-08 16:56+0000\n"
-"Last-Translator: Filipe André Pinho <Unknown>\n"
+"PO-Revision-Date: 2014-08-10 14:59+0000\n"
+"Last-Translator: Ivo Xavier <ivofernandes12@gmail.com>\n"
 "Language-Team: Portuguese <pt@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2014-08-09 06:25+0000\n"
+"X-Launchpad-Export-Date: 2014-08-11 06:36+0000\n"
 "X-Generator: Launchpad (build 17156)\n"
 
 #. TRANSLATORS: This is the summary of a notification bubble with a short message of
@@ -27,7 +27,7 @@ msgstr "Dispositivo de armazenamento detectado"
 #. being scanned when addding a storage device.
 #: cmd/ciborium/main.go:48
 msgid "This device will be scanned for new content"
-msgstr ""
+msgstr "Novo conteúdo será procurado neste equipamento"
 
 #. TRANSLATORS: This is the summary of a notification bubble with a short message of
 #. failure when adding a storage device.
