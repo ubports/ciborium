@@ -134,7 +134,12 @@ func (u *UDisks2) Init() (err error) {
 }
 
 func (s *Storage) desiredEvent(validFS sort.StringSlice) bool {
-	if _, ok := s.Props[dbusFilesystemInterface]; !ok {
+	propFS, ok := s.Props[dbusFilesystemInterface]
+	if !ok {
+		return false
+	}
+	if _, ok := propFS["MountPoints"]; ok {
+		// already mounted
 		return false
 	}
 
