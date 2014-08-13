@@ -134,8 +134,19 @@ func (u *UDisks2) Init() (err error) {
 }
 
 func (s *Storage) desiredEvent(validFS sort.StringSlice) bool {
-	if _, ok := s.Props[dbusFilesystemInterface]; !ok {
+	propFS, ok := s.Props[dbusFilesystemInterface]
+	if !ok {
 		return false
+	}
+	if mountpoints, ok := propFS["MountPoints"]; ok {
+		if reflect.TypeOf(mountpoints.Value).Kind() != reflect.Slice {
+			log.Println(s.Path, "does not hold a MountPoints slice")
+			return false
+		}
+		if l := reflect.ValueOf(mountpoints.Value).Len(); l > 0 {
+			log.Println(l, "previous mountpoint(s) found")
+			return false
+		}
 	}
 
 	propBlock, ok := s.Props[dbusBlockInterface]
