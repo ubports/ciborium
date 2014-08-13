@@ -58,6 +58,15 @@ func main() {
 			// with regards to the failure when adding a storage device.
 			Body: gettext.Gettext("Make sure the storage device is correctly formated"),
 		}
+
+		msgStorageRemoved message = message{
+			// TRANSLATORS: This is the summary of a notification bubble with a short message of
+			// a storage device being removed
+			Summary: gettext.Gettext("Storage device has been removed"),
+			// TRANSLATORS: This is the body of a notification bubble with a short message about content
+			// from the removed device no longer being available
+			Body: gettext.Gettext("Content previously available on this device will no longer be accessible"),
+		}
 	)
 
 	var (
@@ -81,15 +90,22 @@ func main() {
 	n := notifications.NewNotificationHandler(sessionBus, "ciborium", "system-settings", timeout)
 
 	go func() {
-		for a := range udisks2.DriveAdded {
-			if mountpoint, err := a.Mount(systemBus); err != nil {
-				log.Println("Cannot mount", a.Path, "due to:", err)
-				if err := n.SimpleNotify(msgStorageFail.Summary, msgStorageFail.Body); err != nil {
-					log.Println(err)
+		for {
+			select {
+			case a := <-udisks2.DriveAdded:
+				if mountpoint, err := a.Mount(systemBus); err != nil {
+					log.Println("Cannot mount", a.Path, "due to:", err)
+					if err := n.SimpleNotify(msgStorageFail.Summary, msgStorageFail.Body); err != nil {
+						log.Println(err)
+					}
+				} else {
+					log.Println("Mounted", a.Path, "as", mountpoint)
+					if err := n.SimpleNotify(msgStorageSucces.Summary, msgStorageSucces.Body); err != nil {
+						log.Println(err)
+					}
 				}
-			} else {
-				log.Println("Mounted", a.Path, "as", mountpoint)
-				if err := n.SimpleNotify(msgStorageSucces.Summary, msgStorageSucces.Body); err != nil {
+			case <-udisks2.DriveRemoved:
+				if err := n.SimpleNotify(msgStorageRemoved.Summary, msgStorageRemoved.Body); err != nil {
 					log.Println(err)
 				}
 			}
