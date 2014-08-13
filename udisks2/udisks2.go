@@ -41,6 +41,7 @@ const (
 
 type VariantMap map[string]dbus.Variant
 type InterfacesAndProperties map[string]VariantMap
+type Interfaces []string
 
 type Storage struct {
 	Path  dbus.ObjectPath
@@ -50,11 +51,13 @@ type Storage struct {
 type driveMap map[dbus.ObjectPath]InterfacesAndProperties
 
 type UDisks2 struct {
-	conn       *dbus.Connection
-	validFS    sort.StringSlice
-	DriveAdded chan *Storage
-	driveAdded *dbus.SignalWatch
-	drives     driveMap
+	conn         *dbus.Connection
+	validFS      sort.StringSlice
+	DriveAdded   chan *Storage
+	driveAdded   *dbus.SignalWatch
+	DriveRemoved chan dbus.ObjectPath
+	driveRemoved *dbus.SignalWatch
+	drives       driveMap
 }
 
 func (u *UDisks2) connectToSignal(path dbus.ObjectPath, inter, member string) (*dbus.SignalWatch, error) {
@@ -71,20 +74,44 @@ func (u *UDisks2) connectToSignalInterfacesAdded() (*dbus.SignalWatch, error) {
 	return u.connectToSignal(dbusObject, dbusObjectManagerInterface, dbusAddedSignal)
 }
 
-func (u *UDisks2) initInterfacesAddedChan() {
+func (u *UDisks2) connectToSignalInterfacesRemoved() (*dbus.SignalWatch, error) {
+	return u.connectToSignal(dbusObject, dbusObjectManagerInterface, dbusRemovedSignal)
+}
+
+func (u *UDisks2) initInterfacesWatchChan() {
 	go func() {
-		for msg := range u.driveAdded.C {
-			var addedEvent Storage
-			if err := msg.Args(&addedEvent.Path, &addedEvent.Props); err != nil {
-				log.Print(err)
-				continue
-			}
-			if addedEvent.desiredEvent(u.validFS) {
-				u.DriveAdded <- &addedEvent
+		defer close(u.DriveAdded)
+		defer close(u.DriveRemoved)
+		for {
+			select {
+			case msg := <-u.driveAdded.C:
+				var event Storage
+				if err := msg.Args(&event.Path, &event.Props); err != nil {
+					log.Print(err)
+					continue
+				}
+				if event.desiredAddEvent(u.validFS) {
+					u.drives[event.Path] = event.Props
+					u.DriveAdded <- &event
+				}
+			case msg := <-u.driveRemoved.C:
+				var objectPath dbus.ObjectPath
+				var interfaces Interfaces
+				if err := msg.Args(&objectPath, &interfaces); err != nil {
+					log.Print(err)
+					continue
+				}
+				if _, ok := u.drives[objectPath]; !ok {
+					log.Println("not concerned about event for", objectPath)
+					continue
+				}
+				if interfaces.desiredRemoveEvent() {
+					delete(u.drives, objectPath)
+					u.DriveRemoved <- objectPath
+				}
 			}
 		}
 		log.Print("Shutting down InterfacesAdded channel")
-		close(u.DriveAdded)
 	}()
 
 	u.emitExistingDevices()
@@ -104,7 +131,7 @@ func (u *UDisks2) emitExistingDevices() {
 
 	for objectPath, props := range allDevices {
 		s := Storage{objectPath, props}
-		if s.desiredEvent(u.validFS) {
+		if s.desiredAddEvent(u.validFS) {
 			u.DriveAdded <- &s
 		}
 	}
@@ -112,28 +139,43 @@ func (u *UDisks2) emitExistingDevices() {
 
 func NewStorageWatcher(conn *dbus.Connection, filesystems ...string) (u *UDisks2) {
 	u = &UDisks2{
-		conn:       conn,
-		validFS:    sort.StringSlice(filesystems),
-		DriveAdded: make(chan *Storage),
+		conn:         conn,
+		validFS:      sort.StringSlice(filesystems),
+		DriveAdded:   make(chan *Storage),
+		DriveRemoved: make(chan dbus.ObjectPath),
+		drives:       make(driveMap),
 	}
 	runtime.SetFinalizer(u, cleanDriveWatch)
 	return u
 }
 
 func cleanDriveWatch(u *UDisks2) {
-	log.Print("Cancelling InterfacesAdded signal watch")
+	log.Print("Cancelling Interfaces signal watch")
 	u.driveAdded.Cancel()
+	u.driveRemoved.Cancel()
 }
 
 func (u *UDisks2) Init() (err error) {
 	if u.driveAdded, err = u.connectToSignalInterfacesAdded(); err != nil {
 		return err
 	}
-	u.initInterfacesAddedChan()
+	if u.driveRemoved, err = u.connectToSignalInterfacesRemoved(); err != nil {
+		return err
+	}
+	u.initInterfacesWatchChan()
 	return nil
 }
 
-func (s *Storage) desiredEvent(validFS sort.StringSlice) bool {
+func (iface Interfaces) desiredRemoveEvent() bool {
+	for i := range iface {
+		if iface[i] == dbusFilesystemInterface {
+			return true
+		}
+	}
+	return false
+}
+
+func (s *Storage) desiredAddEvent(validFS sort.StringSlice) bool {
 	propFS, ok := s.Props[dbusFilesystemInterface]
 	if !ok {
 		return false
