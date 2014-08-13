@@ -1,3 +1,11 @@
+ciborium (0.1+14.10.20140813-0ubuntu1) utopic; urgency=low
+
+  [ Sergio Schvezov ]
+  * Filtering out previously mounted devices (LP: #1354671)
+  * Adding a notification for when a device is 'unmounted'
+
+ -- Ubuntu daily release <ps-jenkins@lists.canonical.com>  Wed, 13 Aug 2014 18:12:43 +0000
+
 ciborium (0.1+14.10.20140806-0ubuntu1) utopic; urgency=low
 
   [ Sergio Schvezov ]
