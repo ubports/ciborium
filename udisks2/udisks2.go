@@ -140,11 +140,11 @@ func (s *Storage) desiredEvent(validFS sort.StringSlice) bool {
 	}
 	if mountpoints, ok := propFS["MountPoints"]; ok {
 		if reflect.TypeOf(mountpoints.Value).Kind() != reflect.Slice {
-			log.Println("Not a slice")
+			log.Println(s.Path, "does not hold a MountPoints slice")
 			return false
 		}
 		if l := reflect.ValueOf(mountpoints.Value).Len(); l > 0 {
-			log.Println(l, "mountpoint(s) found")
+			log.Println(l, "previous mountpoint(s) found")
 			return false
 		}
 	}
