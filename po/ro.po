@@ -8,13 +8,13 @@ msgstr ""
 "Project-Id-Version: ciborium\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2014-08-12 23:31-0300\n"
-"PO-Revision-Date: 2014-08-08 12:19+0000\n"
+"PO-Revision-Date: 2014-08-14 19:29+0000\n"
 "Last-Translator: Marian Vasile <marianvasile1972@gmail.com>\n"
 "Language-Team: Romanian <ro@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2014-08-14 07:41+0000\n"
+"X-Launchpad-Export-Date: 2014-08-15 06:32+0000\n"
 "X-Generator: Launchpad (build 17156)\n"
 
 #. TRANSLATORS: This is the summary of a notification bubble with a short message of
@@ -45,7 +45,7 @@ msgstr "Asigurați-vă că mediul de stocare este formatat corect"
 #. a storage device being removed
 #: cmd/ciborium/main.go:65
 msgid "Storage device has been removed"
-msgstr ""
+msgstr "Mediul de stocare a fost eliminat"
 
 #. TRANSLATORS: This is the body of a notification bubble with a short message about content
 #. from the removed device no longer being available
@@ -53,3 +53,4 @@ msgstr ""
 msgid ""
 "Content previously available on this device will no longer be accessible"
 msgstr ""
+"Conținutul disponibil anterior pe acest dispozitiv nu va mai putea fi accesat"
