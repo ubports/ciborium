@@ -93,7 +93,7 @@ func main() {
 		for {
 			select {
 			case a := <-udisks2.DriveAdded:
-				if mountpoint, err := a.Mount(systemBus); err != nil {
+				if mountpoint, err := udisks2.Mount(systemBus, a); err != nil {
 					log.Println("Cannot mount", a.Path, "due to:", err)
 					if err := n.SimpleNotify(msgStorageFail.Summary, msgStorageFail.Body); err != nil {
 						log.Println(err)
@@ -104,7 +104,8 @@ func main() {
 						log.Println(err)
 					}
 				}
-			case <-udisks2.DriveRemoved:
+			case r := <-udisks2.DriveRemoved:
+				log.Println("Path removed", r)
 				if err := n.SimpleNotify(msgStorageRemoved.Summary, msgStorageRemoved.Body); err != nil {
 					log.Println(err)
 				}
