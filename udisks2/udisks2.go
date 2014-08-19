@@ -56,7 +56,7 @@ type drive struct {
 
 type driveMap map[dbus.ObjectPath]*drive
 
-type Storage struct {
+type Event struct {
 	Path  dbus.ObjectPath
 	Props InterfacesAndProperties
 }
@@ -66,7 +66,7 @@ type mountpointMap map[dbus.ObjectPath]string
 type UDisks2 struct {
 	conn         *dbus.Connection
 	validFS      sort.StringSlice
-	DriveAdded   chan *Storage
+	DriveAdded   chan *Event
 	driveAdded   *dbus.SignalWatch
 	DriveRemoved chan dbus.ObjectPath
 	driveRemoved *dbus.SignalWatch
@@ -78,7 +78,7 @@ func NewStorageWatcher(conn *dbus.Connection, filesystems ...string) (u *UDisks2
 	u = &UDisks2{
 		conn:         conn,
 		validFS:      sort.StringSlice(filesystems),
-		DriveAdded:   make(chan *Storage),
+		DriveAdded:   make(chan *Event),
 		DriveRemoved: make(chan dbus.ObjectPath),
 		drives:       make(driveMap),
 		mountpoints:  make(mountpointMap),
@@ -87,7 +87,7 @@ func NewStorageWatcher(conn *dbus.Connection, filesystems ...string) (u *UDisks2
 	return u
 }
 
-func (u *UDisks2) Mount(conn *dbus.Connection, s *Storage) (mountpoint string, err error) {
+func (u *UDisks2) Mount(conn *dbus.Connection, s *Event) (mountpoint string, err error) {
 	obj := conn.Object(dbusName, s.Path)
 	options := make(VariantMap)
 	options["auth.no_user_interaction"] = dbus.Variant{true}
@@ -121,7 +121,7 @@ func (u *UDisks2) initInterfacesWatchChan() {
 		for {
 			select {
 			case msg := <-u.driveAdded.C:
-				var event Storage
+				var event Event
 				if err := msg.Args(&event.Path, &event.Props); err != nil {
 					log.Print(err)
 					continue
@@ -178,12 +178,12 @@ func (u *UDisks2) emitExistingDevices() {
 	}
 
 	for objectPath, props := range allDevices {
-		s := &Storage{objectPath, props}
+		s := &Event{objectPath, props}
 		u.processAddEvent(s)
 	}
 }
 
-func (u *UDisks2) processAddEvent(s *Storage) error {
+func (u *UDisks2) processAddEvent(s *Event) error {
 	if err := u.drives.addInterface(s); err != nil {
 		return err
 	}
@@ -216,7 +216,6 @@ func cleanDriveWatch(u *UDisks2) {
 
 func (iface Interfaces) desiredUnmountEvent() bool {
 	for i := range iface {
-		fmt.Println(iface[i])
 		if iface[i] == dbusFilesystemInterface {
 			return true
 		}
@@ -224,8 +223,7 @@ func (iface Interfaces) desiredUnmountEvent() bool {
 	return false
 }
 
-func (u *UDisks2) desiredMountableEvent(s *Storage) bool {
-	fmt.Println("Looking at", s.Path)
+func (u *UDisks2) desiredMountableEvent(s *Event) bool {
 	propFS, ok := s.Props[dbusFilesystemInterface]
 	if !ok {
 		return false
@@ -295,7 +293,7 @@ func (u *UDisks2) desiredMountableEvent(s *Storage) bool {
 	return true
 }
 
-func (s *Storage) getDrive() (dbus.ObjectPath, error) {
+func (s *Event) getDrive() (dbus.ObjectPath, error) {
 	propBlock, ok := s.Props[dbusBlockInterface]
 	if !ok {
 		return "", fmt.Errorf("interface %s not found", dbusBlockInterface)
@@ -307,7 +305,7 @@ func (s *Storage) getDrive() (dbus.ObjectPath, error) {
 	return dbus.ObjectPath(reflect.ValueOf(driveVariant.Value).String()), nil
 }
 
-func newDrive(s *Storage) *drive {
+func newDrive(s *Event) *drive {
 	return &drive{
 		path:         s.Path,
 		blockDevices: make(map[dbus.ObjectPath]InterfacesAndProperties),
@@ -315,7 +313,7 @@ func newDrive(s *Storage) *drive {
 	}
 }
 
-func (dm *driveMap) addInterface(s *Storage) error {
+func (dm *driveMap) addInterface(s *Event) error {
 	objectPathString := string(s.Path)
 	if strings.HasPrefix(objectPathString, path.Join(dbusObject, "drives")) {
 		if _, ok := (*dm)[s.Path]; ok {
