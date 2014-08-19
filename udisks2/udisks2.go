@@ -20,10 +20,13 @@
 package udisks2
 
 import (
+	"errors"
 	"fmt"
+	"path"
 	"reflect"
 	"runtime"
 	"sort"
+	"strings"
 
 	"log"
 
@@ -45,10 +48,13 @@ type VariantMap map[string]dbus.Variant
 type InterfacesAndProperties map[string]VariantMap
 type Interfaces []string
 
-type drives struct {
-	Path         dbus.ObjectPath
-	blockDevices udiskMap
+type drive struct {
+	path         dbus.ObjectPath
+	blockDevices map[dbus.ObjectPath]InterfacesAndProperties
+	driveInfo    InterfacesAndProperties
 }
+
+type driveMap map[dbus.ObjectPath]*drive
 
 type Storage struct {
 	Path  dbus.ObjectPath
@@ -56,7 +62,6 @@ type Storage struct {
 }
 
 type mountpointMap map[dbus.ObjectPath]string
-type udiskMap map[dbus.ObjectPath]InterfacesAndProperties
 
 type UDisks2 struct {
 	conn         *dbus.Connection
@@ -65,8 +70,81 @@ type UDisks2 struct {
 	driveAdded   *dbus.SignalWatch
 	DriveRemoved chan dbus.ObjectPath
 	driveRemoved *dbus.SignalWatch
-	drives       udiskMap
+	drives       driveMap
 	mountpoints  mountpointMap
+}
+
+func NewStorageWatcher(conn *dbus.Connection, filesystems ...string) (u *UDisks2) {
+	u = &UDisks2{
+		conn:         conn,
+		validFS:      sort.StringSlice(filesystems),
+		DriveAdded:   make(chan *Storage),
+		DriveRemoved: make(chan dbus.ObjectPath),
+		drives:       make(driveMap),
+		mountpoints:  make(mountpointMap),
+	}
+	runtime.SetFinalizer(u, cleanDriveWatch)
+	return u
+}
+
+func (u *UDisks2) Mount(conn *dbus.Connection, s *Storage) (mountpoint string, err error) {
+	obj := conn.Object(dbusName, s.Path)
+	options := make(VariantMap)
+	options["auth.no_user_interaction"] = dbus.Variant{true}
+	reply, err := obj.Call(dbusFilesystemInterface, "Mount", options)
+	if err != nil {
+		return "", err
+	}
+	if err := reply.Args(&mountpoint); err != nil {
+		return "", err
+	}
+
+	u.mountpoints[s.Path] = mountpoint
+	return mountpoint, err
+}
+
+func (u *UDisks2) Init() (err error) {
+	if u.driveAdded, err = u.connectToSignalInterfacesAdded(); err != nil {
+		return err
+	}
+	if u.driveRemoved, err = u.connectToSignalInterfacesRemoved(); err != nil {
+		return err
+	}
+	u.initInterfacesWatchChan()
+	return nil
+}
+
+func (u *UDisks2) initInterfacesWatchChan() {
+	go func() {
+		defer close(u.DriveAdded)
+		defer close(u.DriveRemoved)
+		for {
+			select {
+			case msg := <-u.driveAdded.C:
+				var event Storage
+				if err := msg.Args(&event.Path, &event.Props); err != nil {
+					log.Print(err)
+					continue
+				}
+				if err := u.processAddEvent(&event); err != nil {
+					log.Print("Issues while processing ", event.Path, ": ", err)
+				}
+			case msg := <-u.driveRemoved.C:
+				var objectPath dbus.ObjectPath
+				var interfaces Interfaces
+				if err := msg.Args(&objectPath, &interfaces); err != nil {
+					log.Print(err)
+					continue
+				}
+				if err := u.processRemoveEvent(objectPath, interfaces); err != nil {
+					log.Println("Issues while processing remove event:", err)
+				}
+			}
+		}
+		log.Print("Shutting down InterfacesAdded channel")
+	}()
+
+	u.emitExistingDevices()
 }
 
 func (u *UDisks2) connectToSignal(path dbus.ObjectPath, inter, member string) (*dbus.SignalWatch, error) {
@@ -87,43 +165,6 @@ func (u *UDisks2) connectToSignalInterfacesRemoved() (*dbus.SignalWatch, error) 
 	return u.connectToSignal(dbusObject, dbusObjectManagerInterface, dbusRemovedSignal)
 }
 
-func (u *UDisks2) initInterfacesWatchChan() {
-	go func() {
-		defer close(u.DriveAdded)
-		defer close(u.DriveRemoved)
-		for {
-			select {
-			case msg := <-u.driveAdded.C:
-				var event Storage
-				if err := msg.Args(&event.Path, &event.Props); err != nil {
-					log.Print(err)
-					continue
-				}
-				u.processAddEvent(&event)
-			case msg := <-u.driveRemoved.C:
-				var objectPath dbus.ObjectPath
-				var interfaces Interfaces
-				if err := msg.Args(&objectPath, &interfaces); err != nil {
-					log.Print(err)
-					continue
-				}
-				if _, ok := u.drives[objectPath]; !ok {
-					log.Println("not concerned about event for", objectPath)
-					continue
-				}
-				if interfaces.desiredUnmountEvent() {
-					delete(u.drives, objectPath)
-					delete(u.mountpoints, objectPath)
-					u.DriveRemoved <- objectPath
-				}
-			}
-		}
-		log.Print("Shutting down InterfacesAdded channel")
-	}()
-
-	u.emitExistingDevices()
-}
-
 func (u *UDisks2) emitExistingDevices() {
 	obj := u.conn.Object(dbusName, dbusObject)
 	reply, err := obj.Call(dbusObjectManagerInterface, "GetManagedObjects")
@@ -142,24 +183,29 @@ func (u *UDisks2) emitExistingDevices() {
 	}
 }
 
-func (u *UDisks2) processAddEvent(storage *Storage) {
-	u.drives[storage.Path] = storage.Props
-	if u.desiredMountableEvent(storage) {
-		u.DriveAdded <- storage
+func (u *UDisks2) processAddEvent(s *Storage) error {
+	if err := u.drives.addInterface(s); err != nil {
+		return err
 	}
+	if u.desiredMountableEvent(s) {
+		u.DriveAdded <- s
+	}
+	return nil
 }
 
-func NewStorageWatcher(conn *dbus.Connection, filesystems ...string) (u *UDisks2) {
-	u = &UDisks2{
-		conn:         conn,
-		validFS:      sort.StringSlice(filesystems),
-		DriveAdded:   make(chan *Storage),
-		DriveRemoved: make(chan dbus.ObjectPath),
-		drives:       make(udiskMap),
-		mountpoints:  make(mountpointMap),
+func (u *UDisks2) processRemoveEvent(objectPath dbus.ObjectPath, interfaces Interfaces) error {
+	mountpoint, mounted := u.mountpoints[objectPath]
+	if mounted {
+		log.Println("Removing mountpoint", mountpoint)
+		delete(u.mountpoints, objectPath)
+		if interfaces.desiredUnmountEvent() {
+			u.DriveRemoved <- objectPath
+		} else {
+			return errors.New("mounted but does not remove filesystem interface")
+		}
 	}
-	runtime.SetFinalizer(u, cleanDriveWatch)
-	return u
+	delete(u.drives, objectPath)
+	return nil
 }
 
 func cleanDriveWatch(u *UDisks2) {
@@ -168,19 +214,9 @@ func cleanDriveWatch(u *UDisks2) {
 	u.driveRemoved.Cancel()
 }
 
-func (u *UDisks2) Init() (err error) {
-	if u.driveAdded, err = u.connectToSignalInterfacesAdded(); err != nil {
-		return err
-	}
-	if u.driveRemoved, err = u.connectToSignalInterfacesRemoved(); err != nil {
-		return err
-	}
-	u.initInterfacesWatchChan()
-	return nil
-}
-
 func (iface Interfaces) desiredUnmountEvent() bool {
 	for i := range iface {
+		fmt.Println(iface[i])
 		if iface[i] == dbusFilesystemInterface {
 			return true
 		}
@@ -217,29 +253,28 @@ func (u *UDisks2) desiredMountableEvent(s *Storage) bool {
 		return false
 	}
 
-	if driveVariant, ok := propBlock["Drive"]; !ok {
-		log.Println(s.Path, "does not have a drive defined")
+	drivePath, err := s.getDrive()
+	if err != nil {
+		log.Println("Issues while getting drive:", err)
+		return false
+	}
+	if drive, ok := u.drives[drivePath]; !ok {
+		log.Println(s.Path, "doesn't hold Drive")
 		return false
 	} else {
-		drivePath := dbus.ObjectPath(reflect.ValueOf(driveVariant.Value).String())
-		if drive, ok := u.drives[drivePath]; !ok {
-			log.Println(s.Path, "doesn't hold Drive")
+		driveProps, ok := drive.driveInfo[dbusDriveInterface]
+		if !ok {
+			log.Println(drivePath, "doesn't hold a Drive interface")
+			return false
+		}
+		if mediaRemovableVariant, ok := driveProps["MediaRemovable"]; !ok {
+			log.Println(drivePath, "which holds", s.Path, "doesn't have MediaRemovable")
 			return false
 		} else {
-			driveProps, ok := drive[dbusDriveInterface]
-			if !ok {
-				log.Println(drivePath, "doesn't hold a Drive interface")
+			mediaRemovable := reflect.ValueOf(mediaRemovableVariant.Value).Bool()
+			if !mediaRemovable {
+				log.Println(drivePath, "which holds", s.Path, "is not MediaRemovable")
 				return false
-			}
-			if mediaRemovableVariant, ok := driveProps["MediaRemovable"]; !ok {
-				log.Println(drivePath, "which holds", s.Path, "doesn't have MediaRemovable")
-				return false
-			} else {
-				mediaRemovable := reflect.ValueOf(mediaRemovableVariant.Value).Bool()
-				if !mediaRemovable {
-					log.Println(drivePath, "which holds", s.Path, "is not MediaRemovable")
-					return false
-				}
 			}
 		}
 	}
@@ -260,18 +295,44 @@ func (u *UDisks2) desiredMountableEvent(s *Storage) bool {
 	return true
 }
 
-func (u *UDisks2) Mount(conn *dbus.Connection, s *Storage) (mountpoint string, err error) {
-	obj := conn.Object(dbusName, s.Path)
-	options := make(VariantMap)
-	options["auth.no_user_interaction"] = dbus.Variant{true}
-	reply, err := obj.Call(dbusFilesystemInterface, "Mount", options)
-	if err != nil {
-		return "", err
+func (s *Storage) getDrive() (dbus.ObjectPath, error) {
+	propBlock, ok := s.Props[dbusBlockInterface]
+	if !ok {
+		return "", fmt.Errorf("interface %s not found", dbusBlockInterface)
 	}
-	if err := reply.Args(&mountpoint); err != nil {
-		return "", err
+	driveVariant, ok := propBlock["Drive"]
+	if !ok {
+		return "", errors.New("property 'Drive' not found")
 	}
+	return dbus.ObjectPath(reflect.ValueOf(driveVariant.Value).String()), nil
+}
 
-	u.mountpoints[s.Path] = mountpoint
-	return mountpoint, err
+func newDrive(s *Storage) *drive {
+	return &drive{
+		path:         s.Path,
+		blockDevices: make(map[dbus.ObjectPath]InterfacesAndProperties),
+		driveInfo:    s.Props,
+	}
+}
+
+func (dm *driveMap) addInterface(s *Storage) error {
+	objectPathString := string(s.Path)
+	if strings.HasPrefix(objectPathString, path.Join(dbusObject, "drives")) {
+		if _, ok := (*dm)[s.Path]; ok {
+			log.Println("WARNING: replacing", s.Path, "with new drive event")
+		}
+		(*dm)[s.Path] = newDrive(s)
+	} else if strings.HasPrefix(objectPathString, path.Join(dbusObject, "block_devices")) {
+		driveObjectPath, err := s.getDrive()
+		if err != nil {
+			return err
+		}
+		if _, ok := (*dm)[driveObjectPath]; !ok {
+			return errors.New("drive holding block device is not mapped")
+		}
+		(*dm)[driveObjectPath].blockDevices[s.Path] = s.Props
+	} else {
+		return errors.New("unhandled object path")
+	}
+	return nil
 }
