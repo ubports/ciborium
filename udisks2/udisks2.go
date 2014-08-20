@@ -48,13 +48,13 @@ type VariantMap map[string]dbus.Variant
 type InterfacesAndProperties map[string]VariantMap
 type Interfaces []string
 
-type drive struct {
+type Drive struct {
 	path         dbus.ObjectPath
 	blockDevices map[dbus.ObjectPath]InterfacesAndProperties
 	driveInfo    InterfacesAndProperties
 }
 
-type driveMap map[dbus.ObjectPath]*drive
+type driveMap map[dbus.ObjectPath]*Drive
 
 type Event struct {
 	Path  dbus.ObjectPath
@@ -103,8 +103,8 @@ func (u *UDisks2) Mount(conn *dbus.Connection, s *Event) (mountpoint string, err
 	return mountpoint, err
 }
 
-func (u *UDisks2) ExternalDrives() []drive {
-	var drives []drive
+func (u *UDisks2) ExternalDrives() []Drive {
+	var drives []Drive
 	for _, d := range u.drives {
 		if d.hasSystemBlockDevices() {
 			continue
@@ -303,7 +303,7 @@ func (u *UDisks2) desiredMountableEvent(s *Event) bool {
 	return true
 }
 
-func (d *drive) hasSystemBlockDevices() bool {
+func (d *Drive) hasSystemBlockDevices() bool {
 	for _, blockDevice := range d.blockDevices {
 		propBlock, ok := blockDevice[dbusBlockInterface]
 		if !ok {
@@ -330,8 +330,8 @@ func (s *Event) getDrive() (dbus.ObjectPath, error) {
 	return dbus.ObjectPath(reflect.ValueOf(driveVariant.Value).String()), nil
 }
 
-func newDrive(s *Event) *drive {
-	return &drive{
+func newDrive(s *Event) *Drive {
+	return &Drive{
 		path:         s.Path,
 		blockDevices: make(map[dbus.ObjectPath]InterfacesAndProperties),
 		driveInfo:    s.Props,
