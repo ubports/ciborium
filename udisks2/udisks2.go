@@ -103,6 +103,17 @@ func (u *UDisks2) Mount(conn *dbus.Connection, s *Event) (mountpoint string, err
 	return mountpoint, err
 }
 
+func (u *UDisks2) ExternalDrives() []drive {
+	var drives []drive
+	for _, d := range u.drives {
+		if d.hasSystemBlockDevices() {
+			continue
+		}
+		drives = append(drives, *d)
+	}
+	return drives
+}
+
 func (u *UDisks2) Init() (err error) {
 	if u.driveAdded, err = u.connectToSignalInterfacesAdded(); err != nil {
 		return err
@@ -184,12 +195,14 @@ func (u *UDisks2) emitExistingDevices() {
 }
 
 func (u *UDisks2) processAddEvent(s *Event) error {
-	if err := u.drives.addInterface(s); err != nil {
+	if blockDevice, err := u.drives.addInterface(s); err != nil {
 		return err
+	} else if blockDevice {
+		if u.desiredMountableEvent(s) {
+			u.DriveAdded <- s
+		}
 	}
-	if u.desiredMountableEvent(s) {
-		u.DriveAdded <- s
-	}
+
 	return nil
 }
 
@@ -224,40 +237,18 @@ func (iface Interfaces) desiredUnmountEvent() bool {
 }
 
 func (u *UDisks2) desiredMountableEvent(s *Event) bool {
-	propFS, ok := s.Props[dbusFilesystemInterface]
-	if !ok {
-		return false
-	}
-	if mountpointsVariant, ok := propFS["MountPoints"]; ok {
-		if reflect.TypeOf(mountpointsVariant.Value).Kind() != reflect.Slice {
-			log.Println(s.Path, "does not hold a MountPoints slice")
-			return false
-		}
-		if mountpoints := reflect.ValueOf(mountpointsVariant.Value).Len(); mountpoints > 0 {
-			log.Println(mountpoints, "previous mountpoint(s) found")
-			return false
-		}
-	}
-
-	propBlock, ok := s.Props[dbusBlockInterface]
-	if !ok {
-		return false
-	}
-	if systemHintVariant, ok := propBlock["HintSystem"]; !ok {
-		log.Println(s.Path, "does not export a HintSystem")
-		return false
-	} else if systemHint := reflect.ValueOf(systemHintVariant.Value).Bool(); systemHint {
-		log.Print(s.Path, "is a system block device")
-		return false
-	}
-
 	drivePath, err := s.getDrive()
 	if err != nil {
 		log.Println("Issues while getting drive:", err)
 		return false
 	}
+	if ok := u.drives[drivePath].hasSystemBlockDevices(); ok {
+		log.Println(drivePath, "which contains", s.Path, "has HintSystem set")
+		return false
+	}
+
 	if drive, ok := u.drives[drivePath]; !ok {
-		log.Println(s.Path, "doesn't hold Drive")
+		log.Println(drivePath, "not in drive map")
 		return false
 	} else {
 		driveProps, ok := drive.driveInfo[dbusDriveInterface]
@@ -277,6 +268,25 @@ func (u *UDisks2) desiredMountableEvent(s *Event) bool {
 		}
 	}
 
+	propFS, ok := s.Props[dbusFilesystemInterface]
+	if !ok {
+		return false
+	}
+	if mountpointsVariant, ok := propFS["MountPoints"]; ok {
+		if reflect.TypeOf(mountpointsVariant.Value).Kind() != reflect.Slice {
+			log.Println(s.Path, "does not hold a MountPoints slice")
+			return false
+		}
+		if mountpoints := reflect.ValueOf(mountpointsVariant.Value).Len(); mountpoints > 0 {
+			log.Println(mountpoints, "previous mountpoint(s) found")
+			return false
+		}
+	}
+
+	propBlock, ok := s.Props[dbusBlockInterface]
+	if !ok {
+		return false
+	}
 	id, ok := propBlock["IdType"]
 	if !ok {
 		log.Println(s.Path, "doesn't hold IdType")
@@ -291,6 +301,21 @@ func (u *UDisks2) desiredMountableEvent(s *Event) bool {
 	}
 
 	return true
+}
+
+func (d *drive) hasSystemBlockDevices() bool {
+	for _, blockDevice := range d.blockDevices {
+		propBlock, ok := blockDevice[dbusBlockInterface]
+		if !ok {
+			continue
+		}
+		if systemHintVariant, ok := propBlock["HintSystem"]; !ok {
+			continue
+		} else if systemHint := reflect.ValueOf(systemHintVariant.Value).Bool(); systemHint {
+			return true
+		}
+	}
+	return false
 }
 
 func (s *Event) getDrive() (dbus.ObjectPath, error) {
@@ -313,8 +338,10 @@ func newDrive(s *Event) *drive {
 	}
 }
 
-func (dm *driveMap) addInterface(s *Event) error {
+func (dm *driveMap) addInterface(s *Event) (bool, error) {
 	objectPathString := string(s.Path)
+	var blockDevice bool
+
 	if strings.HasPrefix(objectPathString, path.Join(dbusObject, "drives")) {
 		if _, ok := (*dm)[s.Path]; ok {
 			log.Println("WARNING: replacing", s.Path, "with new drive event")
@@ -323,14 +350,16 @@ func (dm *driveMap) addInterface(s *Event) error {
 	} else if strings.HasPrefix(objectPathString, path.Join(dbusObject, "block_devices")) {
 		driveObjectPath, err := s.getDrive()
 		if err != nil {
-			return err
+			return blockDevice, err
 		}
 		if _, ok := (*dm)[driveObjectPath]; !ok {
-			return errors.New("drive holding block device is not mapped")
+			return blockDevice, errors.New("drive holding block device is not mapped")
 		}
 		(*dm)[driveObjectPath].blockDevices[s.Path] = s.Props
+		blockDevice = true
 	} else {
-		return errors.New("unhandled object path")
+		// we don't care about other object paths
 	}
-	return nil
+
+	return blockDevice, nil
 }
