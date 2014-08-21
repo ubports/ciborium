@@ -87,8 +87,8 @@ func NewStorageWatcher(conn *dbus.Connection, filesystems ...string) (u *UDisks2
 	return u
 }
 
-func (u *UDisks2) Mount(conn *dbus.Connection, s *Event) (mountpoint string, err error) {
-	obj := conn.Object(dbusName, s.Path)
+func (u *UDisks2) Mount(s *Event) (mountpoint string, err error) {
+	obj := u.conn.Object(dbusName, s.Path)
 	options := make(VariantMap)
 	options["auth.no_user_interaction"] = dbus.Variant{true}
 	reply, err := obj.Call(dbusFilesystemInterface, "Mount", options)
@@ -101,6 +101,14 @@ func (u *UDisks2) Mount(conn *dbus.Connection, s *Event) (mountpoint string, err
 
 	u.mountpoints[s.Path] = mountpoint
 	return mountpoint, err
+}
+
+func (u *UDisks2) Unmount(d *Drive) error {
+	return nil
+}
+
+func (u *UDisks2) Format(d *Drive) error {
+	return nil
 }
 
 func (u *UDisks2) ExternalDrives() []Drive {
@@ -316,6 +324,18 @@ func (d *Drive) hasSystemBlockDevices() bool {
 		}
 	}
 	return false
+}
+
+func (d *Drive) Model() string {
+	propDrive, ok := d.driveInfo[dbusDriveInterface]
+	if !ok {
+		return ""
+	}
+	modelVariant, ok := propDrive["Model"]
+	if !ok {
+		return ""
+	}
+	return reflect.ValueOf(modelVariant.Value).String()
 }
 
 func (s *Event) getDrive() (dbus.ObjectPath, error) {

@@ -1,5 +1,6 @@
 import QtQuick 2.0
-import Ubuntu.Components 0.1
+import Ubuntu.Components 1.1
+import Ubuntu.Components.ListItems 0.1 as ListItem
 
 /*!
     \brief MainView with a Label and Button elements.
@@ -29,21 +30,13 @@ MainView {
             id: mainPage
             title: i18n.tr("SD Card Management")
 
-            Column {
-                spacing: units.gu(1)
-                anchors {
-                    margins: units.gu(2)
-                    fill: parent
-                }
-
-                Label {
-                    id: label
-                    objectName: "label"
-
-                    text: "drives: \"" + driveCtrl.ExternalDrives + "\""
-                }
-
                 Button {
+                    id: button
+                    anchors {
+                        top: parent.top
+                        left: parent.left
+                        right: parent.right
+                    }
                     objectName: "button"
                     width: parent.width
 
@@ -51,7 +44,65 @@ MainView {
 
                     onClicked: driveCtrl.drives()
                 }
-            }
+
+                ListView {
+                    model: driveCtrl.len
+                    anchors {
+                        top: button.bottom
+                        bottom: parent.bottom
+                        left: parent.left
+                        right: parent.right
+                        topMargin: units.gu(1)
+                    }
+
+                    delegate: UbuntuShape {
+                        height: childrenRect.height
+                        width: parent.width
+                        color: index % 2 === 0 ? "#DECAE3" : "white"
+                        anchors {
+                            topMargin: units.gu(1)
+                            bottomMargin: units.gu(1)
+                        }
+
+                        Column {
+                            spacing: units.gu(2)
+                            anchors {
+                                leftMargin: units.gu(2)
+                                topMargin: units.gu(1)
+                                bottomMargin: units.gu(1)
+                            }
+
+                            Row {
+                                spacing: units.gu(1)
+                                height: units.gu(2)
+                                width: childrenRect.width
+
+                                Icon {
+                                    width: 24
+                                    height: 24
+                                    name: "search"
+                                }
+                                Label {
+                                    width: paintedWidth       
+                                    text: driveCtrl.driveModel(index)
+                                }
+                            }
+                            Row {
+                                spacing: units.gu(1)
+                                height: childrenRect.height
+                                width: childrenRect.width
+                                Button {
+                                    text: i18n.tr("Format")
+                                    onClicked: driveCtrl.driveFormat(index)
+                                }
+                                Button {
+                                    text: i18n.tr("Safely Remove")
+                                    onClicked: driveCtrl.driveUnmount(index)
+                                }
+                            }
+                        }
+                    }
+                }
         }
     }
 }

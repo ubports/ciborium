@@ -93,7 +93,7 @@ func main() {
 		for {
 			select {
 			case a := <-udisks2.DriveAdded:
-				if mountpoint, err := udisks2.Mount(systemBus, a); err != nil {
+				if mountpoint, err := udisks2.Mount(a); err != nil {
 					log.Println("Cannot mount", a.Path, "due to:", err)
 					if err := n.SimpleNotify(msgStorageFail.Summary, msgStorageFail.Body); err != nil {
 						log.Println(err)

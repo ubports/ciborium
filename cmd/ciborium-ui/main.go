@@ -41,6 +41,12 @@ const (
 type driveControl struct {
 	udisks         *udisks2.UDisks2
 	ExternalDrives []udisks2.Drive
+	Len            int
+}
+
+type DriveList struct {
+	Len            int
+	ExternalDrives []udisks2.Drive
 }
 
 var mainQmlPath = filepath.Join(qmlPath, mainQml)
@@ -103,7 +109,31 @@ func newDriveControl() (*driveControl, error) {
 func (ctrl *driveControl) Drives() {
 	go func() {
 		ctrl.ExternalDrives = ctrl.udisks.ExternalDrives()
+		ctrl.Len = len(ctrl.ExternalDrives)
 		qml.Changed(ctrl, &ctrl.ExternalDrives)
-		fmt.Println(ctrl.ExternalDrives)
+		qml.Changed(ctrl, &ctrl.Len)
+		fmt.Println(ctrl.Len)
 	}()
+}
+
+func (ctrl *driveControl) DriveModel(index int) string {
+	return ctrl.ExternalDrives[index].Model()
+}
+
+func (ctrl *driveControl) DriveFormat(index int) bool {
+	drive := ctrl.ExternalDrives[index]
+	if err := ctrl.udisks.Format(&drive); err != nil {
+		log.Println("Error while trying to format", drive.Model(), ":", err)
+		return false
+	}
+	return true
+}
+
+func (ctrl *driveControl) DriveUnmount(index int) bool {
+	drive := ctrl.ExternalDrives[index]
+	if err := ctrl.udisks.Unmount(&drive); err != nil {
+		log.Println("Error while trying to unmount", drive.Model(), ":", err)
+		return false
+	}
+	return true
 }
