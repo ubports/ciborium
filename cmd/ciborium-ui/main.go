@@ -31,11 +31,7 @@ import (
 	"gopkg.in/qml.v0"
 	"launchpad.net/ciborium/udisks2"
 	"launchpad.net/go-dbus/v1"
-)
-
-const (
-	qmlPath = "share/qml"
-	mainQml = "main.qml"
+	"launchpad.net/go-xdg/v0"
 )
 
 type driveControl struct {
@@ -49,16 +45,23 @@ type DriveList struct {
 	ExternalDrives []udisks2.Drive
 }
 
-var mainQmlPath = filepath.Join(qmlPath, mainQml)
+var mainQmlPath = filepath.Join("ciborium", "qml", "main.qml")
 var supportedFS []string = []string{"vfat"}
 
 func init() {
 	os.Setenv("APP_ID", "ciborium")
 	if goPath := os.Getenv("GOPATH"); goPath != "" {
-		p := filepath.Join(goPath, "src", goSource(), mainQml)
+		p := filepath.Join(goPath, "src", goSource(), "share", mainQmlPath)
+		fmt.Println(p)
 		if _, err := os.Stat(p); err == nil {
 			mainQmlPath = p
 		}
+	} else {
+		p, err := xdg.Data.Find(mainQmlPath)
+		if err != nil {
+			log.Fatal("Unable to find main qml:", err)
+		}
+		mainQmlPath = p
 	}
 }
 
@@ -83,9 +86,6 @@ func main() {
 	context.SetVar("driveCtrl", driveCtrl)
 
 	window := component.CreateWindow(nil)
-
-	//ctrl.Root = window.Root()
-
 	rand.Seed(time.Now().Unix())
 
 	window.Show()
@@ -106,13 +106,26 @@ func newDriveControl() (*driveControl, error) {
 	return &driveControl{udisks: udisks}, nil
 }
 
+func (ctrl *driveControl) Watch() {
+	c := ctrl.udisks.SubscribeBlockDeviceEvents()
+	go func() {
+		for b := range c {
+			if b {
+				log.Println("Block device added")
+			} else {
+				log.Println("Block device removed")
+			}
+			ctrl.Drives()
+		}
+	}()
+}
+
 func (ctrl *driveControl) Drives() {
 	go func() {
 		ctrl.ExternalDrives = ctrl.udisks.ExternalDrives()
 		ctrl.Len = len(ctrl.ExternalDrives)
 		qml.Changed(ctrl, &ctrl.ExternalDrives)
 		qml.Changed(ctrl, &ctrl.Len)
-		fmt.Println(ctrl.Len)
 	}()
 }
 

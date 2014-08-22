@@ -29,6 +29,7 @@ MainView {
         Page{
             id: mainPage
             title: i18n.tr("SD Card Management")
+            Component.onCompleted: driveCtrl.watch()
 
                 Button {
                     id: button
@@ -80,7 +81,8 @@ MainView {
                                 Icon {
                                     width: 24
                                     height: 24
-                                    name: "search"
+                                    name: "media-memory-sd"
+                                    //source: "file:///usr/share/icons/Humanity/devices/48/media-memory-sd.svg"
                                 }
                                 Label {
                                     width: paintedWidth       
