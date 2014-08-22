@@ -74,6 +74,7 @@ type UDisks2 struct {
 	drives       driveMap
 	mountpoints  mountpointMap
 	mapLock      sync.Mutex
+	startLock    sync.Mutex
 }
 
 func NewStorageWatcher(conn *dbus.Connection, filesystems ...string) (u *UDisks2) {
@@ -106,6 +107,8 @@ func (u *UDisks2) Mount(conn *dbus.Connection, s *Event) (mountpoint string, err
 }
 
 func (u *UDisks2) ExternalDrives() []Drive {
+	u.startLock.Lock()
+	defer u.startLock.Unlock()
 	var drives []Drive
 	for _, d := range u.drives {
 		if d.hasSystemBlockDevices() {
@@ -181,6 +184,8 @@ func (u *UDisks2) connectToSignalInterfacesRemoved() (*dbus.SignalWatch, error) 
 }
 
 func (u *UDisks2) emitExistingDevices() {
+	u.startLock.Lock()
+	defer u.startLock.Unlock()
 	obj := u.conn.Object(dbusName, dbusObject)
 	reply, err := obj.Call(dbusObjectManagerInterface, "GetManagedObjects")
 	if err != nil {
