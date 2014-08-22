@@ -27,6 +27,7 @@ import (
 	"runtime"
 	"sort"
 	"strings"
+	"sync"
 
 	"log"
 
@@ -72,6 +73,7 @@ type UDisks2 struct {
 	driveRemoved *dbus.SignalWatch
 	drives       driveMap
 	mountpoints  mountpointMap
+	mapLock      sync.Mutex
 }
 
 func NewStorageWatcher(conn *dbus.Connection, filesystems ...string) (u *UDisks2) {
@@ -115,6 +117,8 @@ func (u *UDisks2) ExternalDrives() []Drive {
 	var drives []Drive
 	for _, d := range u.drives {
 		if d.hasSystemBlockDevices() {
+			continue
+		} else if len(d.blockDevices) == 0 {
 			continue
 		}
 		drives = append(drives, *d)
@@ -203,6 +207,8 @@ func (u *UDisks2) emitExistingDevices() {
 }
 
 func (u *UDisks2) processAddEvent(s *Event) error {
+	u.mapLock.Lock()
+	defer u.mapLock.Unlock()
 	if blockDevice, err := u.drives.addInterface(s); err != nil {
 		return err
 	} else if blockDevice {
@@ -225,7 +231,9 @@ func (u *UDisks2) processRemoveEvent(objectPath dbus.ObjectPath, interfaces Inte
 			return errors.New("mounted but does not remove filesystem interface")
 		}
 	}
+	u.mapLock.Lock()
 	delete(u.drives, objectPath)
+	u.mapLock.Unlock()
 	return nil
 }
 
@@ -250,29 +258,26 @@ func (u *UDisks2) desiredMountableEvent(s *Event) bool {
 		log.Println("Issues while getting drive:", err)
 		return false
 	}
-	if ok := u.drives[drivePath].hasSystemBlockDevices(); ok {
+
+	drive := u.drives[drivePath]
+	if ok := drive.hasSystemBlockDevices(); ok {
 		log.Println(drivePath, "which contains", s.Path, "has HintSystem set")
 		return false
 	}
 
-	if drive, ok := u.drives[drivePath]; !ok {
-		log.Println(drivePath, "not in drive map")
+	driveProps, ok := drive.driveInfo[dbusDriveInterface]
+	if !ok {
+		log.Println(drivePath, "doesn't hold a Drive interface")
+		return false
+	}
+	if mediaRemovableVariant, ok := driveProps["MediaRemovable"]; !ok {
+		log.Println(drivePath, "which holds", s.Path, "doesn't have MediaRemovable")
 		return false
 	} else {
-		driveProps, ok := drive.driveInfo[dbusDriveInterface]
-		if !ok {
-			log.Println(drivePath, "doesn't hold a Drive interface")
+		mediaRemovable := reflect.ValueOf(mediaRemovableVariant.Value).Bool()
+		if !mediaRemovable {
+			log.Println(drivePath, "which holds", s.Path, "is not MediaRemovable")
 			return false
-		}
-		if mediaRemovableVariant, ok := driveProps["MediaRemovable"]; !ok {
-			log.Println(drivePath, "which holds", s.Path, "doesn't have MediaRemovable")
-			return false
-		} else {
-			mediaRemovable := reflect.ValueOf(mediaRemovableVariant.Value).Bool()
-			if !mediaRemovable {
-				log.Println(drivePath, "which holds", s.Path, "is not MediaRemovable")
-				return false
-			}
 		}
 	}
 
