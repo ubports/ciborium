@@ -385,10 +385,12 @@ func (dm *driveMap) addInterface(s *Event) (bool, error) {
 		if _, ok := (*dm)[driveObjectPath]; !ok {
 			return blockDevice, errors.New("drive holding block device is not mapped")
 		}
+		log.Println("Adding block device on", s.Path, "to", driveObjectPath)
 		(*dm)[driveObjectPath].blockDevices[s.Path] = s.Props
 		blockDevice = true
 	} else {
 		// we don't care about other object paths
+		log.Println("Unhandled object path", s.Path)
 	}
 
 	return blockDevice, nil
