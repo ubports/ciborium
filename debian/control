@@ -8,6 +8,7 @@ Build-Depends:
  dh-translations,
  golang-go,
  golang-go-dbus-dev,
+ golang-qml.v0-dev,
 Standards-Version: 3.9.5
 Homepage: https://launchpad.net/ciborium
 Vcs-Browser: http://bazaar.launchpad.net/~phablet-team/ciborium/trunk/files
