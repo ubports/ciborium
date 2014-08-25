@@ -71,6 +71,7 @@ type UDisks2 struct {
 	driveAdded   *dbus.SignalWatch
 	DriveRemoved chan dbus.ObjectPath
 	driveRemoved *dbus.SignalWatch
+	blockDevice  chan bool
 	drives       driveMap
 	mountpoints  mountpointMap
 	mapLock      sync.Mutex
@@ -90,8 +91,13 @@ func NewStorageWatcher(conn *dbus.Connection, filesystems ...string) (u *UDisks2
 	return u
 }
 
-func (u *UDisks2) Mount(conn *dbus.Connection, s *Event) (mountpoint string, err error) {
-	obj := conn.Object(dbusName, s.Path)
+func (u *UDisks2) SubscribeBlockDeviceEvents() chan bool {
+	u.blockDevice = make(chan bool)
+	return u.blockDevice
+}
+
+func (u *UDisks2) Mount(s *Event) (mountpoint string, err error) {
+	obj := u.conn.Object(dbusName, s.Path)
 	options := make(VariantMap)
 	options["auth.no_user_interaction"] = dbus.Variant{true}
 	reply, err := obj.Call(dbusFilesystemInterface, "Mount", options)
@@ -104,6 +110,14 @@ func (u *UDisks2) Mount(conn *dbus.Connection, s *Event) (mountpoint string, err
 
 	u.mountpoints[s.Path] = mountpoint
 	return mountpoint, err
+}
+
+func (u *UDisks2) Unmount(d *Drive) error {
+	return nil
+}
+
+func (u *UDisks2) Format(d *Drive) error {
+	return nil
 }
 
 func (u *UDisks2) ExternalDrives() []Drive {
@@ -197,27 +211,49 @@ func (u *UDisks2) emitExistingDevices() {
 		log.Println("Cannot get initial state for devices:", err)
 	}
 
+	var blocks, drives []*Event
+	// separate drives from blocks to avoid aliasing
 	for objectPath, props := range allDevices {
 		s := &Event{objectPath, props}
-		u.processAddEvent(s)
+		switch objectPathType(objectPath) {
+		case deviceTypeDrive:
+			drives = append(drives, s)
+		case deviceTypeBlock:
+			blocks = append(blocks, s)
+		}
+	}
+
+	for i := range drives {
+		if err := u.processAddEvent(drives[i]); err != nil {
+			log.Println("Error while processing events:", err)
+		}
+	}
+
+	for i := range blocks {
+		if err := u.processAddEvent(blocks[i]); err != nil {
+			log.Println("Error while processing events:", err)
+		}
 	}
 }
 
 func (u *UDisks2) processAddEvent(s *Event) error {
 	u.mapLock.Lock()
 	defer u.mapLock.Unlock()
-	if blockDevice, err := u.drives.addInterface(s); err != nil {
+	if isBlockDevice, err := u.drives.addInterface(s); err != nil {
 		return err
-	} else if blockDevice {
+	} else if isBlockDevice {
 		if u.desiredMountableEvent(s) {
 			u.DriveAdded <- s
 		}
+		if u.blockDevice != nil {
+			u.blockDevice <- true
+		}
 	}
-
 	return nil
 }
 
 func (u *UDisks2) processRemoveEvent(objectPath dbus.ObjectPath, interfaces Interfaces) error {
+	log.Println("Remove event for", objectPath)
 	mountpoint, mounted := u.mountpoints[objectPath]
 	if mounted {
 		log.Println("Removing mountpoint", mountpoint)
@@ -229,8 +265,14 @@ func (u *UDisks2) processRemoveEvent(objectPath dbus.ObjectPath, interfaces Inte
 		}
 	}
 	u.mapLock.Lock()
-	delete(u.drives, objectPath)
+	log.Println("Removing device", objectPath)
+	if strings.HasPrefix(string(objectPath), path.Join(dbusObject, "drives")) {
+		delete(u.drives, objectPath)
+	}
 	u.mapLock.Unlock()
+	if u.blockDevice != nil {
+		u.blockDevice <- false
+	}
 	return nil
 }
 
@@ -252,28 +294,28 @@ func (iface Interfaces) desiredUnmountEvent() bool {
 func (u *UDisks2) desiredMountableEvent(s *Event) bool {
 	drivePath, err := s.getDrive()
 	if err != nil {
-		log.Println("Issues while getting drive:", err)
+		//log.Println("Issues while getting drive:", err)
 		return false
 	}
 
 	drive := u.drives[drivePath]
 	if ok := drive.hasSystemBlockDevices(); ok {
-		log.Println(drivePath, "which contains", s.Path, "has HintSystem set")
+		//log.Println(drivePath, "which contains", s.Path, "has HintSystem set")
 		return false
 	}
 
 	driveProps, ok := drive.driveInfo[dbusDriveInterface]
 	if !ok {
-		log.Println(drivePath, "doesn't hold a Drive interface")
+		//log.Println(drivePath, "doesn't hold a Drive interface")
 		return false
 	}
 	if mediaRemovableVariant, ok := driveProps["MediaRemovable"]; !ok {
-		log.Println(drivePath, "which holds", s.Path, "doesn't have MediaRemovable")
+		//log.Println(drivePath, "which holds", s.Path, "doesn't have MediaRemovable")
 		return false
 	} else {
 		mediaRemovable := reflect.ValueOf(mediaRemovableVariant.Value).Bool()
 		if !mediaRemovable {
-			log.Println(drivePath, "which holds", s.Path, "is not MediaRemovable")
+			//log.Println(drivePath, "which holds", s.Path, "is not MediaRemovable")
 			return false
 		}
 	}
@@ -284,11 +326,11 @@ func (u *UDisks2) desiredMountableEvent(s *Event) bool {
 	}
 	if mountpointsVariant, ok := propFS["MountPoints"]; ok {
 		if reflect.TypeOf(mountpointsVariant.Value).Kind() != reflect.Slice {
-			log.Println(s.Path, "does not hold a MountPoints slice")
+			//log.Println(s.Path, "does not hold a MountPoints slice")
 			return false
 		}
 		if mountpoints := reflect.ValueOf(mountpointsVariant.Value).Len(); mountpoints > 0 {
-			log.Println(mountpoints, "previous mountpoint(s) found")
+			//log.Println(mountpoints, "previous mountpoint(s) found")
 			return false
 		}
 	}
@@ -328,6 +370,18 @@ func (d *Drive) hasSystemBlockDevices() bool {
 	return false
 }
 
+func (d *Drive) Model() string {
+	propDrive, ok := d.driveInfo[dbusDriveInterface]
+	if !ok {
+		return ""
+	}
+	modelVariant, ok := propDrive["Model"]
+	if !ok {
+		return ""
+	}
+	return reflect.ValueOf(modelVariant.Value).String()
+}
+
 func (s *Event) getDrive() (dbus.ObjectPath, error) {
 	propBlock, ok := s.Props[dbusBlockInterface]
 	if !ok {
@@ -348,16 +402,35 @@ func newDrive(s *Event) *Drive {
 	}
 }
 
+const (
+	deviceTypeBlock = iota
+	deviceTypeDrive
+	deviceTypeUnhandled
+)
+
+type dbusObjectPathType uint
+
+func objectPathType(objectPath dbus.ObjectPath) dbusObjectPathType {
+	objectPathString := string(objectPath)
+	if strings.HasPrefix(objectPathString, path.Join(dbusObject, "drives")) {
+		return deviceTypeDrive
+	} else if strings.HasPrefix(objectPathString, path.Join(dbusObject, "block_devices")) {
+		return deviceTypeBlock
+	} else {
+		return deviceTypeUnhandled
+	}
+}
+
 func (dm *driveMap) addInterface(s *Event) (bool, error) {
-	objectPathString := string(s.Path)
 	var blockDevice bool
 
-	if strings.HasPrefix(objectPathString, path.Join(dbusObject, "drives")) {
+	switch objectPathType(s.Path) {
+	case deviceTypeDrive:
 		if _, ok := (*dm)[s.Path]; ok {
 			log.Println("WARNING: replacing", s.Path, "with new drive event")
 		}
 		(*dm)[s.Path] = newDrive(s)
-	} else if strings.HasPrefix(objectPathString, path.Join(dbusObject, "block_devices")) {
+	case deviceTypeBlock:
 		driveObjectPath, err := s.getDrive()
 		if err != nil {
 			return blockDevice, err
@@ -365,10 +438,9 @@ func (dm *driveMap) addInterface(s *Event) (bool, error) {
 		if _, ok := (*dm)[driveObjectPath]; !ok {
 			return blockDevice, errors.New("drive holding block device is not mapped")
 		}
-		log.Println("Adding block device on", s.Path, "to", driveObjectPath)
 		(*dm)[driveObjectPath].blockDevices[s.Path] = s.Props
 		blockDevice = true
-	} else {
+	default:
 		// we don't care about other object paths
 		log.Println("Unhandled object path", s.Path)
 	}
