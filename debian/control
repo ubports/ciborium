@@ -11,6 +11,7 @@ Build-Depends:
  golang-go,
  golang-go-dbus-dev,
  golang-go-xdg-dev,
+ pkg-config,
  qtbase5-private-dev,
  qtdeclarative5-private-dev,
 Standards-Version: 3.9.5
