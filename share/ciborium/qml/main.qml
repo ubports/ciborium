@@ -2,6 +2,8 @@ import QtQuick 2.0
 import Ubuntu.Components 1.1
 import Ubuntu.Components.ListItems 0.1 as ListItem
 
+import "components"
+
 /*!
     \brief MainView with a Label and Button elements.
 */
@@ -31,80 +33,79 @@ MainView {
             title: i18n.tr("SD Card Management")
             Component.onCompleted: driveCtrl.watch()
 
-                Button {
-                    id: button
-                    anchors {
-                        top: parent.top
-                        left: parent.left
-                        right: parent.right
-                    }
-                    objectName: "button"
-                    width: parent.width
+            Button {
+                id: button
+                anchors {
+                    top: parent.top
+                    left: parent.left
+                    right: parent.right
+                }
+                objectName: "button"
+                width: parent.width
 
-                    text: i18n.tr("Refresh")
+                text: i18n.tr("Refresh")
 
-                    onClicked: driveCtrl.drives()
+                onClicked: driveCtrl.drives()
+            }
+
+            ListView {
+                model: driveCtrl.len
+                anchors {
+                    top: button.bottom
+                    bottom: parent.bottom
+                    left: parent.left
+                    right: parent.right
+                    topMargin: units.gu(1)
                 }
 
-                ListView {
-                    model: driveCtrl.len
+                delegate: UbuntuShape {
+                    height: childrenRect.height
+                    width: parent.width
+                    color: index % 2 === 0 ? "#DECAE3" : "white"
                     anchors {
-                        top: button.bottom
-                        bottom: parent.bottom
-                        left: parent.left
-                        right: parent.right
                         topMargin: units.gu(1)
+                        bottomMargin: units.gu(1)
                     }
 
-                    delegate: UbuntuShape {
-                        height: childrenRect.height
-                        width: parent.width
-                        color: index % 2 === 0 ? "#DECAE3" : "white"
+                    Column {
+                        spacing: units.gu(2)
                         anchors {
+                            leftMargin: units.gu(2)
                             topMargin: units.gu(1)
                             bottomMargin: units.gu(1)
                         }
 
-                        Column {
-                            spacing: units.gu(2)
-                            anchors {
-                                leftMargin: units.gu(2)
-                                topMargin: units.gu(1)
-                                bottomMargin: units.gu(1)
-                            }
+                        Row {
+                            spacing: units.gu(1)
+                            height: units.gu(2)
+                            width: childrenRect.width
 
-                            Row {
-                                spacing: units.gu(1)
-                                height: units.gu(2)
-                                width: childrenRect.width
-
-                                Icon {
-                                    width: 24
-                                    height: 24
-                                    name: "media-memory-sd"
-                                    //source: "file:///usr/share/icons/Humanity/devices/48/media-memory-sd.svg"
-                                }
-                                Label {
-                                    width: paintedWidth       
-                                    text: driveCtrl.driveModel(index)
-                                }
+                            Icon {
+                                width: 24
+                                height: 24
+                                name: "media-memory-sd"
+                                //source: "file:///usr/share/icons/Humanity/devices/48/media-memory-sd.svg"
                             }
-                            Row {
-                                spacing: units.gu(1)
-                                height: childrenRect.height
-                                width: childrenRect.width
-                                Button {
-                                    text: i18n.tr("Format")
-                                    onClicked: driveCtrl.driveFormat(index)
-                                }
-                                Button {
-                                    text: i18n.tr("Safely Remove")
-                                    onClicked: driveCtrl.driveUnmount(index)
-                                }
+                            Label {
+                                width: paintedWidth       
+                                text: driveCtrl.driveModel(index)
+                            }
+                        }
+                        Row {
+                            spacing: units.gu(1)
+                            height: childrenRect.height
+                            width: childrenRect.width
+                            FormatDialog {
+                                driveIndex: index
+                            }
+                            Button {
+                                text: i18n.tr("Safely Remove")
+                                onClicked: driveCtrl.driveUnmount(index)
                             }
                         }
                     }
                 }
+            }
         }
     }
 }
