@@ -28,7 +28,7 @@ import (
 
 	"log"
 
-	"gopkg.in/qml.v0"
+	"launchpad.net/ciborium/qml.v0"
 	"launchpad.net/ciborium/udisks2"
 	"launchpad.net/go-dbus/v1"
 	"launchpad.net/go-xdg/v0"
