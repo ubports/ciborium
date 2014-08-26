@@ -35,14 +35,16 @@ import (
 )
 
 const (
-	dbusName                   = "org.freedesktop.UDisks2"
-	dbusObject                 = "/org/freedesktop/UDisks2"
-	dbusObjectManagerInterface = "org.freedesktop.DBus.ObjectManager"
-	dbusBlockInterface         = "org.freedesktop.UDisks2.Block"
-	dbusDriveInterface         = "org.freedesktop.UDisks2.Drive"
-	dbusFilesystemInterface    = "org.freedesktop.UDisks2.Filesystem"
-	dbusAddedSignal            = "InterfacesAdded"
-	dbusRemovedSignal          = "InterfacesRemoved"
+	dbusName                    = "org.freedesktop.UDisks2"
+	dbusObject                  = "/org/freedesktop/UDisks2"
+	dbusObjectManagerInterface  = "org.freedesktop.DBus.ObjectManager"
+	dbusBlockInterface          = "org.freedesktop.UDisks2.Block"
+	dbusDriveInterface          = "org.freedesktop.UDisks2.Drive"
+	dbusFilesystemInterface     = "org.freedesktop.UDisks2.Filesystem"
+	dbusPartitionInterface      = "org.freedesktop.UDisks2.Partition"
+	dbusPartitionTableInterface = "org.freedesktop.UDisks2.PartitionTable"
+	dbusAddedSignal             = "InterfacesAdded"
+	dbusRemovedSignal           = "InterfacesRemoved"
 )
 
 type VariantMap map[string]dbus.Variant
@@ -113,10 +115,86 @@ func (u *UDisks2) Mount(s *Event) (mountpoint string, err error) {
 }
 
 func (u *UDisks2) Unmount(d *Drive) error {
+	for blockPath, block := range d.blockDevices {
+		if block.isMounted() {
+			if err := u.umount(blockPath); err != nil {
+				log.Println("Issues while unmounting", blockPath, ":", err)
+				continue
+			}
+			if _, ok := u.mountpoints[blockPath]; ok {
+				delete(u.mountpoints, blockPath)
+			}
+		} else {
+			log.Println(blockPath, "is not mounted")
+		}
+	}
+	return nil
+}
+
+func (u *UDisks2) umount(o dbus.ObjectPath) error {
+	obj := u.conn.Object(dbusName, o)
+	options := make(VariantMap)
+	options["auth.no_user_interaction"] = dbus.Variant{true}
+	_, err := obj.Call(dbusFilesystemInterface, "Unmount", options)
+	if err != nil {
+		return err
+	}
 	return nil
 }
 
 func (u *UDisks2) Format(d *Drive) error {
+	if err := u.Unmount(d); err != nil {
+		log.Println("Error while unmounting:", err)
+		return err
+	}
+	// delete all the partitions
+	for blockPath, block := range d.blockDevices {
+		if block.hasPartition() {
+			if err := u.deletePartition(blockPath); err != nil {
+				log.Println("Issues while deleting partition on", blockPath, ":", err)
+				return err
+			}
+			// delete the block from the map as it shouldn't exist anymore
+			delete(d.blockDevices, blockPath)
+		}
+	}
+
+	// format the blocks with PartitionTable
+	for blockPath, block := range d.blockDevices {
+		if !block.isPartitionable() {
+			continue
+		}
+		fmt.Println("Formatting", blockPath)
+		fmt.Println(block)
+		if err := u.format(blockPath); err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (u *UDisks2) format(o dbus.ObjectPath) error {
+	log.Println("Formatting", o)
+	obj := u.conn.Object(dbusName, o)
+	options := make(VariantMap)
+	options["auth.no_user_interaction"] = dbus.Variant{true}
+	_, err := obj.Call(dbusBlockInterface, "Format", "vfat", options)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (u *UDisks2) deletePartition(o dbus.ObjectPath) error {
+	log.Println("Calling delete on", o)
+	obj := u.conn.Object(dbusName, o)
+	options := make(VariantMap)
+	options["auth.no_user_interaction"] = dbus.Variant{true}
+	_, err := obj.Call(dbusPartitionInterface, "Delete", options)
+	if err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -269,6 +347,8 @@ func (u *UDisks2) processRemoveEvent(objectPath dbus.ObjectPath, interfaces Inte
 	log.Println("Removing device", objectPath)
 	if strings.HasPrefix(string(objectPath), path.Join(dbusObject, "drives")) {
 		delete(u.drives, objectPath)
+	} else {
+		// TODO: remove filesystem interface from map
 	}
 	u.mapLock.Unlock()
 	if u.blockDevice != nil {
@@ -321,19 +401,8 @@ func (u *UDisks2) desiredMountableEvent(s *Event) bool {
 		}
 	}
 
-	propFS, ok := s.Props[dbusFilesystemInterface]
-	if !ok {
+	if s.Props.isMounted() {
 		return false
-	}
-	if mountpointsVariant, ok := propFS["MountPoints"]; ok {
-		if reflect.TypeOf(mountpointsVariant.Value).Kind() != reflect.Slice {
-			//log.Println(s.Path, "does not hold a MountPoints slice")
-			return false
-		}
-		if mountpoints := reflect.ValueOf(mountpointsVariant.Value).Len(); mountpoints > 0 {
-			//log.Println(mountpoints, "previous mountpoint(s) found")
-			return false
-		}
 	}
 
 	propBlock, ok := s.Props[dbusBlockInterface]
@@ -447,4 +516,52 @@ func (dm *driveMap) addInterface(s *Event) (bool, error) {
 	}
 
 	return blockDevice, nil
+}
+
+func (i InterfacesAndProperties) isMounted() bool {
+	propFS, ok := i[dbusFilesystemInterface]
+	if !ok {
+		return false
+	}
+	mountpointsVariant, ok := propFS["MountPoints"]
+	if !ok {
+		return false
+	}
+	if reflect.TypeOf(mountpointsVariant.Value).Kind() != reflect.Slice {
+		return false
+	}
+	if mountpoints := reflect.ValueOf(mountpointsVariant.Value).Len(); mountpoints > 0 {
+		return true
+	}
+	return false
+}
+
+func (i InterfacesAndProperties) hasPartition() bool {
+	prop, ok := i[dbusPartitionInterface]
+	if !ok {
+		return false
+	}
+	// check if a couple of properties exist
+	if _, ok := prop["UUID"]; !ok {
+		return false
+	}
+	if _, ok := prop["Table"]; !ok {
+		return false
+	}
+	return true
+}
+
+func (i InterfacesAndProperties) isPartitionable() bool {
+	prop, ok := i[dbusBlockInterface]
+	if !ok {
+		return false
+	}
+	partitionableHintVariant, ok := prop["HintPartitionable"]
+	if !ok {
+		return false
+	}
+	if reflect.TypeOf(partitionableHintVariant.Value).Kind() != reflect.Bool {
+		return false
+	}
+	return reflect.ValueOf(partitionableHintVariant.Value).Bool()
 }
