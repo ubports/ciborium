@@ -109,6 +109,7 @@ func newDriveControl() (*driveControl, error) {
 func (ctrl *driveControl) Watch() {
 	c := ctrl.udisks.SubscribeBlockDeviceEvents()
 	go func() {
+		ctrl.Drives()
 		for b := range c {
 			if b {
 				log.Println("Block device added")
@@ -135,6 +136,7 @@ func (ctrl *driveControl) DriveModel(index int) string {
 
 func (ctrl *driveControl) DriveFormat(index int) bool {
 	drive := ctrl.ExternalDrives[index]
+	log.Println("Format drive on index", index, "model", drive.Model())
 	if err := ctrl.udisks.Format(&drive); err != nil {
 		log.Println("Error while trying to format", drive.Model(), ":", err)
 		return false
