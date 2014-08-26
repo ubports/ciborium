@@ -33,25 +33,10 @@ MainView {
             title: i18n.tr("SD Card Management")
             Component.onCompleted: driveCtrl.watch()
 
-            Button {
-                id: button
-                anchors {
-                    top: parent.top
-                    left: parent.left
-                    right: parent.right
-                }
-                objectName: "button"
-                width: parent.width
-
-                text: i18n.tr("Refresh")
-
-                onClicked: driveCtrl.drives()
-            }
-
             ListView {
                 model: driveCtrl.len
                 anchors {
-                    top: button.bottom
+                    top: parent.top
                     bottom: parent.bottom
                     left: parent.left
                     right: parent.right
