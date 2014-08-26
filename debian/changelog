@@ -1,3 +1,14 @@
+ciborium (0.2-0ubuntu1) UNRELEASED; urgency=medium
+
+  * udisks2:
+    - support for unmount and wiping.
+    - signalling changes for drives.
+  * Source inlining import of qml.v0 until
+    git+ssh://git.debian.org/git/pkg-go/packages/golang-qml.v0.git is ready.
+  * ciborium-ui (golang + qml) added.
+
+ -- Sergio Schvezov <sergio.schvezov@canonical.com>  Tue, 26 Aug 2014 19:23:55 -0300
+
 ciborium (0.1+14.10.20140813-0ubuntu1) utopic; urgency=low
 
   [ Sergio Schvezov ]
