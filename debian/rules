@@ -2,6 +2,7 @@
 # -*- makefile -*-
 
 export DH_OPTIONS
+export DH_GOLANG_INSTALL_ALL=1
 export DH_GOPKG := launchpad.net/ciborium
 
 %:
@@ -26,6 +27,3 @@ override_dh_auto_install:
 		mofile="$$localedir/$$appname.mo"; \
 		msgfmt -o $$mofile $$pofile; \
 	done
-
-override_dh_strip:
-	echo "Skipping strip (LP: #1318027)"

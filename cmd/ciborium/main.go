@@ -21,7 +21,6 @@ package main
 
 import (
 	"log"
-	"time"
 
 	"launchpad.net/ciborium/gettext"
 	"launchpad.net/ciborium/notifications"
@@ -33,6 +32,8 @@ type message struct{ Summary, Body string }
 
 var supportedFS []string = []string{"vfat"}
 
+const sdCardIcon = "media-memory-sd"
+
 func main() {
 
 	// Initialize i18n
@@ -41,7 +42,7 @@ func main() {
 	gettext.BindTextdomain("ciborium", "/usr/share/locale")
 
 	var (
-		msgStorageSucces message = message{
+		msgStorageSuccess message = message{
 			// TRANSLATORS: This is the summary of a notification bubble with a short message of
 			// success when addding a storage device.
 			Summary: gettext.Gettext("Storage device detected"),
@@ -86,26 +87,45 @@ func main() {
 
 	udisks2 := udisks2.NewStorageWatcher(systemBus, supportedFS...)
 
-	timeout := time.Second * 4
-	n := notifications.NewNotificationHandler(sessionBus, "ciborium", "system-settings", timeout)
+	notificationHandler := notifications.NewLegacyHandler(sessionBus, "ciborium")
 
 	go func() {
 		for {
+			var n *notifications.PushMessage
 			select {
 			case a := <-udisks2.DriveAdded:
-				if mountpoint, err := a.Mount(systemBus); err != nil {
+				if mountpoint, err := udisks2.Mount(a); err != nil {
 					log.Println("Cannot mount", a.Path, "due to:", err)
-					if err := n.SimpleNotify(msgStorageFail.Summary, msgStorageFail.Body); err != nil {
-						log.Println(err)
-					}
+					n = notificationHandler.NewStandardPushMessage(
+						msgStorageFail.Summary,
+						msgStorageFail.Body,
+						sdCardIcon,
+					)
 				} else {
 					log.Println("Mounted", a.Path, "as", mountpoint)
-					if err := n.SimpleNotify(msgStorageSucces.Summary, msgStorageSucces.Body); err != nil {
-						log.Println(err)
-					}
+					n = notificationHandler.NewStandardPushMessage(
+						msgStorageSuccess.Summary,
+						msgStorageSuccess.Body,
+						sdCardIcon,
+					)
 				}
-			case <-udisks2.DriveRemoved:
-				if err := n.SimpleNotify(msgStorageRemoved.Summary, msgStorageRemoved.Body); err != nil {
+			case e := <-udisks2.BlockError:
+				log.Println("Issues in block for added drive:", e)
+				n = notificationHandler.NewStandardPushMessage(
+					msgStorageFail.Summary,
+					msgStorageFail.Body,
+					sdCardIcon,
+				)
+			case r := <-udisks2.DriveRemoved:
+				log.Println("Path removed", r)
+				n = notificationHandler.NewStandardPushMessage(
+					msgStorageRemoved.Summary,
+					msgStorageRemoved.Body,
+					sdCardIcon,
+				)
+			}
+			if n != nil {
+				if err := notificationHandler.Send(n); err != nil {
 					log.Println(err)
 				}
 			}

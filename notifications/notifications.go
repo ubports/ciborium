@@ -22,43 +22,90 @@
 package notifications
 
 import (
-	"time"
+	"encoding/json"
+	"path"
 
 	"launchpad.net/go-dbus/v1"
 )
 
 const (
-	dbusName         = "org.freedesktop.Notifications"
-	dbusInterface    = "org.freedesktop.Notifications"
-	dbusPath         = "/org/freedesktop/Notifications"
-	dbusNotifyMethod = "Notify"
+	dbusName       = "com.ubuntu.Postal"
+	dbusInterface  = "com.ubuntu.Postal"
+	dbusPathPart   = "/com/ubuntu/Postal/"
+	dbusPostMethod = "Post"
 )
 
 type VariantMap map[string]dbus.Variant
 
-type Notification struct {
-	dbusObject    *dbus.ObjectProxy
-	appName, icon string
-	timeout       int32
+type notificationHandler struct {
+	dbusObject  *dbus.ObjectProxy
+	application string
 }
 
-func NewNotificationHandler(conn *dbus.Connection, appName, icon string, timeout time.Duration) *Notification {
-	return &Notification{
-		dbusObject: conn.Object(dbusName, dbusPath),
-		appName:    appName,
-		icon:       icon,
-		timeout:    int32(timeout.Seconds()) * 1000,
+func NewLegacyHandler(conn *dbus.Connection, application string) *notificationHandler {
+	return &notificationHandler{
+		dbusObject:  conn.Object(dbusName, dbus.ObjectPath(path.Join(dbusPathPart, "_"))),
+		application: application,
 	}
 }
 
-func (n *Notification) SimpleNotify(summary, body string) error {
-	return n.Notify(summary, body, nil, nil)
-}
-
-func (n *Notification) Notify(summary, body string, actions []string, hints VariantMap) error {
-	var reuseId uint32
-	if _, err := n.dbusObject.Call(dbusInterface, dbusNotifyMethod, n.appName, reuseId, n.icon, summary, body, actions, hints, n.timeout); err != nil {
+func (n *notificationHandler) Send(m *PushMessage) error {
+	var pushMessage string
+	if out, err := json.Marshal(m); err == nil {
+		pushMessage = string(out)
+	} else {
 		return err
 	}
-	return nil
+	_, err := n.dbusObject.Call(dbusInterface, dbusPostMethod, "_"+n.application, pushMessage)
+	return err
+}
+
+// NewStandardPushMessage creates a base Notification with common
+// components (members) setup.
+func (n *notificationHandler) NewStandardPushMessage(summary, body, icon string) *PushMessage {
+	pm := &PushMessage{
+		Notification: Notification{
+			Card: &Card{
+				Summary: summary,
+				Body:    body,
+				Actions: []string{"application:///" + n.application + ".desktop"},
+				Icon:    icon,
+				Popup:   true,
+				Persist: true,
+			},
+		},
+	}
+	return pm
+}
+
+// PushMessage represents a data structure to be sent over to the
+// Post Office. It consists of a Notification and a Message.
+type PushMessage struct {
+	// Notification (optional) describes the user-facing notifications
+	// triggered by this push message.
+	Notification Notification `json:"notification,omitempty"`
+}
+
+// Notification (optional) describes the user-facing notifications
+// triggered by this push message.
+type Notification struct {
+	Card *Card `json:"card,omitempty"`
+}
+
+// Card is part of a notification and represents the user visible hints for
+// a specific notification.
+type Card struct {
+	// Summary is a required title. The card will not be presented if this is missing.
+	Summary string `json:"summary"`
+	// Body is the longer text.
+	Body string `json:"body,omitempty"`
+	// Whether to show a bubble. Users can disable this, and can easily miss
+	// them, so don’t rely on it exclusively.
+	Popup bool `json:"popup,omitempty"`
+	// Actions provides actions for the bubble's snap decissions.
+	Actions []string `json:"actions,omitempty"`
+	// Icon is a path to an icon to display with the notification bubble.
+	Icon string `json:"icon,omitempty"`
+	// Whether to show in notification centre.
+	Persist bool `json:"persist,omitempty"`
 }

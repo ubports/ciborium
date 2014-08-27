@@ -1,0 +1,14 @@
+[Desktop Entry]
+Type=Application
+Name=External Drives
+GenericName=SD Card Management
+Comment=Manages external drives
+Keywords=SDCard;Drive;Format
+Exec=ciborium-ui
+Terminal=false
+Icon=media-memory-sd
+X-Ubuntu-Touch=true
+X-Ubuntu-StageHint=SideStage
+X-Ubuntu-Single-Instance=true
+X-Ubuntu-Default-Department-ID=accessories
+X-Screenshot=/usr/share/dialer-app/assets/dialer-app-screenshot.png
