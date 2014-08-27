@@ -1,5 +1,6 @@
-ciborium (0.2.11-0ubuntu1) UNRELEASED; urgency=medium
+ciborium (0.2.11+14.10.20140827.4-0ubuntu1) utopic; urgency=medium
 
+  [ Sergio Schvezov ]
   * udisks2:
     - support for unmount and wiping.
     - signalling changes for drives.
@@ -14,7 +15,7 @@ ciborium (0.2.11-0ubuntu1) UNRELEASED; urgency=medium
   * debian/rules: Removing the strip override as that only really affects
     gcc-go. 
 
- -- Sergio Schvezov <sergio.schvezov@canonical.com>  Tue, 26 Aug 2014 19:27:49 -0300
+ -- Ubuntu daily release <ps-jenkins@lists.canonical.com>  Wed, 27 Aug 2014 22:57:24 +0000
 
 ciborium (0.1+14.10.20140813-0ubuntu1) utopic; urgency=low
 
