@@ -42,9 +42,9 @@ type notificationHandler struct {
 	application string
 }
 
-func NewNotificationHandler(conn *dbus.Connection, application string) *notificationHandler {
+func NewLegacyHandler(conn *dbus.Connection, application string) *notificationHandler {
 	return &notificationHandler{
-		dbusObject:  conn.Object(dbusName, dbus.ObjectPath(path.Join(dbusPathPart, application))),
+		dbusObject:  conn.Object(dbusName, dbus.ObjectPath(path.Join(dbusPathPart, "_"))),
 		application: application,
 	}
 }
@@ -56,7 +56,7 @@ func (n *notificationHandler) Send(m *PushMessage) error {
 	} else {
 		return err
 	}
-	if _, err := n.dbusObject.Call(dbusInterface, dbusPostMethod, n.application, pushMessage); err != nil {
+	if _, err := n.dbusObject.Call(dbusInterface, dbusPostMethod, "_"+n.application, pushMessage); err != nil {
 		return err
 	}
 	return nil

@@ -85,7 +85,7 @@ func main() {
 
 	udisks2 := udisks2.NewStorageWatcher(systemBus, supportedFS...)
 
-	notificationHandler := notifications.NewNotificationHandler(sessionBus, "ciborium")
+	notificationHandler := notifications.NewLegacyHandler(sessionBus, "ciborium")
 
 	go func() {
 		for {
