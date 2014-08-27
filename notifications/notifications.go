@@ -22,6 +22,7 @@
 package notifications
 
 import (
+	"encoding/json"
 	"path"
 
 	"launchpad.net/go-dbus/v1"
@@ -49,7 +50,13 @@ func NewNotificationHandler(conn *dbus.Connection, application string) *notifica
 }
 
 func (n *notificationHandler) Send(m *PushMessage) error {
-	if _, err := n.dbusObject.Call(dbusInterface, dbusPostMethod, n.application, m); err != nil {
+	var pushMessage string
+	if out, err := json.Marshal(m); err == nil {
+		pushMessage = string(out)
+	} else {
+		return err
+	}
+	if _, err := n.dbusObject.Call(dbusInterface, dbusPostMethod, n.application, pushMessage); err != nil {
 		return err
 	}
 	return nil
