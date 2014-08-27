@@ -56,10 +56,8 @@ func (n *notificationHandler) Send(m *PushMessage) error {
 	} else {
 		return err
 	}
-	if _, err := n.dbusObject.Call(dbusInterface, dbusPostMethod, "_"+n.application, pushMessage); err != nil {
-		return err
-	}
-	return nil
+	_, err := n.dbusObject.Call(dbusInterface, dbusPostMethod, "_"+n.application, pushMessage)
+	return err
 }
 
 // NewStandardPushMessage creates a base Notification with common
