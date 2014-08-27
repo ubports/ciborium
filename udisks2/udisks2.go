@@ -89,7 +89,7 @@ func NewStorageWatcher(conn *dbus.Connection, filesystems ...string) (u *UDisks2
 		validFS:      sort.StringSlice(filesystems),
 		DriveAdded:   make(chan *Event),
 		DriveRemoved: make(chan dbus.ObjectPath),
-		BlockError:   make(chan error),
+		BlockError:   make(chan error, 1),
 		drives:       make(driveMap),
 		mountpoints:  make(mountpointMap),
 	}
