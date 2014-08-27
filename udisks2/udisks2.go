@@ -125,12 +125,9 @@ func (u *UDisks2) ExternalDrives() []Drive {
 	defer u.startLock.Unlock()
 	var drives []Drive
 	for _, d := range u.drives {
-		if d.hasSystemBlockDevices() {
-			continue
-		} else if len(d.blockDevices) == 0 {
-			continue
+		if !d.hasSystemBlockDevices() && len(d.blockDevices) != 0 {
+			drives = append(drives, *d)
 		}
-		drives = append(drives, *d)
 	}
 	return drives
 }
@@ -357,14 +354,10 @@ func (u *UDisks2) desiredMountableEvent(s *Event) bool {
 
 func (d *Drive) hasSystemBlockDevices() bool {
 	for _, blockDevice := range d.blockDevices {
-		propBlock, ok := blockDevice[dbusBlockInterface]
-		if !ok {
-			continue
-		}
-		if systemHintVariant, ok := propBlock["HintSystem"]; !ok {
-			continue
-		} else if systemHint := reflect.ValueOf(systemHintVariant.Value).Bool(); systemHint {
-			return true
+		if propBlock, ok := blockDevice[dbusBlockInterface]; ok {
+			if systemHintVariant, ok := propBlock["HintSystem"]; ok {
+				return reflect.ValueOf(systemHintVariant.Value).Bool()
+			}
 		}
 	}
 	return false
