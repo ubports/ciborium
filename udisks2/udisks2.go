@@ -164,8 +164,6 @@ func (u *UDisks2) Format(d *Drive) error {
 		if !block.isPartitionable() {
 			continue
 		}
-		fmt.Println("Formatting", blockPath)
-		fmt.Println(block)
 		if err := u.format(blockPath); err != nil {
 			return err
 		}
@@ -365,6 +363,7 @@ func cleanDriveWatch(u *UDisks2) {
 
 func (iface Interfaces) desiredUnmountEvent() bool {
 	for i := range iface {
+		fmt.Println(iface[i])
 		if iface[i] == dbusFilesystemInterface {
 			return true
 		}
