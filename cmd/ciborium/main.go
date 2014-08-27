@@ -32,6 +32,8 @@ type message struct{ Summary, Body string }
 
 var supportedFS []string = []string{"vfat"}
 
+const sdCardIcon = "media-memory-sd"
+
 func main() {
 
 	// Initialize i18n
@@ -97,14 +99,14 @@ func main() {
 					n = notificationHandler.NewStandardPushMessage(
 						msgStorageFail.Summary,
 						msgStorageFail.Body,
-						"media-memory-sd",
+						sdCardIcon,
 					)
 				} else {
 					log.Println("Mounted", a.Path, "as", mountpoint)
 					n = notificationHandler.NewStandardPushMessage(
 						msgStorageSuccess.Summary,
 						msgStorageSuccess.Body,
-						"media-memory-sd",
+						sdCardIcon,
 					)
 				}
 			case e := <-udisks2.BlockError:
@@ -112,14 +114,14 @@ func main() {
 				n = notificationHandler.NewStandardPushMessage(
 					msgStorageFail.Summary,
 					msgStorageFail.Body,
-					"media-memory-sd",
+					sdCardIcon,
 				)
 			case r := <-udisks2.DriveRemoved:
 				log.Println("Path removed", r)
 				n = notificationHandler.NewStandardPushMessage(
 					msgStorageRemoved.Summary,
 					msgStorageRemoved.Body,
-					"media-memory-sd",
+					sdCardIcon,
 				)
 			}
 			if n != nil {
