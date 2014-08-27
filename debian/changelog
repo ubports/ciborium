@@ -11,6 +11,8 @@ ciborium (0.2.11-0ubuntu1) UNRELEASED; urgency=medium
   * debian/control:
     - Adding build dependencies for Qt5 and golang.
     - Updating Section. 
+  * debian/rules: Removing the strip override as that only really affects
+    gcc-go. 
 
  -- Sergio Schvezov <sergio.schvezov@canonical.com>  Tue, 26 Aug 2014 19:27:49 -0300
 
