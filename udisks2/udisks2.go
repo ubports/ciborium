@@ -123,7 +123,7 @@ func (u *UDisks2) Unmount(d *Drive) error {
 		if block.isMounted() {
 			if err := u.umount(blockPath); err != nil {
 				log.Println("Issues while unmounting", blockPath, ":", err)
-				continue
+				return err
 			}
 			if _, ok := u.mountpoints[blockPath]; ok {
 				delete(u.mountpoints, blockPath)
@@ -140,10 +140,7 @@ func (u *UDisks2) umount(o dbus.ObjectPath) error {
 	options := make(VariantMap)
 	options["auth.no_user_interaction"] = dbus.Variant{true}
 	_, err := obj.Call(dbusFilesystemInterface, "Unmount", options)
-	if err != nil {
-		return err
-	}
-	return nil
+	return err
 }
 
 func (u *UDisks2) Format(d *Drive) error {
@@ -182,10 +179,7 @@ func (u *UDisks2) format(o dbus.ObjectPath) error {
 	options := make(VariantMap)
 	options["auth.no_user_interaction"] = dbus.Variant{true}
 	_, err := obj.Call(dbusBlockInterface, "Format", "vfat", options)
-	if err != nil {
-		return err
-	}
-	return nil
+	return err
 }
 
 func (u *UDisks2) deletePartition(o dbus.ObjectPath) error {
@@ -194,10 +188,7 @@ func (u *UDisks2) deletePartition(o dbus.ObjectPath) error {
 	options := make(VariantMap)
 	options["auth.no_user_interaction"] = dbus.Variant{true}
 	_, err := obj.Call(dbusPartitionInterface, "Delete", options)
-	if err != nil {
-		return err
-	}
-	return nil
+	return err
 }
 
 func (u *UDisks2) ExternalDrives() []Drive {
@@ -528,10 +519,9 @@ func (i InterfacesAndProperties) isMounted() bool {
 	if reflect.TypeOf(mountpointsVariant.Value).Kind() != reflect.Slice {
 		return false
 	}
-	if mountpoints := reflect.ValueOf(mountpointsVariant.Value).Len(); mountpoints > 0 {
-		return true
-	}
-	return false
+	mountpoints := reflect.ValueOf(mountpointsVariant.Value).Len()
+
+	return mountpoints > 0
 }
 
 func (i InterfacesAndProperties) hasPartition() bool {
