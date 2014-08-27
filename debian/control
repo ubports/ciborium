@@ -7,10 +7,10 @@ Build-Depends:
  dosfstools,
  dh-golang,
  dh-translations,
- libqt5opengl5-dev,
  golang-go,
  golang-go-dbus-dev,
  golang-go-xdg-dev,
+ libqt5opengl5-dev,
  pkg-config,
  qtbase5-private-dev,
  qtdeclarative5-private-dev,
@@ -21,7 +21,12 @@ Vcs-Bzr: lp:ciborium
 
 Package: ciborium
 Architecture: any
-Depends: udisks2, notify-osd | unity8, ${misc:Depends}, ${shlibs:Depends}
+Depends:
+ dosfstools,
+ notify-osd | unity8,
+ udisks2,
+ ${misc:Depends},
+ ${shlibs:Depends},
 Built-Using: ${misc:Built-Using}
 Description: Manages storage devices on Ubuntu Touch
  This component uses udisks2 to search of mountable media and notifies
