@@ -47,6 +47,8 @@ const (
 	dbusRemovedSignal           = "InterfacesRemoved"
 )
 
+var ErrUnhandledFileSystem = errors.New("unhandled filesystem")
+
 type VariantMap map[string]dbus.Variant
 type InterfacesAndProperties map[string]VariantMap
 type Interfaces []string
@@ -72,6 +74,7 @@ type UDisks2 struct {
 	DriveAdded   chan *Event
 	driveAdded   *dbus.SignalWatch
 	DriveRemoved chan dbus.ObjectPath
+	BlockError   chan error
 	driveRemoved *dbus.SignalWatch
 	blockDevice  chan bool
 	drives       driveMap
@@ -86,6 +89,7 @@ func NewStorageWatcher(conn *dbus.Connection, filesystems ...string) (u *UDisks2
 		validFS:      sort.StringSlice(filesystems),
 		DriveAdded:   make(chan *Event),
 		DriveRemoved: make(chan dbus.ObjectPath),
+		BlockError:   make(chan error),
 		drives:       make(driveMap),
 		mountpoints:  make(mountpointMap),
 	}
@@ -318,7 +322,9 @@ func (u *UDisks2) processAddEvent(s *Event) error {
 	if isBlockDevice, err := u.drives.addInterface(s); err != nil {
 		return err
 	} else if isBlockDevice {
-		if u.desiredMountableEvent(s) {
+		if ok, err := u.desiredMountableEvent(s); err != nil {
+			u.BlockError <- err
+		} else if ok {
 			u.DriveAdded <- s
 		}
 		if u.blockDevice != nil {
@@ -371,57 +377,57 @@ func (iface Interfaces) desiredUnmountEvent() bool {
 	return false
 }
 
-func (u *UDisks2) desiredMountableEvent(s *Event) bool {
+func (u *UDisks2) desiredMountableEvent(s *Event) (bool, error) {
 	drivePath, err := s.getDrive()
 	if err != nil {
 		//log.Println("Issues while getting drive:", err)
-		return false
+		return false, nil
 	}
 
 	drive := u.drives[drivePath]
 	if ok := drive.hasSystemBlockDevices(); ok {
 		//log.Println(drivePath, "which contains", s.Path, "has HintSystem set")
-		return false
+		return false, nil
 	}
 
 	driveProps, ok := drive.driveInfo[dbusDriveInterface]
 	if !ok {
 		//log.Println(drivePath, "doesn't hold a Drive interface")
-		return false
+		return false, nil
 	}
 	if mediaRemovableVariant, ok := driveProps["MediaRemovable"]; !ok {
 		//log.Println(drivePath, "which holds", s.Path, "doesn't have MediaRemovable")
-		return false
+		return false, nil
 	} else {
 		mediaRemovable := reflect.ValueOf(mediaRemovableVariant.Value).Bool()
 		if !mediaRemovable {
 			//log.Println(drivePath, "which holds", s.Path, "is not MediaRemovable")
-			return false
+			return false, nil
 		}
 	}
 
 	if s.Props.isMounted() {
-		return false
+		return false, nil
 	}
 
 	propBlock, ok := s.Props[dbusBlockInterface]
 	if !ok {
-		return false
+		return false, nil
 	}
 	id, ok := propBlock["IdType"]
 	if !ok {
 		log.Println(s.Path, "doesn't hold IdType")
-		return false
+		return false, nil
 	}
 
 	fs := reflect.ValueOf(id.Value).String()
 	i := u.validFS.Search(fs)
 	if i >= u.validFS.Len() || u.validFS[i] != fs {
 		log.Println(fs, "not in:", u.validFS, "for", s.Path)
-		return false
+		return false, ErrUnhandledFileSystem
 	}
 
-	return true
+	return true, nil
 }
 
 func (d *Drive) hasSystemBlockDevices() bool {

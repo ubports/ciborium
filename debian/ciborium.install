@@ -1,2 +1,3 @@
 debian/ciborium.conf /usr/share/upstart/sessions/
+lib /usr/
 share /usr/
