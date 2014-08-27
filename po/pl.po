@@ -1,4 +1,4 @@
-# Finnish translation for ciborium
+# Polish translation for ciborium
 # Copyright (c) 2014 Rosetta Contributors and Canonical Ltd 2014
 # This file is distributed under the same license as the ciborium package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2014.
@@ -8,44 +8,44 @@ msgstr ""
 "Project-Id-Version: ciborium\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2014-08-12 23:31-0300\n"
-"PO-Revision-Date: 2014-08-15 08:12+0000\n"
-"Last-Translator: Jiri Grönroos <Unknown>\n"
-"Language-Team: Finnish <fi@li.org>\n"
+"PO-Revision-Date: 2014-08-18 18:14+0000\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: Polish <pl@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2014-08-16 06:54+0000\n"
+"X-Launchpad-Export-Date: 2014-08-19 07:04+0000\n"
 "X-Generator: Launchpad (build 17156)\n"
 
 #. TRANSLATORS: This is the summary of a notification bubble with a short message of
 #. success when addding a storage device.
 #: cmd/ciborium/main.go:47
 msgid "Storage device detected"
-msgstr "Tallennuslaite havaittu"
+msgstr ""
 
 #. TRANSLATORS: This is the body of a notification bubble with a short message about content
 #. being scanned when addding a storage device.
 #: cmd/ciborium/main.go:50
 msgid "This device will be scanned for new content"
-msgstr "Tämä laite tutkitaan uuden sisällön varalta"
+msgstr ""
 
 #. TRANSLATORS: This is the summary of a notification bubble with a short message of
 #. failure when adding a storage device.
 #: cmd/ciborium/main.go:56
 msgid "Failed to add storage device"
-msgstr "Tallennuslaitteen lisääminen epäonnistui"
+msgstr ""
 
 #. TRANSLATORS: This is the body of a notification bubble with a short message with hints
 #. with regards to the failure when adding a storage device.
 #: cmd/ciborium/main.go:59
 msgid "Make sure the storage device is correctly formated"
-msgstr "Varmista, että tallennuslaite on alustettu oikein"
+msgstr ""
 
 #. TRANSLATORS: This is the summary of a notification bubble with a short message of
 #. a storage device being removed
 #: cmd/ciborium/main.go:65
 msgid "Storage device has been removed"
-msgstr "Tallennuslaite on irrotettu"
+msgstr ""
 
 #. TRANSLATORS: This is the body of a notification bubble with a short message about content
 #. from the removed device no longer being available
@@ -53,4 +53,3 @@ msgstr "Tallennuslaite on irrotettu"
 msgid ""
 "Content previously available on this device will no longer be accessible"
 msgstr ""
-"Tällä laitteella aiemmin käytettävissä ollut sisältö ei ole enää saatavilla"
