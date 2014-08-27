@@ -8,13 +8,13 @@ msgstr ""
 "Project-Id-Version: ciborium\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2014-08-12 23:31-0300\n"
-"PO-Revision-Date: 2014-08-08 20:39+0000\n"
+"PO-Revision-Date: 2014-08-15 14:01+0000\n"
 "Last-Translator: Danial Behzadi <dani.behzi@gmail.com>\n"
 "Language-Team: Persian <fa@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2014-08-15 06:32+0000\n"
+"X-Launchpad-Export-Date: 2014-08-16 06:54+0000\n"
 "X-Generator: Launchpad (build 17156)\n"
 
 #. TRANSLATORS: This is the summary of a notification bubble with a short message of
@@ -45,7 +45,7 @@ msgstr "مطمئن شوید دستگاه ذخیره‌سازی به درستی �
 #. a storage device being removed
 #: cmd/ciborium/main.go:65
 msgid "Storage device has been removed"
-msgstr ""
+msgstr "دستگاه ذخیره‌سازی برداشته شد"
 
 #. TRANSLATORS: This is the body of a notification bubble with a short message about content
 #. from the removed device no longer being available
@@ -53,3 +53,4 @@ msgstr ""
 msgid ""
 "Content previously available on this device will no longer be accessible"
 msgstr ""
+"محتوایی که پیش‌تر روی این دستگاه موجود بود دیگر قابل دست‌رسی نخواهند بود"
