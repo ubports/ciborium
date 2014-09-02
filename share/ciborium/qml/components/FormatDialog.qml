@@ -14,15 +14,15 @@ Item {
         Dialog {
             id: dialogue
 
-            title: "Format"
-            text: "This action will wipe the content from the device"
+            title: i18n.tr("Format")
+            text: i18n.tr("This action will wipe the content from the device")
 
             Button {
-                text: "Cancel"
+                text: i18n.tr("Cancel")
                 onClicked: PopupUtils.close(dialogue)
             }
             Button {
-                text: "Continue with format"
+                text: i18n.tr("Continue with format")
                 color: UbuntuColors.orange
                 onClicked: {
                     driveCtrl.driveFormat(driveIndex)                     
@@ -34,7 +34,7 @@ Item {
     Button {
         anchors.centerIn: parent
         id: formatButton
-        text: "Format"
+        text: i18n.tr("Format")
         onClicked: PopupUtils.open(dialog)
     }
 }
