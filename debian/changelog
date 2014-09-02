@@ -1,3 +1,13 @@
+ciborium (0.2.11+14.10.20140902.1-0ubuntu1) utopic; urgency=low
+
+  [ Martin Pitt ]
+  * Mark for using language packs.
+
+  [ Víctor R. Ruiz ]
+  * Mark strings for localization.
+
+ -- Ubuntu daily release <ps-jenkins@lists.canonical.com>  Tue, 02 Sep 2014 13:38:31 +0000
+
 ciborium (0.2.11+14.10.20140827.4-0ubuntu1) utopic; urgency=medium
 
   [ Sergio Schvezov ]
