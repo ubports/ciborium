@@ -1,0 +1,56 @@
+# Basque translation for ciborium
+# Copyright (c) 2014 Rosetta Contributors and Canonical Ltd 2014
+# This file is distributed under the same license as the ciborium package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2014.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: ciborium\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2014-08-12 23:31-0300\n"
+"PO-Revision-Date: 2014-09-01 22:23+0000\n"
+"Last-Translator: Ibai Oihanguren Sala <Unknown>\n"
+"Language-Team: Basque <eu@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2014-09-02 07:33+0000\n"
+"X-Generator: Launchpad (build 17192)\n"
+
+#. TRANSLATORS: This is the summary of a notification bubble with a short message of
+#. success when addding a storage device.
+#: cmd/ciborium/main.go:47
+msgid "Storage device detected"
+msgstr "Biltegiratze-gailua antzeman da"
+
+#. TRANSLATORS: This is the body of a notification bubble with a short message about content
+#. being scanned when addding a storage device.
+#: cmd/ciborium/main.go:50
+msgid "This device will be scanned for new content"
+msgstr "Gailua eskaneatuko da eduki berrien bila"
+
+#. TRANSLATORS: This is the summary of a notification bubble with a short message of
+#. failure when adding a storage device.
+#: cmd/ciborium/main.go:56
+msgid "Failed to add storage device"
+msgstr "Huts egin du biltegiratze-gailua gehitzeak"
+
+#. TRANSLATORS: This is the body of a notification bubble with a short message with hints
+#. with regards to the failure when adding a storage device.
+#: cmd/ciborium/main.go:59
+msgid "Make sure the storage device is correctly formated"
+msgstr "Ziurtatu biltegiratze-gailuak formatu egokia duela"
+
+#. TRANSLATORS: This is the summary of a notification bubble with a short message of
+#. a storage device being removed
+#: cmd/ciborium/main.go:65
+msgid "Storage device has been removed"
+msgstr "Biltegiratze-gailua kendu da"
+
+#. TRANSLATORS: This is the body of a notification bubble with a short message about content
+#. from the removed device no longer being available
+#: cmd/ciborium/main.go:68
+msgid ""
+"Content previously available on this device will no longer be accessible"
+msgstr ""
+"Gailu honetan zegoen eduki erabilgarria dagoeneko ez da eskuragarri izango"
