@@ -7,50 +7,50 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ciborium\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2014-08-12 23:31-0300\n"
+"POT-Creation-Date: 2014-09-01 19:23+0100\n"
 "PO-Revision-Date: 2014-08-18 12:27+0000\n"
 "Last-Translator: Rafael Neri <Unknown>\n"
 "Language-Team: Brazilian Portuguese <pt_BR@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2014-08-19 07:04+0000\n"
-"X-Generator: Launchpad (build 17156)\n"
+"X-Launchpad-Export-Date: 2014-09-03 07:28+0000\n"
+"X-Generator: Launchpad (build 17196)\n"
 
 #. TRANSLATORS: This is the summary of a notification bubble with a short message of
 #. success when addding a storage device.
-#: cmd/ciborium/main.go:47
+#: cmd/ciborium/main.go:48
 msgid "Storage device detected"
 msgstr "Dispositivo de armazenamento detectado"
 
 #. TRANSLATORS: This is the body of a notification bubble with a short message about content
 #. being scanned when addding a storage device.
-#: cmd/ciborium/main.go:50
+#: cmd/ciborium/main.go:51
 msgid "This device will be scanned for new content"
 msgstr "Este dispositivo será verificado para novo conteúdo"
 
 #. TRANSLATORS: This is the summary of a notification bubble with a short message of
 #. failure when adding a storage device.
-#: cmd/ciborium/main.go:56
+#: cmd/ciborium/main.go:57
 msgid "Failed to add storage device"
 msgstr "Falha ao adicionar dispositivo de armazenamento"
 
 #. TRANSLATORS: This is the body of a notification bubble with a short message with hints
 #. with regards to the failure when adding a storage device.
-#: cmd/ciborium/main.go:59
+#: cmd/ciborium/main.go:60
 msgid "Make sure the storage device is correctly formated"
 msgstr ""
 "Verifique se o dispositivo de armazenamento está corretamente formatado"
 
 #. TRANSLATORS: This is the summary of a notification bubble with a short message of
 #. a storage device being removed
-#: cmd/ciborium/main.go:65
+#: cmd/ciborium/main.go:66
 msgid "Storage device has been removed"
 msgstr "O dispositivo de armazenamento foi removido"
 
 #. TRANSLATORS: This is the body of a notification bubble with a short message about content
 #. from the removed device no longer being available
-#: cmd/ciborium/main.go:68
+#: cmd/ciborium/main.go:69
 msgid ""
 "Content previously available on this device will no longer be accessible"
 msgstr ""
