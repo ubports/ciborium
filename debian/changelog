@@ -1,3 +1,10 @@
+ciborium (0.2.11+14.10.20140904-0ubuntu1) utopic; urgency=low
+
+  [ Sergio Schvezov ]
+  * Setting up the desktop file for translations (LP: #1364118)
+
+ -- Ubuntu daily release <ps-jenkins@lists.canonical.com>  Thu, 04 Sep 2014 00:53:37 +0000
+
 ciborium (0.2.11+14.10.20140902.1-0ubuntu1) utopic; urgency=low
 
   [ Martin Pitt ]
