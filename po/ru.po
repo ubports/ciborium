@@ -7,14 +7,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ciborium\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2014-09-01 19:23+0100\n"
-"PO-Revision-Date: 2014-08-19 05:25+0000\n"
+"POT-Creation-Date: 2014-09-03 17:16-0300\n"
+"PO-Revision-Date: 2014-09-04 10:10+0000\n"
 "Last-Translator: Jay ZDLin <Unknown>\n"
 "Language-Team: Russian <ru@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2014-09-03 07:28+0000\n"
+"X-Launchpad-Export-Date: 2014-09-05 01:11+0000\n"
 "X-Generator: Launchpad (build 17196)\n"
 
 #. TRANSLATORS: This is the summary of a notification bubble with a short message of
@@ -53,3 +53,7 @@ msgstr "Запоминающее устройство было извлечен�
 msgid ""
 "Content previously available on this device will no longer be accessible"
 msgstr "Содержимое данного устройства более недоступно"
+
+#: share/applications/ciborium.desktop.tr.h:1
+msgid "External Drives"
+msgstr "Внешние накопители"
