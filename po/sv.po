@@ -8,13 +8,13 @@ msgstr ""
 "Project-Id-Version: ciborium\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2014-09-03 17:16-0300\n"
-"PO-Revision-Date: 2014-08-08 08:21+0000\n"
-"Last-Translator: Gunnar Hjalmarsson <Unknown>\n"
+"PO-Revision-Date: 2014-09-09 14:38+0000\n"
+"Last-Translator: Josef Andersson <Unknown>\n"
 "Language-Team: Swedish <sv@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2014-09-05 01:11+0000\n"
+"X-Launchpad-Export-Date: 2014-09-10 08:12+0000\n"
 "X-Generator: Launchpad (build 17196)\n"
 
 #. TRANSLATORS: This is the summary of a notification bubble with a short message of
@@ -45,7 +45,7 @@ msgstr "Kontrollera att lagringsenheten är korrekt formaterad"
 #. a storage device being removed
 #: cmd/ciborium/main.go:66
 msgid "Storage device has been removed"
-msgstr ""
+msgstr "Lagringsenheten har blivit borttagen"
 
 #. TRANSLATORS: This is the body of a notification bubble with a short message about content
 #. from the removed device no longer being available
@@ -53,7 +53,8 @@ msgstr ""
 msgid ""
 "Content previously available on this device will no longer be accessible"
 msgstr ""
+"Tidigare tillgängligt innehåll på den här enheten är inte åtkomstbart"
 
 #: share/applications/ciborium.desktop.tr.h:1
 msgid "External Drives"
-msgstr ""
+msgstr "Externa diskar"
