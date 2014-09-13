@@ -409,6 +409,10 @@ func (u *UDisks2) desiredMountableEvent(s *Event) (bool, error) {
 	}
 
 	fs := reflect.ValueOf(id.Value).String()
+	if fs == "" {
+		return false, nil
+	}
+
 	i := u.validFS.Search(fs)
 	if i >= u.validFS.Len() || u.validFS[i] != fs {
 		log.Println(fs, "not in:", u.validFS, "for", s.Path)
