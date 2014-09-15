@@ -366,6 +366,12 @@ func (iface Interfaces) desiredUnmountEvent() bool {
 }
 
 func (u *UDisks2) desiredMountableEvent(s *Event) (bool, error) {
+	// No file system interface means we can't mount it even if we wanted to
+	_, ok := s.Props[dbusFilesystemInterface]
+	if !ok {
+		return false, nil
+	}
+
 	drivePath, err := s.getDrive()
 	if err != nil {
 		//log.Println("Issues while getting drive:", err)
@@ -409,6 +415,10 @@ func (u *UDisks2) desiredMountableEvent(s *Event) (bool, error) {
 	}
 
 	fs := reflect.ValueOf(id.Value).String()
+	if fs == "" {
+		return false, nil
+	}
+
 	i := u.validFS.Search(fs)
 	if i >= u.validFS.Len() || u.validFS[i] != fs {
 		log.Println(fs, "not in:", u.validFS, "for", s.Path)
