@@ -20,7 +20,11 @@
 package main
 
 import (
+	"errors"
+	"fmt"
 	"log"
+	"syscall"
+	"time"
 
 	"launchpad.net/ciborium/gettext"
 	"launchpad.net/ciborium/notifications"
@@ -32,7 +36,12 @@ type message struct{ Summary, Body string }
 
 var supportedFS []string = []string{"vfat"}
 
-const sdCardIcon = "media-memory-sd"
+const (
+	sdCardIcon    = "media-memory-sd"
+	errorIcon     = "error"
+	queryPath     = "/home"
+	freeThreshold = 5
+)
 
 func main() {
 
@@ -68,11 +77,21 @@ func main() {
 			// from the removed device no longer being available
 			Body: gettext.Gettext("Content previously available on this device will no longer be accessible"),
 		}
+
+		msgAvailableSpace message = message{
+			// TRANSLATORS: This is the summary of a notification bubble with a short message warning on
+			// low space
+			Summary: gettext.Gettext("Low on disk space"),
+			// TRANSLATORS: This is the body of a notification bubble with a short message about content
+			// reamining available space, %d is the remaining percentage of space available
+			Body: gettext.Gettext("Only %d%% is available on the device"),
+		}
 	)
 
 	var (
 		systemBus, sessionBus *dbus.Connection
 		err                   error
+		warningSent           bool
 	)
 
 	if systemBus, err = dbus.Connect(dbus.SystemBus); err != nil {
@@ -99,7 +118,7 @@ func main() {
 					n = notificationHandler.NewStandardPushMessage(
 						msgStorageFail.Summary,
 						msgStorageFail.Body,
-						sdCardIcon,
+						errorIcon,
 					)
 				} else {
 					log.Println("Mounted", a.Path, "as", mountpoint)
@@ -114,7 +133,7 @@ func main() {
 				n = notificationHandler.NewStandardPushMessage(
 					msgStorageFail.Summary,
 					msgStorageFail.Body,
-					sdCardIcon,
+					errorIcon,
 				)
 			case r := <-udisks2.DriveRemoved:
 				log.Println("Path removed", r)
@@ -123,6 +142,21 @@ func main() {
 					msgStorageRemoved.Body,
 					sdCardIcon,
 				)
+			case <-time.After(time.Minute):
+				log.Println("Checking free space")
+				availPercentage, err := queryFreePercentage(queryPath)
+				if err != nil {
+					log.Print("Cannot query free space on ", queryPath, ":", err)
+				} else if !warningSent && availPercentage <= freeThreshold {
+					n = notificationHandler.NewStandardPushMessage(
+						msgAvailableSpace.Summary,
+						fmt.Sprintf(msgAvailableSpace.Body, availPercentage),
+						errorIcon,
+					)
+					warningSent = true
+				} else if availPercentage > freeThreshold {
+					warningSent = false
+				}
 			}
 			if n != nil {
 				if err := notificationHandler.Send(n); err != nil {
@@ -138,4 +172,15 @@ func main() {
 
 	done := make(chan bool)
 	<-done
+}
+
+func queryFreePercentage(path string) (uint64, error) {
+	s := syscall.Statfs_t{}
+	if err := syscall.Statfs(path, &s); err != nil {
+		return 0, err
+	}
+	if s.Blocks == 0 {
+		return 0, errors.New("statfs call returned 0 blocks available")
+	}
+	return uint64(s.Bavail) * 100 / uint64(s.Blocks), nil
 }
