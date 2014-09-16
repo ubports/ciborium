@@ -143,7 +143,6 @@ func main() {
 					sdCardIcon,
 				)
 			case <-time.After(time.Minute):
-				log.Println("Checking free space")
 				availPercentage, err := queryFreePercentage(queryPath)
 				if err != nil {
 					log.Print("Cannot query free space on ", queryPath, ":", err)
