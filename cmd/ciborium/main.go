@@ -23,6 +23,7 @@ import (
 	"errors"
 	"fmt"
 	"log"
+	"sync"
 	"syscall"
 	"time"
 
@@ -34,13 +35,33 @@ import (
 
 type message struct{ Summary, Body string }
 
+type mountpoint string
+type mountwatch struct {
+	lock        sync.Mutex
+	mountpoints map[mountpoint]bool
+}
+
+func (m *mountwatch) set(path mountpoint, state bool) {
+	m.lock.Lock()
+	defer m.lock.Unlock()
+
+	m.mountpoints[path] = state
+}
+
+func (m *mountwatch) remove(path mountpoint) {
+	m.lock.Lock()
+	defer m.lock.Unlock()
+
+	delete(m.mountpoints, path)
+}
+
 var supportedFS []string = []string{"vfat"}
 
 const (
-	sdCardIcon    = "media-memory-sd"
-	errorIcon     = "error"
-	queryPath     = "/home"
-	freeThreshold = 5
+	sdCardIcon                = "media-memory-sd"
+	errorIcon                 = "error"
+	homeMountpoint mountpoint = "/home"
+	freeThreshold             = 5
 )
 
 func main() {
@@ -143,19 +164,7 @@ func main() {
 					sdCardIcon,
 				)
 			case <-time.After(time.Minute):
-				availPercentage, err := queryFreePercentage(queryPath)
-				if err != nil {
-					log.Print("Cannot query free space on ", queryPath, ":", err)
-				} else if !warningSent && availPercentage <= freeThreshold {
-					n = notificationHandler.NewStandardPushMessage(
-						msgAvailableSpace.Summary,
-						fmt.Sprintf(msgAvailableSpace.Body, availPercentage),
-						errorIcon,
-					)
-					warningSent = true
-				} else if availPercentage > freeThreshold {
-					warningSent = false
-				}
+				notify(homeMountpoint)
 			}
 			if n != nil {
 				if err := notificationHandler.Send(n); err != nil {
@@ -173,9 +182,28 @@ func main() {
 	<-done
 }
 
-func queryFreePercentage(path string) (uint64, error) {
+// notify only notifies if a notification is actually needed
+// depending on freeThreshold and on warningSent's status
+func notify(path mountpoint) (*notifications.PushMessage, error) {
+	availPercentage, err := queryFreePercentage(path)
+	if err != nil {
+		return nil, err
+	}
+	if !warningSent && availPercentage <= freeThreshold {
+		n := notificationHandler.NewStandardPushMessage(
+			msgAvailableSpace.Summary,
+			fmt.Sprintf(msgAvailableSpace.Body, availPercentage),
+			errorIcon,
+		)
+		warningSent = true
+	} else if availPercentage > freeThreshold {
+		warningSent = false
+	}
+}
+
+func queryFreePercentage(path mountpoint) (uint64, error) {
 	s := syscall.Statfs_t{}
-	if err := syscall.Statfs(path, &s); err != nil {
+	if err := syscall.Statfs(string(path), &s); err != nil {
 		return 0, err
 	}
 	if s.Blocks == 0 {
