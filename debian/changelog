@@ -1,3 +1,10 @@
+ciborium (0.2.11+14.10.20140917.2-0ubuntu1) 14.09; urgency=low
+
+  [ Sergio Schvezov ]
+  * Warning message when space is lower than 5% (LP: #1284629)
+
+ -- Ubuntu daily release <ps-jenkins@lists.canonical.com>  Wed, 17 Sep 2014 18:43:01 +0000
+
 ciborium (0.2.11+14.10.20140915.1-0ubuntu1) 14.09; urgency=low
 
   [ Ubuntu daily release ]
