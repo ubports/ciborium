@@ -37,19 +37,19 @@ const (
 
 type VariantMap map[string]dbus.Variant
 
-type notificationHandler struct {
+type NotificationHandler struct {
 	dbusObject  *dbus.ObjectProxy
 	application string
 }
 
-func NewLegacyHandler(conn *dbus.Connection, application string) *notificationHandler {
-	return &notificationHandler{
+func NewLegacyHandler(conn *dbus.Connection, application string) *NotificationHandler {
+	return &NotificationHandler{
 		dbusObject:  conn.Object(dbusName, dbus.ObjectPath(path.Join(dbusPathPart, "_"))),
 		application: application,
 	}
 }
 
-func (n *notificationHandler) Send(m *PushMessage) error {
+func (n *NotificationHandler) Send(m *PushMessage) error {
 	var pushMessage string
 	if out, err := json.Marshal(m); err == nil {
 		pushMessage = string(out)
@@ -62,7 +62,7 @@ func (n *notificationHandler) Send(m *PushMessage) error {
 
 // NewStandardPushMessage creates a base Notification with common
 // components (members) setup.
-func (n *notificationHandler) NewStandardPushMessage(summary, body, icon string) *PushMessage {
+func (n *NotificationHandler) NewStandardPushMessage(summary, body, icon string) *PushMessage {
 	pm := &PushMessage{
 		Notification: Notification{
 			Card: &Card{

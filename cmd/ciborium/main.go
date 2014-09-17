@@ -20,7 +20,13 @@
 package main
 
 import (
+	"errors"
+	"fmt"
 	"log"
+	"strings"
+	"sync"
+	"syscall"
+	"time"
 
 	"launchpad.net/ciborium/gettext"
 	"launchpad.net/ciborium/notifications"
@@ -29,10 +35,75 @@ import (
 )
 
 type message struct{ Summary, Body string }
+type notifyFreeFunc func(mountpoint) error
 
-var supportedFS []string = []string{"vfat"}
+type mountpoint string
 
-const sdCardIcon = "media-memory-sd"
+func (m mountpoint) external() bool {
+	return strings.HasPrefix(string(m), "/media")
+}
+
+type mountwatch struct {
+	lock        sync.Mutex
+	mountpoints map[mountpoint]bool
+}
+
+func (m *mountwatch) set(path mountpoint, state bool) {
+	m.lock.Lock()
+	defer m.lock.Unlock()
+
+	m.mountpoints[path] = state
+}
+
+func (m *mountwatch) getMountpoints() []mountpoint {
+	m.lock.Lock()
+	defer m.lock.Unlock()
+
+	mapLen := len(m.mountpoints)
+	mountpoints := make([]mountpoint, mapLen, mapLen)
+	for p := range m.mountpoints {
+		mountpoints = append(mountpoints, p)
+	}
+	return mountpoints
+}
+
+func (m *mountwatch) warn(path mountpoint) bool {
+	m.lock.Lock()
+	defer m.lock.Unlock()
+
+	return m.mountpoints[path]
+}
+
+func (m *mountwatch) remove(path mountpoint) {
+	m.lock.Lock()
+	defer m.lock.Unlock()
+
+	delete(m.mountpoints, path)
+}
+
+func newMountwatch() *mountwatch {
+	return &mountwatch{
+		mountpoints: make(map[mountpoint]bool),
+	}
+}
+
+const (
+	sdCardIcon                = "media-memory-sd"
+	errorIcon                 = "error"
+	homeMountpoint mountpoint = "/home"
+	freeThreshold             = 5
+)
+
+var (
+	mw          *mountwatch
+	supportedFS []string
+)
+
+func init() {
+	mw = newMountwatch()
+	mw.set(homeMountpoint, true)
+	supportedFS = []string{"vfat"}
+}
 
 func main() {
 
@@ -88,41 +159,51 @@ func main() {
 	udisks2 := udisks2.NewStorageWatcher(systemBus, supportedFS...)
 
 	notificationHandler := notifications.NewLegacyHandler(sessionBus, "ciborium")
+	notifyFree := buildFreeNotify(notificationHandler)
 
 	go func() {
 		for {
 			var n *notifications.PushMessage
 			select {
 			case a := <-udisks2.DriveAdded:
-				if mountpoint, err := udisks2.Mount(a); err != nil {
+				if m, err := udisks2.Mount(a); err != nil {
 					log.Println("Cannot mount", a.Path, "due to:", err)
 					n = notificationHandler.NewStandardPushMessage(
 						msgStorageFail.Summary,
 						msgStorageFail.Body,
-						sdCardIcon,
+						errorIcon,
 					)
 				} else {
-					log.Println("Mounted", a.Path, "as", mountpoint)
+					log.Println("Mounted", a.Path, "as", m)
 					n = notificationHandler.NewStandardPushMessage(
 						msgStorageSuccess.Summary,
 						msgStorageSuccess.Body,
 						sdCardIcon,
 					)
+					mw.set(mountpoint(m), true)
 				}
 			case e := <-udisks2.BlockError:
 				log.Println("Issues in block for added drive:", e)
 				n = notificationHandler.NewStandardPushMessage(
 					msgStorageFail.Summary,
 					msgStorageFail.Body,
-					sdCardIcon,
+					errorIcon,
 				)
-			case r := <-udisks2.DriveRemoved:
-				log.Println("Path removed", r)
+			case m := <-udisks2.DriveRemoved:
+				log.Println("Path removed", m)
 				n = notificationHandler.NewStandardPushMessage(
 					msgStorageRemoved.Summary,
 					msgStorageRemoved.Body,
 					sdCardIcon,
 				)
+				mw.remove(mountpoint(m))
+			case <-time.After(time.Minute):
+				for _, m := range mw.getMountpoints() {
+					err = notifyFree(m)
+					if err != nil {
+						log.Print("Error while querying free space for ", m, ": ", err)
+					}
+				}
 			}
 			if n != nil {
 				if err := notificationHandler.Send(n); err != nil {
@@ -138,4 +219,64 @@ func main() {
 
 	done := make(chan bool)
 	<-done
+}
+
+// notify only notifies if a notification is actually needed
+// depending on freeThreshold and on warningSent's status
+func buildFreeNotify(nh *notifications.NotificationHandler) notifyFreeFunc {
+	// TRANSLATORS: This is the summary of a notification bubble with a short message warning on
+	// low space
+	summary := gettext.Gettext("Low on disk space")
+	// TRANSLATORS: This is the body of a notification bubble with a short message about content
+	// reamining available space, %d is the remaining percentage of space available on internal
+	// storage
+	bodyInternal := gettext.Gettext("Only %d%% is available on the internal storage device")
+	// TRANSLATORS: This is the body of a notification bubble with a short message about content
+	// reamining available space, %d is the remaining percentage of space available on a given
+	// external storage device
+	bodyExternal := gettext.Gettext("Only %d%% is available on the external storage device")
+
+	var body string
+
+	return func(path mountpoint) error {
+		if path.external() {
+			body = bodyExternal
+		} else {
+			body = bodyInternal
+		}
+
+		availPercentage, err := queryFreePercentage(path)
+		if err != nil {
+			return err
+		}
+
+		if mw.warn(path) && availPercentage <= freeThreshold {
+			n := nh.NewStandardPushMessage(
+				summary,
+				fmt.Sprintf(body, availPercentage),
+				errorIcon,
+			)
+			log.Println("Warning for", path, "available percentage", availPercentage)
+			if err := nh.Send(n); err != nil {
+				return err
+			}
+			mw.set(path, false)
+		}
+
+		if availPercentage > freeThreshold {
+			mw.set(path, true)
+		}
+		return nil
+	}
+}
+
+func queryFreePercentage(path mountpoint) (uint64, error) {
+	s := syscall.Statfs_t{}
+	if err := syscall.Statfs(string(path), &s); err != nil {
+		return 0, err
+	}
+	if s.Blocks == 0 {
+		return 0, errors.New("statfs call returned 0 blocks available")
+	}
+	return uint64(s.Bavail) * 100 / uint64(s.Blocks), nil
 }
