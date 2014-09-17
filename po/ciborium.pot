@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ciborium\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-09-16 13:34-0300\n"
+"POT-Creation-Date: 2014-09-17 00:30-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,52 +19,61 @@ msgstr ""
 
 #. TRANSLATORS: This is the summary of a notification bubble with a short message of
 #. success when addding a storage device.
-#: cmd/ciborium/main.go:57
+#: cmd/ciborium/main.go:118
 msgid "Storage device detected"
 msgstr ""
 
 #. TRANSLATORS: This is the body of a notification bubble with a short message about content
 #. being scanned when addding a storage device.
-#: cmd/ciborium/main.go:60
+#: cmd/ciborium/main.go:121
 msgid "This device will be scanned for new content"
 msgstr ""
 
 #. TRANSLATORS: This is the summary of a notification bubble with a short message of
 #. failure when adding a storage device.
-#: cmd/ciborium/main.go:66
+#: cmd/ciborium/main.go:127
 msgid "Failed to add storage device"
 msgstr ""
 
 #. TRANSLATORS: This is the body of a notification bubble with a short message with hints
 #. with regards to the failure when adding a storage device.
-#: cmd/ciborium/main.go:69
+#: cmd/ciborium/main.go:130
 msgid "Make sure the storage device is correctly formated"
 msgstr ""
 
 #. TRANSLATORS: This is the summary of a notification bubble with a short message of
 #. a storage device being removed
-#: cmd/ciborium/main.go:75
+#: cmd/ciborium/main.go:136
 msgid "Storage device has been removed"
 msgstr ""
 
 #. TRANSLATORS: This is the body of a notification bubble with a short message about content
 #. from the removed device no longer being available
-#: cmd/ciborium/main.go:78
+#: cmd/ciborium/main.go:139
 msgid ""
 "Content previously available on this device will no longer be accessible"
 msgstr ""
 
 #. TRANSLATORS: This is the summary of a notification bubble with a short message warning on
 #. low space
-#: cmd/ciborium/main.go:84
+#: cmd/ciborium/main.go:228
 msgid "Low on disk space"
 msgstr ""
 
 #. TRANSLATORS: This is the body of a notification bubble with a short message about content
-#. reamining available space, %d is the remaining percentage of space available
-#: cmd/ciborium/main.go:87
+#. reamining available space, %d is the remaining percentage of space available on internal
+#. storage
+#: cmd/ciborium/main.go:232
 #, c-format
-msgid "Only %d%% is available on the device"
+msgid "Only %d%% is available on the interal storage"
+msgstr ""
+
+#. TRANSLATORS: This is the body of a notification bubble with a short message about content
+#. reamining available space, %d is the remaining percentage of space available on a given
+#. external storage device
+#: cmd/ciborium/main.go:236
+#, c-format
+msgid "Only %d%% is available on the external storage device"
 msgstr ""
 
 #: share/applications/ciborium.desktop.tr.h:1
