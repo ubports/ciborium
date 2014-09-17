@@ -73,7 +73,7 @@ type UDisks2 struct {
 	validFS      sort.StringSlice
 	DriveAdded   chan *Event
 	driveAdded   *dbus.SignalWatch
-	DriveRemoved chan dbus.ObjectPath
+	DriveRemoved chan string
 	BlockError   chan error
 	driveRemoved *dbus.SignalWatch
 	blockDevice  chan bool
@@ -88,7 +88,7 @@ func NewStorageWatcher(conn *dbus.Connection, filesystems ...string) (u *UDisks2
 		conn:         conn,
 		validFS:      sort.StringSlice(filesystems),
 		DriveAdded:   make(chan *Event),
-		DriveRemoved: make(chan dbus.ObjectPath),
+		DriveRemoved: make(chan string),
 		BlockError:   make(chan error, 1),
 		drives:       make(driveMap),
 		mountpoints:  make(mountpointMap),
@@ -330,7 +330,7 @@ func (u *UDisks2) processRemoveEvent(objectPath dbus.ObjectPath, interfaces Inte
 		log.Println("Removing mountpoint", mountpoint)
 		delete(u.mountpoints, objectPath)
 		if interfaces.desiredUnmountEvent() {
-			u.DriveRemoved <- objectPath
+			u.DriveRemoved <- mountpoint
 		} else {
 			return errors.New("mounted but does not remove filesystem interface")
 		}
