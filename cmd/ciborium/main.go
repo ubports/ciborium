@@ -230,7 +230,7 @@ func buildFreeNotify(nh *notifications.NotificationHandler) notifyFreeFunc {
 	// TRANSLATORS: This is the body of a notification bubble with a short message about content
 	// reamining available space, %d is the remaining percentage of space available on internal
 	// storage
-	bodyInternal := gettext.Gettext("Only %d%% is available on the interal storage")
+	bodyInternal := gettext.Gettext("Only %d%% is available on the internal storage device")
 	// TRANSLATORS: This is the body of a notification bubble with a short message about content
 	// reamining available space, %d is the remaining percentage of space available on a given
 	// external storage device
