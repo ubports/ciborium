@@ -8,13 +8,13 @@ msgstr ""
 "Project-Id-Version: ciborium\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2014-09-17 15:03-0300\n"
-"PO-Revision-Date: 2014-09-08 17:12+0000\n"
+"PO-Revision-Date: 2014-09-19 05:45+0000\n"
 "Last-Translator: Damir Jerovšek <Unknown>\n"
 "Language-Team: Slovenian <sl@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2014-09-18 07:19+0000\n"
+"X-Launchpad-Export-Date: 2014-09-19 08:14+0000\n"
 "X-Generator: Launchpad (build 17196)\n"
 
 #. TRANSLATORS: This is the summary of a notification bubble with a short message of
@@ -58,7 +58,7 @@ msgstr "Vsebina, predhodno razpoložljiva na tej napravi, ne bo več na voljo"
 #. low space
 #: cmd/ciborium/main.go:229
 msgid "Low on disk space"
-msgstr ""
+msgstr "Primanjkuje prostora"
 
 #. TRANSLATORS: This is the body of a notification bubble with a short message about content
 #. reamining available space, %d is the remaining percentage of space available on internal
@@ -66,7 +66,7 @@ msgstr ""
 #: cmd/ciborium/main.go:233
 #, c-format
 msgid "Only %d%% is available on the internal storage device"
-msgstr ""
+msgstr "V notranjem pomnilniku naprave je prosto samo še %d%%"
 
 #. TRANSLATORS: This is the body of a notification bubble with a short message about content
 #. reamining available space, %d is the remaining percentage of space available on a given
@@ -74,7 +74,7 @@ msgstr ""
 #: cmd/ciborium/main.go:237
 #, c-format
 msgid "Only %d%% is available on the external storage device"
-msgstr ""
+msgstr "V zunanjem pomnilniku naprave je prosto samo še %d%%"
 
 #: share/applications/ciborium.desktop.tr.h:1
 msgid "External Drives"
