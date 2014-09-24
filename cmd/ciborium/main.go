@@ -60,7 +60,7 @@ func (m *mountwatch) getMountpoints() []mountpoint {
 	defer m.lock.Unlock()
 
 	mapLen := len(m.mountpoints)
-	mountpoints := make([]mountpoint, mapLen, mapLen)
+	mountpoints := make([]mountpoint, 0, mapLen)
 	for p := range m.mountpoints {
 		mountpoints = append(mountpoints, p)
 	}
