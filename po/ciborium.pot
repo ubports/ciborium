@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ciborium\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-09-24 17:38-0300\n"
+"POT-Creation-Date: 2014-09-24 17:39-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -114,7 +114,7 @@ msgid "Safely Remove"
 msgstr ""
 
 #: share/ciborium/qml/components/FormatDialog.qml:17
-#: share/ciborium/qml/components/FormatDialog.qml:37
+#: share/ciborium/qml/components/FormatDialog.qml:59
 msgid "Format"
 msgstr ""
 
@@ -124,6 +124,10 @@ msgstr ""
 
 #: share/ciborium/qml/components/FormatDialog.qml:25
 msgid "Continue with format"
+msgstr ""
+
+#: share/ciborium/qml/components/FormatDialog.qml:42
+msgid "Formatting"
 msgstr ""
 
 #: share/applications/ciborium.desktop.tr.h:1
