@@ -71,10 +71,10 @@ type mountpointMap map[dbus.ObjectPath]string
 type UDisks2 struct {
 	conn         *dbus.Connection
 	validFS      sort.StringSlice
-	DriveAdded   chan *Event
+	blockAdded   chan *Event
 	driveAdded   *dbus.SignalWatch
-	DriveRemoved chan string
-	BlockError   chan error
+	mountRemoved chan string
+	blockError   chan error
 	driveRemoved *dbus.SignalWatch
 	blockDevice  chan bool
 	drives       driveMap
@@ -85,19 +85,27 @@ type UDisks2 struct {
 
 func NewStorageWatcher(conn *dbus.Connection, filesystems ...string) (u *UDisks2) {
 	u = &UDisks2{
-		conn:         conn,
-		validFS:      sort.StringSlice(filesystems),
-		DriveAdded:   make(chan *Event),
-		DriveRemoved: make(chan string),
-		BlockError:   make(chan error, 1),
-		drives:       make(driveMap),
-		mountpoints:  make(mountpointMap),
+		conn:        conn,
+		validFS:     sort.StringSlice(filesystems),
+		drives:      make(driveMap),
+		mountpoints: make(mountpointMap),
 	}
 	runtime.SetFinalizer(u, cleanDriveWatch)
 	return u
 }
 
-func (u *UDisks2) SubscribeBlockDeviceEvents() chan bool {
+func (u *UDisks2) SubscribeAddEvents() (<-chan *Event, <-chan error) {
+	u.blockAdded = make(chan *Event)
+	u.blockError = make(chan error)
+	return u.blockAdded, u.blockError
+}
+
+func (u *UDisks2) SubscribeRemoveEvents() <-chan string {
+	u.mountRemoved = make(chan string)
+	return u.mountRemoved
+}
+
+func (u *UDisks2) SubscribeBlockDeviceEvents() <-chan bool {
 	u.blockDevice = make(chan bool)
 	return u.blockDevice
 }
@@ -216,8 +224,6 @@ func (u *UDisks2) Init() (err error) {
 
 func (u *UDisks2) initInterfacesWatchChan() {
 	go func() {
-		defer close(u.DriveAdded)
-		defer close(u.DriveRemoved)
 		for {
 			select {
 			case msg := <-u.driveAdded.C:
@@ -310,10 +316,12 @@ func (u *UDisks2) processAddEvent(s *Event) error {
 	if isBlockDevice, err := u.drives.addInterface(s); err != nil {
 		return err
 	} else if isBlockDevice {
-		if ok, err := u.desiredMountableEvent(s); err != nil {
-			u.BlockError <- err
-		} else if ok {
-			u.DriveAdded <- s
+		if u.blockAdded != nil && u.blockError != nil {
+			if ok, err := u.desiredMountableEvent(s); err != nil {
+				u.blockError <- err
+			} else if ok {
+				u.blockAdded <- s
+			}
 		}
 		if u.blockDevice != nil {
 			u.blockDevice <- true
@@ -329,8 +337,8 @@ func (u *UDisks2) processRemoveEvent(objectPath dbus.ObjectPath, interfaces Inte
 	if mounted {
 		log.Println("Removing mountpoint", mountpoint)
 		delete(u.mountpoints, objectPath)
-		if interfaces.desiredUnmountEvent() {
-			u.DriveRemoved <- mountpoint
+		if u.mountRemoved != nil && interfaces.desiredUnmountEvent() {
+			u.mountRemoved <- mountpoint
 		} else {
 			return errors.New("mounted but does not remove filesystem interface")
 		}

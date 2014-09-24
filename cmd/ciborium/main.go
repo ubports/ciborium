@@ -161,11 +161,14 @@ func main() {
 	notificationHandler := notifications.NewLegacyHandler(sessionBus, "ciborium")
 	notifyFree := buildFreeNotify(notificationHandler)
 
+	blockAdded, blockError := udisks2.SubscribeAddEvents()
+	mountRemoved := udisks2.SubscribeRemoveEvents()
+
 	go func() {
 		for {
 			var n *notifications.PushMessage
 			select {
-			case a := <-udisks2.DriveAdded:
+			case a := <-blockAdded:
 				if m, err := udisks2.Mount(a); err != nil {
 					log.Println("Cannot mount", a.Path, "due to:", err)
 					n = notificationHandler.NewStandardPushMessage(
@@ -182,14 +185,14 @@ func main() {
 					)
 					mw.set(mountpoint(m), true)
 				}
-			case e := <-udisks2.BlockError:
+			case e := <-blockError:
 				log.Println("Issues in block for added drive:", e)
 				n = notificationHandler.NewStandardPushMessage(
 					msgStorageFail.Summary,
 					msgStorageFail.Body,
 					errorIcon,
 				)
-			case m := <-udisks2.DriveRemoved:
+			case m := <-mountRemoved:
 				log.Println("Path removed", m)
 				n = notificationHandler.NewStandardPushMessage(
 					msgStorageRemoved.Summary,

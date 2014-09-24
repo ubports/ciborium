@@ -111,20 +111,11 @@ func (ctrl *driveControl) Watch() {
 	c := ctrl.udisks.SubscribeBlockDeviceEvents()
 	go func() {
 		ctrl.Drives()
-		for {
-			select {
-			case err := <-ctrl.udisks.BlockError:
-				log.Println("Error while adding block:", err)
-			case b := <-c:
-				if b {
-					log.Println("Block device added")
-				} else {
-					log.Println("Block device removed")
-				}
-			case d := <-ctrl.udisks.DriveAdded:
-				log.Println("Drive added", d.Path)
-			case o := <-ctrl.udisks.DriveRemoved:
-				log.Println("Drive removed:", o)
+		for block := range c {
+			if block {
+				log.Println("Block device added")
+			} else {
+				log.Println("Block device removed")
 			}
 			ctrl.Drives()
 		}
