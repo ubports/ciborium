@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ciborium\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-09-17 15:03-0300\n"
+"POT-Creation-Date: 2014-09-24 11:50-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -74,6 +74,61 @@ msgstr ""
 #: cmd/ciborium/main.go:237
 #, c-format
 msgid "Only %d%% is available on the external storage device"
+msgstr ""
+
+#: share/ciborium/qml/main.qml:33
+msgid "SD Card Management"
+msgstr ""
+
+#: share/ciborium/qml/components/FormatDialogComplete.qml:17
+#: share/ciborium/qml/components/FormatDialogComplete.qml:37
+#: share/ciborium/qml/components/FormatDialog.qml:17
+#: share/ciborium/qml/components/FormatDialog.qml:37
+msgid "Format"
+msgstr ""
+
+#: share/ciborium/qml/components/FormatDialogComplete.qml:18
+#: share/ciborium/qml/components/FormatDialog.qml:18
+msgid "This action will wipe the content from the device"
+msgstr ""
+
+#: share/ciborium/qml/components/FormatDialogComplete.qml:21
+#: share/ciborium/qml/components/SafeRemoval.qml:40
+#: share/ciborium/qml/components/FormatDialog.qml:21
+msgid "Cancel"
+msgstr ""
+
+#: share/ciborium/qml/components/FormatDialogComplete.qml:25
+#: share/ciborium/qml/components/FormatDialog.qml:25
+msgid "Continue with format"
+msgstr ""
+
+#: share/ciborium/qml/components/SafeRemoval.qml:17
+msgid "Safe to remove"
+msgstr ""
+
+#: share/ciborium/qml/components/SafeRemoval.qml:18
+msgid "You can now safely remove the device"
+msgstr ""
+
+#: share/ciborium/qml/components/SafeRemoval.qml:21
+msgid "Ok"
+msgstr ""
+
+#: share/ciborium/qml/components/SafeRemoval.qml:36
+msgid "Confirm remove"
+msgstr ""
+
+#: share/ciborium/qml/components/SafeRemoval.qml:37
+msgid "Files on the device can't be accessed after removing"
+msgstr ""
+
+#: share/ciborium/qml/components/SafeRemoval.qml:44
+msgid "Continue"
+msgstr ""
+
+#: share/ciborium/qml/components/SafeRemoval.qml:58
+msgid "Safely Remove"
 msgstr ""
 
 #: share/applications/ciborium.desktop.tr.h:1
