@@ -46,6 +46,7 @@ Item {
                 onClicked: {
                     driveCtrl.driveUnmount(index)
                     PopupUtils.close(dialogueConfirmRemove)
+                    saferemoval.enabled= false
                     PopupUtils.open(dialogRemoved)
                 }
             }
