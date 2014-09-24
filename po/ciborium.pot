@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ciborium\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-09-24 11:50-0300\n"
+"POT-Creation-Date: 2014-09-24 17:38-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -80,29 +80,6 @@ msgstr ""
 msgid "SD Card Management"
 msgstr ""
 
-#: share/ciborium/qml/components/FormatDialogComplete.qml:17
-#: share/ciborium/qml/components/FormatDialogComplete.qml:37
-#: share/ciborium/qml/components/FormatDialog.qml:17
-#: share/ciborium/qml/components/FormatDialog.qml:37
-msgid "Format"
-msgstr ""
-
-#: share/ciborium/qml/components/FormatDialogComplete.qml:18
-#: share/ciborium/qml/components/FormatDialog.qml:18
-msgid "This action will wipe the content from the device"
-msgstr ""
-
-#: share/ciborium/qml/components/FormatDialogComplete.qml:21
-#: share/ciborium/qml/components/SafeRemoval.qml:40
-#: share/ciborium/qml/components/FormatDialog.qml:21
-msgid "Cancel"
-msgstr ""
-
-#: share/ciborium/qml/components/FormatDialogComplete.qml:25
-#: share/ciborium/qml/components/FormatDialog.qml:25
-msgid "Continue with format"
-msgstr ""
-
 #: share/ciborium/qml/components/SafeRemoval.qml:17
 msgid "Safe to remove"
 msgstr ""
@@ -123,12 +100,30 @@ msgstr ""
 msgid "Files on the device can't be accessed after removing"
 msgstr ""
 
+#: share/ciborium/qml/components/SafeRemoval.qml:40
+#: share/ciborium/qml/components/FormatDialog.qml:21
+msgid "Cancel"
+msgstr ""
+
 #: share/ciborium/qml/components/SafeRemoval.qml:44
 msgid "Continue"
 msgstr ""
 
-#: share/ciborium/qml/components/SafeRemoval.qml:58
+#: share/ciborium/qml/components/SafeRemoval.qml:59
 msgid "Safely Remove"
+msgstr ""
+
+#: share/ciborium/qml/components/FormatDialog.qml:17
+#: share/ciborium/qml/components/FormatDialog.qml:37
+msgid "Format"
+msgstr ""
+
+#: share/ciborium/qml/components/FormatDialog.qml:18
+msgid "This action will wipe the content from the device"
+msgstr ""
+
+#: share/ciborium/qml/components/FormatDialog.qml:25
+msgid "Continue with format"
 msgstr ""
 
 #: share/applications/ciborium.desktop.tr.h:1
