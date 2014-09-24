@@ -38,6 +38,7 @@ type driveControl struct {
 	udisks         *udisks2.UDisks2
 	ExternalDrives []udisks2.Drive
 	Len            int
+	Formatting     bool
 }
 
 type DriveList struct {
@@ -143,14 +144,22 @@ func (ctrl *driveControl) DriveModel(index int) string {
 	return ctrl.ExternalDrives[index].Model()
 }
 
-func (ctrl *driveControl) DriveFormat(index int) bool {
-	drive := ctrl.ExternalDrives[index]
-	log.Println("Format drive on index", index, "model", drive.Model())
-	if err := ctrl.udisks.Format(&drive); err != nil {
-		log.Println("Error while trying to format", drive.Model(), ":", err)
-		return false
-	}
-	return true
+func (ctrl *driveControl) DriveFormat(index int) {
+	ctrl.Formatting = true
+	qml.Changed(ctrl, &ctrl.Formatting)
+
+	go func() {
+		defer func() {
+			ctrl.Formatting = false
+			qml.Changed(ctrl, &ctrl.Formatting)
+		}()
+
+		drive := ctrl.ExternalDrives[index]
+		log.Println("Format drive on index", index, "model", drive.Model())
+		if err := ctrl.udisks.Format(&drive); err != nil {
+			log.Println("Error while trying to format", drive.Model(), ":", err)
+		}
+	}()
 }
 
 func (ctrl *driveControl) DriveUnmount(index int) bool {
