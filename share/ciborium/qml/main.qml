@@ -83,9 +83,8 @@ MainView {
                             FormatDialog {
                                 driveIndex: index
                             }
-                            Button {
-                                text: i18n.tr("Safely Remove")
-                                onClicked: driveCtrl.driveUnmount(index)
+                            SafeRemoval {
+                                driveIndex: index
                             }
                         }
                     }
