@@ -35,6 +35,7 @@ MainView {
 
             ListView {
                 model: driveCtrl.len
+                spacing: units.gu(1)
                 anchors {
                     top: parent.top
                     bottom: parent.bottom
@@ -46,7 +47,7 @@ MainView {
                 delegate: UbuntuShape {
                     height: childrenRect.height
                     width: parent.width
-                    color: index % 2 === 0 ? "#DECAE3" : "white"
+                    color: index % 2 === 0 ? "white" : "#DECAE3"
                     anchors {
                         topMargin: units.gu(1)
                         bottomMargin: units.gu(1)
@@ -83,9 +84,8 @@ MainView {
                             FormatDialog {
                                 driveIndex: index
                             }
-                            Button {
-                                text: i18n.tr("Safely Remove")
-                                onClicked: driveCtrl.driveUnmount(index)
+                            SafeRemoval {
+                                driveIndex: index
                             }
                         }
                     }

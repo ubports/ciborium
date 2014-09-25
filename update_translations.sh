@@ -1,6 +1,7 @@
 #!/bin/sh
 
 sources=$(find . -name '*.go' | xargs)
+qml=$(find . -name '*.qml' | xargs)
 domain='ciborium'
 pot_file=po/$domain.pot
 desktop=share/applications/$domain.desktop
@@ -16,7 +17,7 @@ xgettext -o $pot_file \
  --keyword=Gettext --keyword=tr --keyword=tr:1,2 --keyword=N_ \
  --package-name=$domain \
  --copyright-holder='Canonical Ltd.' \
- $sources $desktop.tr.h
+ $sources $qml $desktop.tr.h
 
 echo Removing $desktop.tr.h $desktop.tr
 rm $desktop.tr.h $desktop.tr
