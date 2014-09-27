@@ -8,13 +8,13 @@ msgstr ""
 "Project-Id-Version: ciborium\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2014-09-24 17:39-0300\n"
-"PO-Revision-Date: 2014-09-23 03:50+0000\n"
+"PO-Revision-Date: 2014-09-27 00:30+0000\n"
 "Last-Translator: Gheyret T.Kenji <Unknown>\n"
 "Language-Team: Uyghur <ug@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2014-09-26 06:55+0000\n"
+"X-Launchpad-Export-Date: 2014-09-27 06:37+0000\n"
 "X-Generator: Launchpad (build 17196)\n"
 
 #. TRANSLATORS: This is the summary of a notification bubble with a short message of
@@ -80,57 +80,58 @@ msgstr "سىرتقى ئۈسكۈنىدە پەقەت %d% % بوشلۇق قالدى
 
 #: share/ciborium/qml/main.qml:33
 msgid "SD Card Management"
-msgstr ""
+msgstr "SD كارت باشقۇرۇش"
 
 #: share/ciborium/qml/components/SafeRemoval.qml:17
 msgid "Safe to remove"
-msgstr ""
+msgstr "چىقىرىش بىخەتەر"
 
 #: share/ciborium/qml/components/SafeRemoval.qml:18
 msgid "You can now safely remove the device"
-msgstr ""
+msgstr "ھازىر ئۈسكۈنىنى بىخەتەر چىقىرالايسىز"
 
 #: share/ciborium/qml/components/SafeRemoval.qml:21
 msgid "Ok"
-msgstr ""
+msgstr "تامام"
 
 #: share/ciborium/qml/components/SafeRemoval.qml:36
 msgid "Confirm remove"
-msgstr ""
+msgstr "چىقىرىۋېتىشنى جەزملەش"
 
 #: share/ciborium/qml/components/SafeRemoval.qml:37
 msgid "Files on the device can't be accessed after removing"
 msgstr ""
+"چىقىرىۋەتكەندىن كېيىن ئۈسكۈنە ئۈستىدىكى ھۆججەتلەرنى زىيارەت قىلغىلى بولمايدۇ"
 
 #: share/ciborium/qml/components/SafeRemoval.qml:40
 #: share/ciborium/qml/components/FormatDialog.qml:21
 msgid "Cancel"
-msgstr ""
+msgstr "ئەمەلدىن قالدۇر"
 
 #: share/ciborium/qml/components/SafeRemoval.qml:44
 msgid "Continue"
-msgstr ""
+msgstr "داۋاملاشتۇر"
 
 #: share/ciborium/qml/components/SafeRemoval.qml:59
 msgid "Safely Remove"
-msgstr ""
+msgstr "بىخەتەر چىقىرىش"
 
 #: share/ciborium/qml/components/FormatDialog.qml:17
 #: share/ciborium/qml/components/FormatDialog.qml:59
 msgid "Format"
-msgstr ""
+msgstr "پىچىم"
 
 #: share/ciborium/qml/components/FormatDialog.qml:18
 msgid "This action will wipe the content from the device"
-msgstr ""
+msgstr "بۇ مەشغۇلات ئۈسكۈنىدىكى بارلىق مەزمۇنلارنى يۇيىۋېتىدۇ"
 
 #: share/ciborium/qml/components/FormatDialog.qml:25
 msgid "Continue with format"
-msgstr ""
+msgstr "پىچىشنى داۋاملاشتۇر"
 
 #: share/ciborium/qml/components/FormatDialog.qml:42
 msgid "Formatting"
-msgstr ""
+msgstr "پىچىىش"
 
 #: share/applications/ciborium.desktop.tr.h:1
 msgid "External Drives"

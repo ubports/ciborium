@@ -8,13 +8,13 @@ msgstr ""
 "Project-Id-Version: ciborium\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2014-09-24 17:39-0300\n"
-"PO-Revision-Date: 2014-09-18 09:22+0000\n"
+"PO-Revision-Date: 2014-09-27 04:09+0000\n"
 "Last-Translator: Åka Sikrom <Unknown>\n"
 "Language-Team: Norwegian Bokmal <nb@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2014-09-26 06:55+0000\n"
+"X-Launchpad-Export-Date: 2014-09-27 06:37+0000\n"
 "X-Generator: Launchpad (build 17196)\n"
 
 #. TRANSLATORS: This is the summary of a notification bubble with a short message of
@@ -78,57 +78,57 @@ msgstr "Det er bare %d%% ledig plass på ekstern lagringsenhet"
 
 #: share/ciborium/qml/main.qml:33
 msgid "SD Card Management"
-msgstr ""
+msgstr "Håndtering av SD-kort"
 
 #: share/ciborium/qml/components/SafeRemoval.qml:17
 msgid "Safe to remove"
-msgstr ""
+msgstr "Klart for fjerning"
 
 #: share/ciborium/qml/components/SafeRemoval.qml:18
 msgid "You can now safely remove the device"
-msgstr ""
+msgstr "Du kan nå fjerne enheten"
 
 #: share/ciborium/qml/components/SafeRemoval.qml:21
 msgid "Ok"
-msgstr ""
+msgstr "OK"
 
 #: share/ciborium/qml/components/SafeRemoval.qml:36
 msgid "Confirm remove"
-msgstr ""
+msgstr "Bekreft fjerning"
 
 #: share/ciborium/qml/components/SafeRemoval.qml:37
 msgid "Files on the device can't be accessed after removing"
-msgstr ""
+msgstr "Du har ikke tilgang til filer på enheten når du fjerner den"
 
 #: share/ciborium/qml/components/SafeRemoval.qml:40
 #: share/ciborium/qml/components/FormatDialog.qml:21
 msgid "Cancel"
-msgstr ""
+msgstr "Avbryt"
 
 #: share/ciborium/qml/components/SafeRemoval.qml:44
 msgid "Continue"
-msgstr ""
+msgstr "Fortsett"
 
 #: share/ciborium/qml/components/SafeRemoval.qml:59
 msgid "Safely Remove"
-msgstr ""
+msgstr "Trygg fjerning"
 
 #: share/ciborium/qml/components/FormatDialog.qml:17
 #: share/ciborium/qml/components/FormatDialog.qml:59
 msgid "Format"
-msgstr ""
+msgstr "Formater"
 
 #: share/ciborium/qml/components/FormatDialog.qml:18
 msgid "This action will wipe the content from the device"
-msgstr ""
+msgstr "Dette sletter innholdet fra enheten"
 
 #: share/ciborium/qml/components/FormatDialog.qml:25
 msgid "Continue with format"
-msgstr ""
+msgstr "Fortsett med formatering"
 
 #: share/ciborium/qml/components/FormatDialog.qml:42
 msgid "Formatting"
-msgstr ""
+msgstr "Formatering"
 
 #: share/applications/ciborium.desktop.tr.h:1
 msgid "External Drives"
