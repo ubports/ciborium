@@ -8,13 +8,13 @@ msgstr ""
 "Project-Id-Version: ciborium\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2014-09-24 17:39-0300\n"
-"PO-Revision-Date: 2014-09-04 09:25+0000\n"
+"PO-Revision-Date: 2014-09-30 11:42+0000\n"
 "Last-Translator: Claudio Arseni <claudio.arseni@gmail.com>\n"
 "Language-Team: Italian <it@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2014-09-26 06:55+0000\n"
+"X-Launchpad-Export-Date: 2014-10-01 06:30+0000\n"
 "X-Generator: Launchpad (build 17196)\n"
 
 #. TRANSLATORS: This is the summary of a notification bubble with a short message of
@@ -61,7 +61,7 @@ msgstr ""
 #. low space
 #: cmd/ciborium/main.go:229
 msgid "Low on disk space"
-msgstr ""
+msgstr "Spazio su disco scarso"
 
 #. TRANSLATORS: This is the body of a notification bubble with a short message about content
 #. reamining available space, %d is the remaining percentage of space available on internal
@@ -81,7 +81,7 @@ msgstr ""
 
 #: share/ciborium/qml/main.qml:33
 msgid "SD Card Management"
-msgstr ""
+msgstr "Gestione scheda SD"
 
 #: share/ciborium/qml/components/SafeRemoval.qml:17
 msgid "Safe to remove"
@@ -93,45 +93,45 @@ msgstr ""
 
 #: share/ciborium/qml/components/SafeRemoval.qml:21
 msgid "Ok"
-msgstr ""
+msgstr "OK"
 
 #: share/ciborium/qml/components/SafeRemoval.qml:36
 msgid "Confirm remove"
-msgstr ""
+msgstr "Conferma rimozione"
 
 #: share/ciborium/qml/components/SafeRemoval.qml:37
 msgid "Files on the device can't be accessed after removing"
-msgstr ""
+msgstr "I file sul dispositivo non saranno accessibili dopo la rimozione"
 
 #: share/ciborium/qml/components/SafeRemoval.qml:40
 #: share/ciborium/qml/components/FormatDialog.qml:21
 msgid "Cancel"
-msgstr ""
+msgstr "Annulla"
 
 #: share/ciborium/qml/components/SafeRemoval.qml:44
 msgid "Continue"
-msgstr ""
+msgstr "Continua"
 
 #: share/ciborium/qml/components/SafeRemoval.qml:59
 msgid "Safely Remove"
-msgstr ""
+msgstr "Rimuovi in sicurezza"
 
 #: share/ciborium/qml/components/FormatDialog.qml:17
 #: share/ciborium/qml/components/FormatDialog.qml:59
 msgid "Format"
-msgstr ""
+msgstr "Formatta"
 
 #: share/ciborium/qml/components/FormatDialog.qml:18
 msgid "This action will wipe the content from the device"
-msgstr ""
+msgstr "Questa azione cancellerà il contenuto del dispositivo"
 
 #: share/ciborium/qml/components/FormatDialog.qml:25
 msgid "Continue with format"
-msgstr ""
+msgstr "Continua formattazione"
 
 #: share/ciborium/qml/components/FormatDialog.qml:42
 msgid "Formatting"
-msgstr ""
+msgstr "Formattazione"
 
 #: share/applications/ciborium.desktop.tr.h:1
 msgid "External Drives"
