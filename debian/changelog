@@ -1,3 +1,10 @@
+ciborium (0.2.12+14.10.20141008-0ubuntu1) 14.09; urgency=low
+
+  [ Sergio Schvezov ]
+  * Adding startup splash.
+
+ -- Ubuntu daily release <ps-jenkins@lists.canonical.com>  Wed, 08 Oct 2014 12:46:40 +0000
+
 ciborium (0.2.12+14.10.20140925-0ubuntu1) 14.09; urgency=medium
 
   [ Sergio Schvezov ]
