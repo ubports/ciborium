@@ -1,4 +1,4 @@
-# Catalan translation for ciborium
+# Chinese (Traditional) translation for ciborium
 # Copyright (c) 2014 Rosetta Contributors and Canonical Ltd 2014
 # This file is distributed under the same license as the ciborium package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2014.
@@ -8,9 +8,9 @@ msgstr ""
 "Project-Id-Version: ciborium\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2014-09-24 17:39-0300\n"
-"PO-Revision-Date: 2014-10-15 08:15+0000\n"
-"Last-Translator: David Planella <david.planella@ubuntu.com>\n"
-"Language-Team: Catalan <ca@li.org>\n"
+"PO-Revision-Date: 2014-10-13 06:33+0000\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: Chinese (Traditional) <zh_TW@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -21,33 +21,31 @@ msgstr ""
 #. success when addding a storage device.
 #: cmd/ciborium/main.go:119
 msgid "Storage device detected"
-msgstr "S'ha detectat un dispositiu d'emmagatzematge"
+msgstr ""
 
 #. TRANSLATORS: This is the body of a notification bubble with a short message about content
 #. being scanned when addding a storage device.
 #: cmd/ciborium/main.go:122
 msgid "This device will be scanned for new content"
-msgstr "S'analitzarà el dispositiu per detectar-ne el contingut"
+msgstr ""
 
 #. TRANSLATORS: This is the summary of a notification bubble with a short message of
 #. failure when adding a storage device.
 #: cmd/ciborium/main.go:128
 msgid "Failed to add storage device"
-msgstr "No s'ha pogut afegir el dispositiu d'emmagatzematge"
+msgstr ""
 
 #. TRANSLATORS: This is the body of a notification bubble with a short message with hints
 #. with regards to the failure when adding a storage device.
 #: cmd/ciborium/main.go:131
 msgid "Make sure the storage device is correctly formated"
 msgstr ""
-"Assegureu-vos que el dispositiu d'emmagatzematge estigui formatat "
-"correctament"
 
 #. TRANSLATORS: This is the summary of a notification bubble with a short message of
 #. a storage device being removed
 #: cmd/ciborium/main.go:137
 msgid "Storage device has been removed"
-msgstr "S'ha suprimit el dispositiu d'emmagatzematge"
+msgstr ""
 
 #. TRANSLATORS: This is the body of a notification bubble with a short message about content
 #. from the removed device no longer being available
@@ -55,13 +53,12 @@ msgstr "S'ha suprimit el dispositiu d'emmagatzematge"
 msgid ""
 "Content previously available on this device will no longer be accessible"
 msgstr ""
-"Ja no es pot accedir al contingug que estava disponible en aquest dispositiu"
 
 #. TRANSLATORS: This is the summary of a notification bubble with a short message warning on
 #. low space
 #: cmd/ciborium/main.go:229
 msgid "Low on disk space"
-msgstr "Hi ha poc espai de disc"
+msgstr ""
 
 #. TRANSLATORS: This is the body of a notification bubble with a short message about content
 #. reamining available space, %d is the remaining percentage of space available on internal
@@ -69,7 +66,7 @@ msgstr "Hi ha poc espai de disc"
 #: cmd/ciborium/main.go:233
 #, c-format
 msgid "Only %d%% is available on the internal storage device"
-msgstr "Només hi ha un %d%% disponible al dispositiu d'emmagatzematge intern"
+msgstr ""
 
 #. TRANSLATORS: This is the body of a notification bubble with a short message about content
 #. reamining available space, %d is the remaining percentage of space available on a given
@@ -77,62 +74,62 @@ msgstr "Només hi ha un %d%% disponible al dispositiu d'emmagatzematge intern"
 #: cmd/ciborium/main.go:237
 #, c-format
 msgid "Only %d%% is available on the external storage device"
-msgstr "Només hi ha un %d%% disponible al dispositiu d'emmagatzematge extern"
+msgstr ""
 
 #: share/ciborium/qml/main.qml:33
 msgid "SD Card Management"
-msgstr "Gestió de targetes SD"
+msgstr ""
 
 #: share/ciborium/qml/components/SafeRemoval.qml:17
 msgid "Safe to remove"
-msgstr "Extracció segura"
+msgstr ""
 
 #: share/ciborium/qml/components/SafeRemoval.qml:18
 msgid "You can now safely remove the device"
-msgstr "Podeu extreure el dispositiu de manera segura"
+msgstr ""
 
 #: share/ciborium/qml/components/SafeRemoval.qml:21
 msgid "Ok"
-msgstr "D'acord"
+msgstr ""
 
 #: share/ciborium/qml/components/SafeRemoval.qml:36
 msgid "Confirm remove"
-msgstr "Confirmeu l'extracció"
+msgstr ""
 
 #: share/ciborium/qml/components/SafeRemoval.qml:37
 msgid "Files on the device can't be accessed after removing"
-msgstr "No es podrà accedir als fitxers del dispositiu un cop l'hàgiu extret"
+msgstr ""
 
 #: share/ciborium/qml/components/SafeRemoval.qml:40
 #: share/ciborium/qml/components/FormatDialog.qml:21
 msgid "Cancel"
-msgstr "Cancel·la"
+msgstr ""
 
 #: share/ciborium/qml/components/SafeRemoval.qml:44
 msgid "Continue"
-msgstr "Continua"
+msgstr ""
 
 #: share/ciborium/qml/components/SafeRemoval.qml:59
 msgid "Safely Remove"
-msgstr "Extreu-ho de manera segura"
+msgstr ""
 
 #: share/ciborium/qml/components/FormatDialog.qml:17
 #: share/ciborium/qml/components/FormatDialog.qml:59
 msgid "Format"
-msgstr "Formata"
+msgstr ""
 
 #: share/ciborium/qml/components/FormatDialog.qml:18
 msgid "This action will wipe the content from the device"
-msgstr "Aquesta acció suprimirà permanentment les dades del dispositiu"
+msgstr ""
 
 #: share/ciborium/qml/components/FormatDialog.qml:25
 msgid "Continue with format"
-msgstr "Continua amb el formatatge"
+msgstr ""
 
 #: share/ciborium/qml/components/FormatDialog.qml:42
 msgid "Formatting"
-msgstr "S'està formatant"
+msgstr ""
 
 #: share/applications/ciborium.desktop.tr.h:1
 msgid "External Drives"
-msgstr "Unitats externes"
+msgstr ""

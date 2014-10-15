@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: ciborium\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2014-09-24 17:39-0300\n"
-"PO-Revision-Date: 2014-10-15 08:15+0000\n"
+"PO-Revision-Date: 2014-10-15 14:37+0000\n"
 "Last-Translator: David Planella <david.planella@ubuntu.com>\n"
 "Language-Team: Catalan <ca@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -40,8 +40,7 @@ msgstr "No s'ha pogut afegir el dispositiu d'emmagatzematge"
 #: cmd/ciborium/main.go:131
 msgid "Make sure the storage device is correctly formated"
 msgstr ""
-"Assegureu-vos que el dispositiu d'emmagatzematge estigui formatat "
-"correctament"
+"Assegureu-vos que el dispositiu d'emmagatzematge estiga formatat correctament"
 
 #. TRANSLATORS: This is the summary of a notification bubble with a short message of
 #. a storage device being removed
@@ -55,7 +54,7 @@ msgstr "S'ha suprimit el dispositiu d'emmagatzematge"
 msgid ""
 "Content previously available on this device will no longer be accessible"
 msgstr ""
-"Ja no es pot accedir al contingug que estava disponible en aquest dispositiu"
+"Ja no es pot accedir al contingug que estava disponible en este dispositiu"
 
 #. TRANSLATORS: This is the summary of a notification bubble with a short message warning on
 #. low space
@@ -81,15 +80,15 @@ msgstr "Només hi ha un %d%% disponible al dispositiu d'emmagatzematge extern"
 
 #: share/ciborium/qml/main.qml:33
 msgid "SD Card Management"
-msgstr "Gestió de targetes SD"
+msgstr ""
 
 #: share/ciborium/qml/components/SafeRemoval.qml:17
 msgid "Safe to remove"
-msgstr "Extracció segura"
+msgstr ""
 
 #: share/ciborium/qml/components/SafeRemoval.qml:18
 msgid "You can now safely remove the device"
-msgstr "Podeu extreure el dispositiu de manera segura"
+msgstr ""
 
 #: share/ciborium/qml/components/SafeRemoval.qml:21
 msgid "Ok"
@@ -97,11 +96,11 @@ msgstr "D'acord"
 
 #: share/ciborium/qml/components/SafeRemoval.qml:36
 msgid "Confirm remove"
-msgstr "Confirmeu l'extracció"
+msgstr ""
 
 #: share/ciborium/qml/components/SafeRemoval.qml:37
 msgid "Files on the device can't be accessed after removing"
-msgstr "No es podrà accedir als fitxers del dispositiu un cop l'hàgiu extret"
+msgstr ""
 
 #: share/ciborium/qml/components/SafeRemoval.qml:40
 #: share/ciborium/qml/components/FormatDialog.qml:21
@@ -114,24 +113,24 @@ msgstr "Continua"
 
 #: share/ciborium/qml/components/SafeRemoval.qml:59
 msgid "Safely Remove"
-msgstr "Extreu-ho de manera segura"
+msgstr ""
 
 #: share/ciborium/qml/components/FormatDialog.qml:17
 #: share/ciborium/qml/components/FormatDialog.qml:59
 msgid "Format"
-msgstr "Formata"
+msgstr ""
 
 #: share/ciborium/qml/components/FormatDialog.qml:18
 msgid "This action will wipe the content from the device"
-msgstr "Aquesta acció suprimirà permanentment les dades del dispositiu"
+msgstr ""
 
 #: share/ciborium/qml/components/FormatDialog.qml:25
 msgid "Continue with format"
-msgstr "Continua amb el formatatge"
+msgstr ""
 
 #: share/ciborium/qml/components/FormatDialog.qml:42
 msgid "Formatting"
-msgstr "S'està formatant"
+msgstr ""
 
 #: share/applications/ciborium.desktop.tr.h:1
 msgid "External Drives"
