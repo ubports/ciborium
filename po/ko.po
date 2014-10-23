@@ -8,48 +8,48 @@ msgstr ""
 "Project-Id-Version: ciborium\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2014-09-24 17:39-0300\n"
-"PO-Revision-Date: 2014-08-18 22:42+0000\n"
+"PO-Revision-Date: 2014-10-22 08:04+0000\n"
 "Last-Translator: MinSik CHO <Unknown>\n"
 "Language-Team: Korean <ko@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2014-09-26 06:55+0000\n"
-"X-Generator: Launchpad (build 17196)\n"
+"X-Launchpad-Export-Date: 2014-10-23 07:48+0000\n"
+"X-Generator: Launchpad (build 17203)\n"
 
 #. TRANSLATORS: This is the summary of a notification bubble with a short message of
 #. success when addding a storage device.
-#: cmd/ciborium/main.go:119
+#: cmd/ciborium/main.go:48
 msgid "Storage device detected"
 msgstr "저장 장치가 연결되었습니다."
 
 #. TRANSLATORS: This is the body of a notification bubble with a short message about content
 #. being scanned when addding a storage device.
-#: cmd/ciborium/main.go:122
+#: cmd/ciborium/main.go:51
 msgid "This device will be scanned for new content"
 msgstr "장치에서 새로운 컨텐츠를 검색합니다."
 
 #. TRANSLATORS: This is the summary of a notification bubble with a short message of
 #. failure when adding a storage device.
-#: cmd/ciborium/main.go:128
+#: cmd/ciborium/main.go:57
 msgid "Failed to add storage device"
 msgstr "저장 장치를 추가하지 못했습니다."
 
 #. TRANSLATORS: This is the body of a notification bubble with a short message with hints
 #. with regards to the failure when adding a storage device.
-#: cmd/ciborium/main.go:131
+#: cmd/ciborium/main.go:60
 msgid "Make sure the storage device is correctly formated"
 msgstr "저장 장치가 올바른 포맷으로 설정되어 있는지 확인하세요."
 
 #. TRANSLATORS: This is the summary of a notification bubble with a short message of
 #. a storage device being removed
-#: cmd/ciborium/main.go:137
+#: cmd/ciborium/main.go:66
 msgid "Storage device has been removed"
 msgstr "저장 장치가 제거되었습니다."
 
 #. TRANSLATORS: This is the body of a notification bubble with a short message about content
 #. from the removed device no longer being available
-#: cmd/ciborium/main.go:140
+#: cmd/ciborium/main.go:69
 msgid ""
 "Content previously available on this device will no longer be accessible"
 msgstr "저장 장치에 저장되어 있었던 컨텐츠는 더 이상 사용할 수 없습니다."
@@ -58,7 +58,7 @@ msgstr "저장 장치에 저장되어 있었던 컨텐츠는 더 이상 사용�
 #. low space
 #: cmd/ciborium/main.go:229
 msgid "Low on disk space"
-msgstr ""
+msgstr "다스크에 빈 공간 부족"
 
 #. TRANSLATORS: This is the body of a notification bubble with a short message about content
 #. reamining available space, %d is the remaining percentage of space available on internal
@@ -66,7 +66,7 @@ msgstr ""
 #: cmd/ciborium/main.go:233
 #, c-format
 msgid "Only %d%% is available on the internal storage device"
-msgstr ""
+msgstr "내부 저장소에 %d%% 정도의 공간만 남아있습니다."
 
 #. TRANSLATORS: This is the body of a notification bubble with a short message about content
 #. reamining available space, %d is the remaining percentage of space available on a given
@@ -74,62 +74,62 @@ msgstr ""
 #: cmd/ciborium/main.go:237
 #, c-format
 msgid "Only %d%% is available on the external storage device"
-msgstr ""
+msgstr "외부 저장소에 %d%% 정도의 공간만 남아있습니다."
 
 #: share/ciborium/qml/main.qml:33
 msgid "SD Card Management"
-msgstr ""
+msgstr "SD 카드 관리"
 
 #: share/ciborium/qml/components/SafeRemoval.qml:17
 msgid "Safe to remove"
-msgstr ""
+msgstr "제거해도 안전합니다."
 
 #: share/ciborium/qml/components/SafeRemoval.qml:18
 msgid "You can now safely remove the device"
-msgstr ""
+msgstr "이제 안전하게 장치를 제거할 수 있습니다."
 
 #: share/ciborium/qml/components/SafeRemoval.qml:21
 msgid "Ok"
-msgstr ""
+msgstr "확인"
 
 #: share/ciborium/qml/components/SafeRemoval.qml:36
 msgid "Confirm remove"
-msgstr ""
+msgstr "제거 확인"
 
 #: share/ciborium/qml/components/SafeRemoval.qml:37
 msgid "Files on the device can't be accessed after removing"
-msgstr ""
+msgstr "제거한 후에는 장치에 있는 파일에 접근할 수 없습니다."
 
 #: share/ciborium/qml/components/SafeRemoval.qml:40
 #: share/ciborium/qml/components/FormatDialog.qml:21
 msgid "Cancel"
-msgstr ""
+msgstr "취소"
 
 #: share/ciborium/qml/components/SafeRemoval.qml:44
 msgid "Continue"
-msgstr ""
+msgstr "계속"
 
 #: share/ciborium/qml/components/SafeRemoval.qml:59
 msgid "Safely Remove"
-msgstr ""
+msgstr "안전하게 제거"
 
 #: share/ciborium/qml/components/FormatDialog.qml:17
 #: share/ciborium/qml/components/FormatDialog.qml:59
 msgid "Format"
-msgstr ""
+msgstr "포맷"
 
 #: share/ciborium/qml/components/FormatDialog.qml:18
 msgid "This action will wipe the content from the device"
-msgstr ""
+msgstr "이 동작은 장치의 내용을 완전히 지웁니다."
 
 #: share/ciborium/qml/components/FormatDialog.qml:25
 msgid "Continue with format"
-msgstr ""
+msgstr "포멧 계속 진행"
 
 #: share/ciborium/qml/components/FormatDialog.qml:42
 msgid "Formatting"
-msgstr ""
+msgstr "포맷 중"
 
 #: share/applications/ciborium.desktop.tr.h:1
 msgid "External Drives"
-msgstr ""
+msgstr "외부 저장소"
