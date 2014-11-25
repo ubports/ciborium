@@ -23,6 +23,8 @@ import (
 	"errors"
 	"fmt"
 	"log"
+	"os"
+	"path/filepath"
 	"strings"
 	"sync"
 	"syscall"
@@ -183,6 +185,11 @@ func main() {
 						msgStorageSuccess.Body,
 						sdCardIcon,
 					)
+
+					if err := createMediaDirs(m); err != nil {
+						log.Println("Failed to create media dirs:", err)
+					}
+
 					mw.set(mountpoint(m), true)
 				}
 			case e := <-blockError:
@@ -222,6 +229,24 @@ func main() {
 
 	done := make(chan bool)
 	<-done
+}
+
+// createMediaDirs creates the Pictures and Videos dir for the user to be able
+// to store photos and videos on the sdcard from a confined process.
+func createMediaDirs(mountpoint string) error {
+	for _, node := range []string{"Videos", "Pictures"} {
+		dir := filepath.Join(mountpoint, node)
+
+		if _, err := os.Stat(dir); err != nil && os.IsNotExist(err) {
+			if err := os.MkdirAll(dir, 755); err != nil {
+				return err
+			}
+		} else {
+			return err
+		}
+	}
+
+	return nil
 }
 
 // notify only notifies if a notification is actually needed
