@@ -234,7 +234,7 @@ func main() {
 // createMediaDirs creates the Pictures and Videos dir for the user to be able
 // to store photos and videos on the sdcard from a confined process.
 func createMediaDirs(mountpoint string) error {
-	for _, node := range []string{"Videos", "Pictures"} {
+	for _, node := range []string{"Documents", "Downloads", "Music", "Pictures", "Videos"} {
 		dir := filepath.Join(mountpoint, node)
 
 		if _, err := os.Stat(dir); err != nil && os.IsNotExist(err) {
