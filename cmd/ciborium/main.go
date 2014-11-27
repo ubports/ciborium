@@ -186,8 +186,8 @@ func main() {
 						sdCardIcon,
 					)
 
-					if err := createMediaDirs(m); err != nil {
-						log.Println("Failed to create media dirs:", err)
+					if err := createStandardHomeDirs(m); err != nil {
+						log.Println("Failed to create standard dir layout:", err)
 					}
 
 					mw.set(mountpoint(m), true)
@@ -231,9 +231,9 @@ func main() {
 	<-done
 }
 
-// createMediaDirs creates the Pictures and Videos dir for the user to be able
-// to store photos and videos on the sdcard from a confined process.
-func createMediaDirs(mountpoint string) error {
+// createStandardHomeDirs creates directories reflecting a standard home, these
+// directories are Documents, Downloads, Music, Pictures and Videos
+func createStandardHomeDirs(mountpoint string) error {
 	for _, node := range []string{"Documents", "Downloads", "Music", "Pictures", "Videos"} {
 		dir := filepath.Join(mountpoint, node)
 
