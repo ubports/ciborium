@@ -241,7 +241,7 @@ func createStandardHomeDirs(mountpoint string) error {
 			if err := os.MkdirAll(dir, 755); err != nil {
 				return err
 			}
-		} else {
+		} else if err != nil {
 			return err
 		}
 	}
