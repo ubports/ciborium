@@ -1,3 +1,11 @@
+ciborium (0.2.12+15.04.20141201-0ubuntu1) vivid; urgency=low
+
+  [ Sergio Schvezov ]
+  * Create standard home dirs (Documents, Downloads, Music, Pictures and
+    Videos) after mounting, if they don't exist
+
+ -- Ubuntu daily release <ps-jenkins@lists.canonical.com>  Mon, 01 Dec 2014 19:59:49 +0000
+
 ciborium (0.2.12+14.10.20141008-0ubuntu2) vivid; urgency=medium
 
   * No-change rebuild against Qt 5.3.2.
