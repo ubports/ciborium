@@ -23,6 +23,8 @@ import (
 	"errors"
 	"fmt"
 	"log"
+	"os"
+	"path/filepath"
 	"strings"
 	"sync"
 	"syscall"
@@ -183,6 +185,11 @@ func main() {
 						msgStorageSuccess.Body,
 						sdCardIcon,
 					)
+
+					if err := createStandardHomeDirs(m); err != nil {
+						log.Println("Failed to create standard dir layout:", err)
+					}
+
 					mw.set(mountpoint(m), true)
 				}
 			case e := <-blockError:
@@ -222,6 +229,24 @@ func main() {
 
 	done := make(chan bool)
 	<-done
+}
+
+// createStandardHomeDirs creates directories reflecting a standard home, these
+// directories are Documents, Downloads, Music, Pictures and Videos
+func createStandardHomeDirs(mountpoint string) error {
+	for _, node := range []string{"Documents", "Downloads", "Music", "Pictures", "Videos"} {
+		dir := filepath.Join(mountpoint, node)
+
+		if _, err := os.Stat(dir); err != nil && os.IsNotExist(err) {
+			if err := os.MkdirAll(dir, 755); err != nil {
+				return err
+			}
+		} else if err != nil {
+			return err
+		}
+	}
+
+	return nil
 }
 
 // notify only notifies if a notification is actually needed
