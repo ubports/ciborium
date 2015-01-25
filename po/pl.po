@@ -8,57 +8,58 @@ msgstr ""
 "Project-Id-Version: ciborium\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2014-09-24 17:39-0300\n"
-"PO-Revision-Date: 2014-08-18 18:14+0000\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"PO-Revision-Date: 2015-01-24 17:31+0000\n"
+"Last-Translator: GTriderXC <gtriderxc@yahoo.com>\n"
 "Language-Team: Polish <pl@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2014-12-09 06:42+0000\n"
-"X-Generator: Launchpad (build 17283)\n"
+"X-Launchpad-Export-Date: 2015-01-25 06:10+0000\n"
+"X-Generator: Launchpad (build 17306)\n"
 
 #. TRANSLATORS: This is the summary of a notification bubble with a short message of
 #. success when addding a storage device.
-#: cmd/ciborium/main.go:48
+#: cmd/ciborium/main.go:119
 msgid "Storage device detected"
-msgstr ""
+msgstr "Wykryto urządzenie z pamięcią masową"
 
 #. TRANSLATORS: This is the body of a notification bubble with a short message about content
 #. being scanned when addding a storage device.
-#: cmd/ciborium/main.go:51
+#: cmd/ciborium/main.go:122
 msgid "This device will be scanned for new content"
-msgstr ""
+msgstr "Urządzenie zostanie zeskanowaine w poszukiwaniu nowej zawartości"
 
 #. TRANSLATORS: This is the summary of a notification bubble with a short message of
 #. failure when adding a storage device.
-#: cmd/ciborium/main.go:57
+#: cmd/ciborium/main.go:128
 msgid "Failed to add storage device"
-msgstr ""
+msgstr "Dodawanie urządzenia z pamięcią masową nie powiodło się"
 
 #. TRANSLATORS: This is the body of a notification bubble with a short message with hints
 #. with regards to the failure when adding a storage device.
-#: cmd/ciborium/main.go:60
+#: cmd/ciborium/main.go:131
 msgid "Make sure the storage device is correctly formated"
-msgstr ""
+msgstr "Proszę się upewnić, że pamięć jest poprawnie sformatowana"
 
 #. TRANSLATORS: This is the summary of a notification bubble with a short message of
 #. a storage device being removed
-#: cmd/ciborium/main.go:66
+#: cmd/ciborium/main.go:137
 msgid "Storage device has been removed"
-msgstr ""
+msgstr "Urządzenie z pamięcią masową zostało usunięte"
 
 #. TRANSLATORS: This is the body of a notification bubble with a short message about content
 #. from the removed device no longer being available
-#: cmd/ciborium/main.go:69
+#: cmd/ciborium/main.go:140
 msgid ""
 "Content previously available on this device will no longer be accessible"
 msgstr ""
+"Poprzednio dostępna zawartość na tym urządzeniu nie będzie już dostępna"
 
 #. TRANSLATORS: This is the summary of a notification bubble with a short message warning on
 #. low space
 #: cmd/ciborium/main.go:229
 msgid "Low on disk space"
-msgstr ""
+msgstr "Niskie zasoby wolnej pamięci"
 
 #. TRANSLATORS: This is the body of a notification bubble with a short message about content
 #. reamining available space, %d is the remaining percentage of space available on internal
@@ -66,7 +67,7 @@ msgstr ""
 #: cmd/ciborium/main.go:233
 #, c-format
 msgid "Only %d%% is available on the internal storage device"
-msgstr ""
+msgstr "W pamięci urządzenia pozostało dostepnych jedynie %d%%"
 
 #. TRANSLATORS: This is the body of a notification bubble with a short message about content
 #. reamining available space, %d is the remaining percentage of space available on a given
@@ -74,62 +75,62 @@ msgstr ""
 #: cmd/ciborium/main.go:237
 #, c-format
 msgid "Only %d%% is available on the external storage device"
-msgstr ""
+msgstr "W pamięci zewnętrznej pozostało dostepnych jedynie %d%%"
 
 #: share/ciborium/qml/main.qml:33
 msgid "SD Card Management"
-msgstr ""
+msgstr "Zarządzanie kartą SD"
 
 #: share/ciborium/qml/components/SafeRemoval.qml:17
 msgid "Safe to remove"
-msgstr ""
+msgstr "Odłączony"
 
 #: share/ciborium/qml/components/SafeRemoval.qml:18
 msgid "You can now safely remove the device"
-msgstr ""
+msgstr "Można bez obaw odłączyć urządzenie"
 
 #: share/ciborium/qml/components/SafeRemoval.qml:21
 msgid "Ok"
-msgstr ""
+msgstr "OK"
 
 #: share/ciborium/qml/components/SafeRemoval.qml:36
 msgid "Confirm remove"
-msgstr ""
+msgstr "Potwierdź operację usunięcia"
 
 #: share/ciborium/qml/components/SafeRemoval.qml:37
 msgid "Files on the device can't be accessed after removing"
-msgstr ""
+msgstr "Po odłączeniu urządzenia zapisane na nim dane będą niedostępne"
 
 #: share/ciborium/qml/components/SafeRemoval.qml:40
 #: share/ciborium/qml/components/FormatDialog.qml:21
 msgid "Cancel"
-msgstr ""
+msgstr "Anuluj"
 
 #: share/ciborium/qml/components/SafeRemoval.qml:44
 msgid "Continue"
-msgstr ""
+msgstr "Kontynuuj"
 
 #: share/ciborium/qml/components/SafeRemoval.qml:59
 msgid "Safely Remove"
-msgstr ""
+msgstr "Bezpiecznie usuń"
 
 #: share/ciborium/qml/components/FormatDialog.qml:17
 #: share/ciborium/qml/components/FormatDialog.qml:59
 msgid "Format"
-msgstr ""
+msgstr "Formatuj"
 
 #: share/ciborium/qml/components/FormatDialog.qml:18
 msgid "This action will wipe the content from the device"
-msgstr ""
+msgstr "Ta operacja bezpowrotnie usunie wszystkie dane z urządzenia"
 
 #: share/ciborium/qml/components/FormatDialog.qml:25
 msgid "Continue with format"
-msgstr ""
+msgstr "Kontynuuj i formatuj"
 
 #: share/ciborium/qml/components/FormatDialog.qml:42
 msgid "Formatting"
-msgstr ""
+msgstr "Formatowanie"
 
 #: share/applications/ciborium.desktop.tr.h:1
 msgid "External Drives"
-msgstr ""
+msgstr "Pamięci zewnętrzne"
