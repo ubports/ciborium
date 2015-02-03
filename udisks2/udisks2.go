@@ -43,15 +43,12 @@ const (
 	dbusFilesystemInterface     = "org.freedesktop.UDisks2.Filesystem"
 	dbusPartitionInterface      = "org.freedesktop.UDisks2.Partition"
 	dbusPartitionTableInterface = "org.freedesktop.UDisks2.PartitionTable"
+	dbusJobInterface            = "org.freedesktop.UDisks2.Job"
 	dbusAddedSignal             = "InterfacesAdded"
 	dbusRemovedSignal           = "InterfacesRemoved"
 )
 
 var ErrUnhandledFileSystem = errors.New("unhandled filesystem")
-
-type VariantMap map[string]dbus.Variant
-type InterfacesAndProperties map[string]VariantMap
-type Interfaces []string
 
 type Drive struct {
 	path         dbus.ObjectPath
@@ -60,11 +57,6 @@ type Drive struct {
 }
 
 type driveMap map[dbus.ObjectPath]*Drive
-
-type Event struct {
-	Path  dbus.ObjectPath
-	Props InterfacesAndProperties
-}
 
 type mountpointMap map[dbus.ObjectPath]string
 
@@ -81,6 +73,7 @@ type UDisks2 struct {
 	mountpoints  mountpointMap
 	mapLock      sync.Mutex
 	startLock    sync.Mutex
+	dispatcher   *dispatcher
 }
 
 func NewStorageWatcher(conn *dbus.Connection, filesystems ...string) (u *UDisks2) {
@@ -212,45 +205,25 @@ func (u *UDisks2) ExternalDrives() []Drive {
 }
 
 func (u *UDisks2) Init() (err error) {
-	if u.driveAdded, err = u.connectToSignalInterfacesAdded(); err != nil {
-		return err
-	}
-	if u.driveRemoved, err = u.connectToSignalInterfacesRemoved(); err != nil {
-		return err
-	}
-	u.initInterfacesWatchChan()
-	return nil
-}
-
-func (u *UDisks2) initInterfacesWatchChan() {
-	go func() {
-		for {
-			select {
-			case msg := <-u.driveAdded.C:
-				var event Event
-				if err := msg.Args(&event.Path, &event.Props); err != nil {
-					log.Print(err)
-					continue
-				}
+	d, err := newDispatcher(u.conn)
+	if err != nil {
+		u.dispatcher = d
+		go func() {
+			for e := range u.dispatcher.Additions {
 				if err := u.processAddEvent(&event); err != nil {
 					log.Print("Issues while processing ", event.Path, ": ", err)
 				}
-			case msg := <-u.driveRemoved.C:
-				var objectPath dbus.ObjectPath
-				var interfaces Interfaces
-				if err := msg.Args(&objectPath, &interfaces); err != nil {
-					log.Print(err)
-					continue
-				}
-				if err := u.processRemoveEvent(objectPath, interfaces); err != nil {
+			}
+		}()
+		go func() {
+			for e := range u.dispatcher.Removals {
+				if err := u.processRemoveEvent(e.path, e.Interfaces); err != nil {
 					log.Println("Issues while processing remove event:", err)
 				}
 			}
-		}
-		log.Print("Shutting down InterfacesAdded channel")
-	}()
-
-	u.emitExistingDevices()
+		}()
+	}
+	return err
 }
 
 func (u *UDisks2) connectToSignal(path dbus.ObjectPath, inter, member string) (*dbus.SignalWatch, error) {
@@ -288,7 +261,7 @@ func (u *UDisks2) emitExistingDevices() {
 	var blocks, drives []*Event
 	// separate drives from blocks to avoid aliasing
 	for objectPath, props := range allDevices {
-		s := &Event{objectPath, props}
+		s := &Event{objectPath, props, make([]string, 0, 0)}
 		switch objectPathType(objectPath) {
 		case deviceTypeDrive:
 			drives = append(drives, s)
@@ -523,51 +496,4 @@ func (dm *driveMap) addInterface(s *Event) (bool, error) {
 	}
 
 	return blockDevice, nil
-}
-
-func (i InterfacesAndProperties) isMounted() bool {
-	propFS, ok := i[dbusFilesystemInterface]
-	if !ok {
-		return false
-	}
-	mountpointsVariant, ok := propFS["MountPoints"]
-	if !ok {
-		return false
-	}
-	if reflect.TypeOf(mountpointsVariant.Value).Kind() != reflect.Slice {
-		return false
-	}
-	mountpoints := reflect.ValueOf(mountpointsVariant.Value).Len()
-
-	return mountpoints > 0
-}
-
-func (i InterfacesAndProperties) hasPartition() bool {
-	prop, ok := i[dbusPartitionInterface]
-	if !ok {
-		return false
-	}
-	// check if a couple of properties exist
-	if _, ok := prop["UUID"]; !ok {
-		return false
-	}
-	if _, ok := prop["Table"]; !ok {
-		return false
-	}
-	return true
-}
-
-func (i InterfacesAndProperties) isPartitionable() bool {
-	prop, ok := i[dbusBlockInterface]
-	if !ok {
-		return false
-	}
-	partitionableHintVariant, ok := prop["HintPartitionable"]
-	if !ok {
-		return false
-	}
-	if reflect.TypeOf(partitionableHintVariant.Value).Kind() != reflect.Bool {
-		return false
-	}
-	return reflect.ValueOf(partitionableHintVariant.Value).Bool()
 }
