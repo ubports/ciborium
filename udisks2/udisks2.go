@@ -107,22 +107,17 @@ func (u *UDisks2) SubscribeBlockDeviceEvents() <-chan bool {
 }
 
 func (u *UDisks2) Mount(s *Event) (mountpoint string, err error) {
-	log.Print("Mounting device ", s.Path)
 	obj := u.conn.Object(dbusName, s.Path)
 	options := make(VariantMap)
 	options["auth.no_user_interaction"] = dbus.Variant{true}
 	reply, err := obj.Call(dbusFilesystemInterface, "Mount", options)
-	log.Print("Remote call performed Reply: ", reply,  " Error: ", err)
 	if err != nil {
-		log.Print("Error mounting ", s.Path, " ", err)
 		return "", err
 	}
 	if err := reply.Args(&mountpoint); err != nil {
-		log.Print("Error mounting ", s.Path, " ", err)
 		return "", err
 	}
 
-	log.Print("New mount point is ", mountpoint)
 	u.mountpoints[s.Path] = mountpoint
 	return mountpoint, err
 }
@@ -160,7 +155,6 @@ func (u *UDisks2) Format(d *Drive) error {
 	// delete all the partitions
 	for blockPath, block := range d.blockDevices {
 		if block.hasPartition() {
-			log.Print("Erase partition.")
 			if err := u.deletePartition(blockPath); err != nil {
 				log.Println("Issues while deleting partition on", blockPath, ":", err)
 				return err
@@ -340,6 +334,7 @@ func (u *UDisks2) processAddEvent(s *Event) error {
 }
 
 func (u *UDisks2) processRemoveEvent(objectPath dbus.ObjectPath, interfaces Interfaces) error {
+	log.Println("Remove event for", objectPath)
 	mountpoint, mounted := u.mountpoints[objectPath]
 	if mounted {
 		log.Println("Removing mountpoint", mountpoint)
@@ -365,6 +360,7 @@ func (u *UDisks2) processRemoveEvent(objectPath dbus.ObjectPath, interfaces Inte
 }
 
 func cleanDriveWatch(u *UDisks2) {
+	log.Print("Cancelling Interfaces signal watch")
 	u.driveAdded.Cancel()
 	u.driveRemoved.Cancel()
 }
@@ -388,13 +384,13 @@ func (u *UDisks2) desiredMountableEvent(s *Event) (bool, error) {
 
 	drivePath, err := s.getDrive()
 	if err != nil {
-		log.Print("Issues while getting drive:", err)
+		//log.Println("Issues while getting drive:", err)
 		return false, nil
 	}
 
 	drive := u.drives[drivePath]
 	if ok := drive.hasSystemBlockDevices(); ok {
-		log.Print(drivePath, "which contains", s.Path, "has HintSystem set")
+		//log.Println(drivePath, "which contains", s.Path, "has HintSystem set")
 		return false, nil
 	}
 
