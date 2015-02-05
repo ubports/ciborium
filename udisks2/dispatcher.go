@@ -55,6 +55,7 @@ type dispatcher struct {
 }
 
 func connectToSignal(conn *dbus.Connection, path dbus.ObjectPath, inter, member string) (*dbus.SignalWatch, error) {
+	log.Print("Connecting to signal ", path, " ", inter, " ", member)
 	w, err := conn.WatchSignal(&dbus.MatchRule{
 		Type:      dbus.TypeSignal,
 		Sender:    dbusName,
@@ -65,7 +66,8 @@ func connectToSignal(conn *dbus.Connection, path dbus.ObjectPath, inter, member 
 }
 
 func newDispatcher(conn *dbus.Connection) (*dispatcher, error) {
-	// connect to the reuired signals, if it is not possible, return nil
+	log.Print("Creating new dispatcher.")
+	// connect to the required signals, if it is not possible, return nil
 	add_w, err := connectToSignal(conn, dbusObject, dbusObjectManagerInterface, dbusAddedSignal)
 	if err != nil {
 		return nil, err
@@ -84,6 +86,11 @@ func newDispatcher(conn *dbus.Connection) (*dispatcher, error) {
 	runtime.SetFinalizer(d, cleanDispatcherData)
 
 	// create the go routines used to grab the events and dispatch them accordingly
+	return d, nil
+}
+
+func (d *dispatcher) Init() {
+	log.Print("Initi the dispatcher.")
 	go func() {
 		for msg := range d.additionsWatch.C {
 			var event Event
@@ -91,26 +98,30 @@ func newDispatcher(conn *dbus.Connection) (*dispatcher, error) {
 				log.Print(err)
 				continue
 			}
+			log.Print("New addition event for path ", event.Path, event.Props)
 			d.processAddition(event)
 		}
+		log.Print("Add go routine done")
 	}()
 
 	go func() {
 		for msg := range d.removalsWatch.C {
+			log.Print("New removal event for path.")
 			var event Event
 			if err := msg.Args(&event.Path, &event.Interfaces); err != nil {
 				log.Print(err)
 				continue
 			}
 			sort.Strings(event.Interfaces)
+			log.Print("Removal event is ", event.Path, " Interfaces: ", event.Interfaces)
 			d.processRemoval(event)
 		}
+		log.Print("Remove go routine done.")
 	}()
-
-	return d, nil
 }
 
 func (d *dispatcher) free() {
+	log.Print("Cleaning dispatcher resources.")
 	// cancel all watches so that goroutines are done and close the
 	// channels
 	d.additionsWatch.Cancel()
@@ -124,10 +135,21 @@ func (d *dispatcher) processAddition(event Event) {
 	log.Print("Dealing with an add event from path ", event.Path)
 	// according to the object path we know if the even was a job one or not
 	if strings.HasPrefix(string(event.Path), jobPrefixPath) {
-		d.Jobs <- event
-	}
-	if strings.HasPrefix(string(event.Path), blockDevices) {
-		d.Additions <- event
+		log.Print("Sending a new job event.")
+		select {
+		case d.Jobs <- event:
+			log.Print("Sent event ", event.Path)
+		default:
+			log.Print("No event sent")
+		}
+	} else {
+		log.Print("Sending a new general add event.")
+		select {
+		case d.Additions <- event:
+			log.Print("Sent event ", event.Path)
+		default:
+			log.Print("No event sent")
+		}
 	}
 }
 
@@ -135,10 +157,17 @@ func (d *dispatcher) processRemoval(event Event) {
 	log.Print("Dealing with a remove event from path ", event.Path)
 	// according to the object path we know if the even was a job one or not
 	if strings.HasPrefix(string(event.Path), jobPrefixPath) {
-		d.Jobs <- event
-	}
-	if strings.HasPrefix(string(event.Path), blockDevices) {
-		d.Removals <- event
+		log.Print("Sending a new remove job event.")
+		select {
+		case d.Jobs <- event:
+			log.Print("Sent event ", event.Path)
+		}
+	} else {
+		log.Print("Sending a new general remove event.")
+		select {
+		case d.Removals <- event:
+			log.Print("Sent event ", event.Path)
+		}
 	}
 }
 

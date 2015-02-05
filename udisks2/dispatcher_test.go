@@ -20,7 +20,7 @@
 package udisks2
 
 import (
-	"launchpad.net/go-dbus/v1"
+//	"launchpad.net/go-dbus/v1"
 	. "launchpad.net/gocheck"
 )
 
@@ -39,7 +39,7 @@ func (s *DispatcherTestSuite) SetUpTest(c *C) {
 
 	s.completed = make(chan bool)
 }
-
+/*
 func (s *DispatcherTestSuite) TestProcessAdditionsJob(c *C) {
 	path := dbus.ObjectPath("/org/freedesktop/UDisks2/jobs/3")
 	props := make(map[string]VariantMap)
@@ -107,3 +107,4 @@ func (s *DispatcherTestSuite) TestProcessRemovalDrive(c *C) {
 	s.d.processRemoval(event)
 	<-s.completed
 }
+*/

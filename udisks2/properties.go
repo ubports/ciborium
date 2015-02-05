@@ -87,35 +87,28 @@ func (i InterfacesAndProperties) isPartitionable() bool {
 	return reflect.ValueOf(partitionableHintVariant.Value).Bool()
 }
 
-func (i InterfacesAndProperties) isEraseFormatJob() bool {
+func (i InterfacesAndProperties) jobOperation() string {
 	prop, ok := i[dbusJobInterface]
 	if !ok {
-		return false
+		return ""
 	}
 	operationVariant, ok := prop[operationProperty]
 	if !ok {
-		return false
+		return ""
 	}
 	if reflect.TypeOf(operationVariant.Value).Kind() != reflect.String {
-		return false
+		return ""
 	}
-	return reflect.ValueOf(operationVariant.Value).String() == formatErase
+	return reflect.ValueOf(operationVariant.Value).String()
+}
+
+func (i InterfacesAndProperties) isEraseFormatJob() bool {
+	return i.jobOperation() == formatErase
 
 }
 
 func (i InterfacesAndProperties) isMkfsFormatJob() bool {
-	prop, ok := i[dbusJobInterface]
-	if !ok {
-		return false
-	}
-	operationVariant, ok := prop[operationProperty]
-	if !ok {
-		return false
-	}
-	if reflect.TypeOf(operationVariant.Value).Kind() != reflect.String {
-		return false
-	}
-	return reflect.ValueOf(operationVariant.Value).String() == formateMkfs
+	return i.jobOperation() == formateMkfs
 }
 
 func (i InterfacesAndProperties) getFormattedPaths() []string {
@@ -144,4 +137,9 @@ func (i InterfacesAndProperties) getFormattedPaths() []string {
 	}
 
 	return objectPaths
+}
+
+func (i InterfacesAndProperties) isFilesystem() bool {
+	_, ok := i[dbusFilesystemInterface]
+	return ok;
 }

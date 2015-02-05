@@ -28,6 +28,7 @@ import (
 )
 
 type job struct {
+	Event        Event
 	Operation    string
 	Paths        []string
 	WasCompleted bool
@@ -49,33 +50,41 @@ func newJobManager(d *dispatcher) *jobManager {
 
 	// create a go routine that will filter the diff jobs
 	go func() {
-		for e := range d.Jobs {
-			if e.isRemovalEvent() {
-				m.processRemovalEvent(e)
-			} else {
-				m.processAdditionEvent(e)
+		for {
+			select {
+			case e := <-d.Jobs:
+				log.Print("New event ", e.Path, " Properties: ", e.Props, " Interfaces: ", e.Interfaces)
+				if e.isRemovalEvent() {
+					log.Print("Is removal event")
+					m.processRemovalEvent(e)
+				} else {
+					m.processAdditionEvent(e)
+				}
 			}
 		}
+		log.Print("Job manager routine done")
 	}()
 	return m
 }
 
 func (m *jobManager) processRemovalEvent(e Event) {
 	job, ok := m.onGoingJobs[e.Path]
+	log.Print("Deal with job event removal ", e.Path, " ", e.Interfaces)
 	if ok {
 		// assert that we did loose the jobs interface, the dispatcher does sort the interfaces
 		i := sort.SearchStrings(e.Interfaces, dbusJobInterface)
 		if i != len(e.Interfaces) {
+			log.Print("Job completed.")
 			// complete event found
 			job.WasCompleted = true
 
 			if job.Operation == formatErase {
-				log.Print("Sending new erase job")
+				log.Print("Sending completed erase job")
 				m.FormatEraseJobs <- job
 			}
 
 			if job.Operation == formateMkfs {
-				log.Print("Sending mkfs job")
+				log.Print("Sending completed mkfs job")
 				m.FormatMkfsJobs <- job
 			}
 
@@ -96,20 +105,19 @@ func (m *jobManager) processAdditionEvent(e Event) {
 	j, ok := m.onGoingJobs[e.Path]
 	if !ok {
 		log.Print("Creating job for new path ", e.Path)
-		var operation string
+		log.Print("New job operation ", e.Props.jobOperation())
+		operation := e.Props.jobOperation()
 		var paths []string
-		if e.Props.isEraseFormatJob() {
-			operation = formatErase
-		}
 		if e.Props.isMkfsFormatJob() {
-			operation = formateMkfs
+			log.Print("Get paths from formatMkfs event.")
 			paths = e.Props.getFormattedPaths()
 		}
 
-		j = job{operation, paths, false}
+		j = job{e, operation, paths, false}
 		m.onGoingJobs[e.Path] = j
 	} else {
 		log.Print("Updating job for path ", e.Path)
+		j.Event = e
 		if e.Props.isEraseFormatJob() {
 			j.Operation = formatErase
 		}
@@ -120,11 +128,13 @@ func (m *jobManager) processAdditionEvent(e Event) {
 	}
 
 	if j.Operation == formatErase {
+		log.Print("Sending rease job from addition.")
 		m.FormatEraseJobs <- j
-	}
-
-	if j.Operation == formateMkfs {
+	} else if j.Operation == formateMkfs {
+		log.Print("Sending format job from addition.")
 		m.FormatMkfsJobs <- j
+	} else {
+		log.Print("Ignoring job event with operation", j.Operation)
 	}
 }
 

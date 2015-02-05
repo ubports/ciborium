@@ -168,7 +168,7 @@ func (s *JobManagerTestSuite) TestProcessRemovalEventMkfs(c *C) {
 	// is fwd to the channel as completed and removed from the map
 	formattedPaths := make([]string, 1, 1)
 	formattedPaths[0] = "/one/path/to/a/fmormatted/fs/1"
-	presentJob := job{formateMkfs, formattedPaths, false}
+	presentJob := job{Event{}, formateMkfs, formattedPaths, false}
 
 	s.ongoing[path] = presentJob
 
