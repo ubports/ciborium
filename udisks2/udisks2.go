@@ -235,7 +235,6 @@ func (u *UDisks2) Init() (err error) {
 						u.pendingMounts = append(u.pendingMounts, j.Paths...)
 						sort.Strings(u.pendingMounts)
 					} else {
-						log.Print("##############################")
 						log.Print("Format job started.")
 					}
 				}
