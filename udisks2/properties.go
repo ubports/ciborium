@@ -141,5 +141,5 @@ func (i InterfacesAndProperties) getFormattedPaths() []string {
 
 func (i InterfacesAndProperties) isFilesystem() bool {
 	_, ok := i[dbusFilesystemInterface]
-	return ok;
+	return ok
 }

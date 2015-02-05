@@ -61,29 +61,29 @@ type driveMap map[dbus.ObjectPath]*Drive
 type mountpointMap map[dbus.ObjectPath]string
 
 type UDisks2 struct {
-	conn         *dbus.Connection
-	validFS      sort.StringSlice
-	blockAdded   chan *Event
-	driveAdded   *dbus.SignalWatch
-	mountRemoved chan string
-	blockError   chan error
-	driveRemoved *dbus.SignalWatch
-	blockDevice  chan bool
-	drives       driveMap
-	mountpoints  mountpointMap
-	mapLock      sync.Mutex
-	startLock    sync.Mutex
-	dispatcher   *dispatcher
-	jobs         *jobManager
+	conn          *dbus.Connection
+	validFS       sort.StringSlice
+	blockAdded    chan *Event
+	driveAdded    *dbus.SignalWatch
+	mountRemoved  chan string
+	blockError    chan error
+	driveRemoved  *dbus.SignalWatch
+	blockDevice   chan bool
+	drives        driveMap
+	mountpoints   mountpointMap
+	mapLock       sync.Mutex
+	startLock     sync.Mutex
+	dispatcher    *dispatcher
+	jobs          *jobManager
 	pendingMounts []string
 }
 
 func NewStorageWatcher(conn *dbus.Connection, filesystems ...string) (u *UDisks2) {
 	u = &UDisks2{
-		conn:        conn,
-		validFS:     sort.StringSlice(filesystems),
-		drives:      make(driveMap),
-		mountpoints: make(mountpointMap),
+		conn:          conn,
+		validFS:       sort.StringSlice(filesystems),
+		drives:        make(driveMap),
+		mountpoints:   make(mountpointMap),
 		pendingMounts: make([]string, 0, 0),
 	}
 	runtime.SetFinalizer(u, cleanDriveWatch)
@@ -215,21 +215,21 @@ func (u *UDisks2) Init() (err error) {
 		go func() {
 			for {
 				select {
-				case e:= <-u.dispatcher.Additions:
+				case e := <-u.dispatcher.Additions:
 					if err := u.processAddEvent(&e); err != nil {
 						log.Print("Issues while processing ", e.Path, ": ", err)
 					}
-				case e:= <-u.dispatcher.Removals:
+				case e := <-u.dispatcher.Removals:
 					if err := u.processRemoveEvent(e.Path, e.Interfaces); err != nil {
 						log.Println("Issues while processing remove event:", err)
 					}
-				case j:= <-u.jobs.FormatEraseJobs:
+				case j := <-u.jobs.FormatEraseJobs:
 					if j.WasCompleted {
 						log.Print("Erase job completed.")
 					} else {
 						log.Print("Erase job started.")
 					}
-				case j:= <-u.jobs.FormatMkfsJobs:
+				case j := <-u.jobs.FormatMkfsJobs:
 					if j.WasCompleted {
 						log.Print("Format job done for ", j.Event.Path)
 						u.pendingMounts = append(u.pendingMounts, j.Paths...)
@@ -308,8 +308,8 @@ func (u *UDisks2) emitExistingDevices() {
 func (u *UDisks2) processAddEvent(s *Event) error {
 	u.mapLock.Lock()
 	defer u.mapLock.Unlock()
-	pos := sort.SearchStrings(u.pendingMounts , string(s.Path))
-	if pos != len(u.pendingMounts)  && s.Props.isFilesystem() {
+	pos := sort.SearchStrings(u.pendingMounts, string(s.Path))
+	if pos != len(u.pendingMounts) && s.Props.isFilesystem() {
 		log.Print("Mount path ", s.Path)
 		_, err := u.Mount(s)
 		u.pendingMounts = append(u.pendingMounts[:pos], u.pendingMounts[pos+1:]...)
