@@ -139,16 +139,12 @@ func (d *dispatcher) processAddition(event Event) {
 		select {
 		case d.Jobs <- event:
 			log.Print("Sent event ", event.Path)
-		default:
-			log.Print("No event sent")
 		}
 	} else {
 		log.Print("Sending a new general add event.")
 		select {
 		case d.Additions <- event:
 			log.Print("Sent event ", event.Path)
-		default:
-			log.Print("No event sent")
 		}
 	}
 }

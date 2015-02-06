@@ -208,3 +208,12 @@ func (s *InterfacesAndPropertiesTestSuite) TestGetFormattedPaths(c *C) {
 	c.Assert(sort.SearchStrings(paths, secondPath), Not(Equals), len(paths))
 	c.Assert(sort.SearchStrings(paths, thirdPath), Not(Equals), len(paths))
 }
+
+func (s *InterfacesAndPropertiesTestSuite) TestIsFileSystemNoInterface(c *C) {
+	c.Assert(s.properties.isFilesystem(), Equals, false)
+}
+
+func (s *InterfacesAndPropertiesTestSuite) TestIsFileSystem(c *C) {
+	s.properties[dbusFilesystemInterface] = make(map[string]dbus.Variant)
+	c.Assert(s.properties.isFilesystem(), Equals, true)
+}
