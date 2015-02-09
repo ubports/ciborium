@@ -1,9 +1,3 @@
-ciborium (0.2.12+15.04.20141201-0ubuntu2) UNRELEASED; urgency=medium
-
-  * Refactored code to deal with all diff events better.
-
- -- Manuel de la Pena <manuel.delapena@canonical.com>  Tue, 03 Feb 2015 16:43:25 +0100
-
 ciborium (0.2.12+15.04.20141201-0ubuntu1) vivid; urgency=low
 
   [ Sergio Schvezov ]

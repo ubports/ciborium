@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Canonical Ltd.
+ * Copyright 2015 Canonical Ltd.
  *
  * Authors:
  * Manuel de la Pena : manuel.delapena@cannical.com
@@ -29,8 +29,8 @@ import (
 )
 
 const (
-	jobPrefixPath = "/org/freedesktop/UDisks2/jobs/"
-	blockDevices  = "/org/freedesktop/UDisks2/block_devices/"
+	jobPrefixPath    = "/org/freedesktop/UDisks2/jobs/"
+	blockDevicesPath = "/org/freedesktop/UDisks2/block_devices/"
 )
 
 type Interfaces []string
@@ -41,6 +41,9 @@ type Event struct {
 	Interfaces Interfaces
 }
 
+// siRemovalEvent returns if an event represent an InterfacesRemoved signal from the dbus ObjectManager
+// dbus interface. An event is a removal event when it carries a set of the interfaces that have been lost
+// in a dbus object path.
 func (e *Event) isRemovalEvent() bool {
 	return len(e.Interfaces) != 0
 }
@@ -55,7 +58,7 @@ type dispatcher struct {
 }
 
 func connectToSignal(conn *dbus.Connection, path dbus.ObjectPath, inter, member string) (*dbus.SignalWatch, error) {
-	log.Print("Connecting to signal ", path, " ", inter, " ", member)
+	log.Println("Connecting to signal", path, inter, member)
 	w, err := conn.WatchSignal(&dbus.MatchRule{
 		Type:      dbus.TypeSignal,
 		Sender:    dbusName,
@@ -65,9 +68,11 @@ func connectToSignal(conn *dbus.Connection, path dbus.ObjectPath, inter, member 
 	return w, err
 }
 
+// newDispatcher tires to return a dispatcher instance that is connected to the dbus signal that must be listen
+// to correctly interact with UDisk. If the dispatcher is not correctly connected, a nil pointer is returned
+// with the error that was found when trying to connect to dbus.
 func newDispatcher(conn *dbus.Connection) (*dispatcher, error) {
 	log.Print("Creating new dispatcher.")
-	// connect to the required signals, if it is not possible, return nil
 	add_w, err := connectToSignal(conn, dbusObject, dbusObjectManagerInterface, dbusAddedSignal)
 	if err != nil {
 		return nil, err
@@ -90,7 +95,7 @@ func newDispatcher(conn *dbus.Connection) (*dispatcher, error) {
 }
 
 func (d *dispatcher) Init() {
-	log.Print("Initi the dispatcher.")
+	log.Print("Init the dispatcher.")
 	go func() {
 		for msg := range d.additionsWatch.C {
 			var event Event
@@ -101,7 +106,6 @@ func (d *dispatcher) Init() {
 			log.Print("New addition event for path ", event.Path, event.Props)
 			d.processAddition(event)
 		}
-		log.Print("Add go routine done")
 	}()
 
 	go func() {
@@ -116,7 +120,6 @@ func (d *dispatcher) Init() {
 			log.Print("Removal event is ", event.Path, " Interfaces: ", event.Interfaces)
 			d.processRemoval(event)
 		}
-		log.Print("Remove go routine done.")
 	}()
 }
 
@@ -132,41 +135,37 @@ func (d *dispatcher) free() {
 }
 
 func (d *dispatcher) processAddition(event Event) {
-	log.Print("Dealing with an add event from path ", event.Path)
+	log.Print("Processing an add event from path ", event.Path)
 	// according to the object path we know if the even was a job one or not
 	if strings.HasPrefix(string(event.Path), jobPrefixPath) {
 		log.Print("Sending a new job event.")
 		select {
 		case d.Jobs <- event:
 			log.Print("Sent event ", event.Path)
-		default:
-			log.Print("No event sent")
 		}
 	} else {
 		log.Print("Sending a new general add event.")
 		select {
 		case d.Additions <- event:
 			log.Print("Sent event ", event.Path)
-		default:
-			log.Print("No event sent")
 		}
 	}
 }
 
 func (d *dispatcher) processRemoval(event Event) {
-	log.Print("Dealing with a remove event from path ", event.Path)
+	log.Print("Processing a remove event from path ", event.Path)
 	// according to the object path we know if the even was a job one or not
 	if strings.HasPrefix(string(event.Path), jobPrefixPath) {
 		log.Print("Sending a new remove job event.")
 		select {
 		case d.Jobs <- event:
-			log.Print("Sent event ", event.Path)
+			log.Println("Sent event", event.Path)
 		}
 	} else {
 		log.Print("Sending a new general remove event.")
 		select {
 		case d.Removals <- event:
-			log.Print("Sent event ", event.Path)
+			log.Println("Sent event", event.Path)
 		}
 	}
 }

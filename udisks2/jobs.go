@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Canonical Ltd.
+ * Copyright 2015 Canonical Ltd.
  *
  * Authors:
  * Manuel de la Pena : manuel.delapena@cannical.com
@@ -43,9 +43,9 @@ type jobManager struct {
 func newJobManager(d *dispatcher) *jobManager {
 	// listen to the diff job events and ensure that they are dealt with in the correct channel
 	ongoing := make(map[dbus.ObjectPath]job)
-	erase_ch := make(chan job)
-	mkfs_ch := make(chan job)
-	m := &jobManager{ongoing, erase_ch, mkfs_ch}
+	eraseChan := make(chan job)
+	mkfsChan := make(chan job)
+	m := &jobManager{ongoing, eraseChan, mkfsChan}
 	runtime.SetFinalizer(m, cleanJobData)
 
 	// create a go routine that will filter the diff jobs
@@ -53,7 +53,7 @@ func newJobManager(d *dispatcher) *jobManager {
 		for {
 			select {
 			case e := <-d.Jobs:
-				log.Print("New event ", e.Path, " Properties: ", e.Props, " Interfaces: ", e.Interfaces)
+				log.Println("New event", e.Path, "Properties:", e.Props, "Interfaces:", e.Interfaces)
 				if e.isRemovalEvent() {
 					log.Print("Is removal event")
 					m.processRemovalEvent(e)
@@ -68,9 +68,8 @@ func newJobManager(d *dispatcher) *jobManager {
 }
 
 func (m *jobManager) processRemovalEvent(e Event) {
-	job, ok := m.onGoingJobs[e.Path]
-	log.Print("Deal with job event removal ", e.Path, " ", e.Interfaces)
-	if ok {
+	log.Println("Deal with job event removal", e.Path, e.Interfaces)
+	if job, ok := m.onGoingJobs[e.Path]; ok {
 		// assert that we did loose the jobs interface, the dispatcher does sort the interfaces
 		i := sort.SearchStrings(e.Interfaces, dbusJobInterface)
 		if i != len(e.Interfaces) {
@@ -92,11 +91,11 @@ func (m *jobManager) processRemovalEvent(e Event) {
 			delete(m.onGoingJobs, e.Path)
 			return
 		} else {
-			log.Print("Ignoring event for path ", e.Path, " because the job interface was not lost")
+			log.Println("Ignoring event for path", e.Path, "because the job interface was not lost")
 			return
 		}
 	} else {
-		log.Print("Ignoring event for path ", e.Path)
+		log.Println("Ignoring event for path", e.Path)
 		return
 	}
 }
@@ -104,8 +103,8 @@ func (m *jobManager) processRemovalEvent(e Event) {
 func (m *jobManager) processAdditionEvent(e Event) {
 	j, ok := m.onGoingJobs[e.Path]
 	if !ok {
-		log.Print("Creating job for new path ", e.Path)
-		log.Print("New job operation ", e.Props.jobOperation())
+		log.Println("Creating job for new path", e.Path)
+		log.Println("New job operation", e.Props.jobOperation())
 		operation := e.Props.jobOperation()
 		var paths []string
 		if e.Props.isMkfsFormatJob() {
@@ -134,7 +133,7 @@ func (m *jobManager) processAdditionEvent(e Event) {
 		log.Print("Sending format job from addition.")
 		m.FormatMkfsJobs <- j
 	} else {
-		log.Print("Ignoring job event with operation", j.Operation)
+		log.Println("Ignoring job event with operation", j.Operation)
 	}
 }
 
