@@ -35,10 +35,10 @@ var _ = Suite(&JobManagerTestSuite{})
 
 func (s *JobManagerTestSuite) SetUpTest(c *C) {
 	s.ongoing = make(map[dbus.ObjectPath]job)
-	erase_ch := make(chan job)
-	mkfs_ch := make(chan job)
+	eraseChan := make(chan job)
+	mkfsChan := make(chan job)
 
-	s.manager = &jobManager{s.ongoing, erase_ch, mkfs_ch}
+	s.manager = &jobManager{s.ongoing, eraseChan, mkfsChan}
 	s.completed = make(chan bool)
 }
 

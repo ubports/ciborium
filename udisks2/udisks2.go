@@ -231,7 +231,7 @@ func (u *UDisks2) Init() (err error) {
 					}
 				case j := <-u.jobs.FormatMkfsJobs:
 					if j.WasCompleted {
-						log.Print("Format job done for ", j.Event.Path)
+						log.Println("Format job done for", j.Event.Path)
 						u.pendingMounts = append(u.pendingMounts, j.Paths...)
 						sort.Strings(u.pendingMounts)
 					} else {
@@ -309,7 +309,7 @@ func (u *UDisks2) processAddEvent(s *Event) error {
 	defer u.mapLock.Unlock()
 	pos := sort.SearchStrings(u.pendingMounts, string(s.Path))
 	if pos != len(u.pendingMounts) && s.Props.isFilesystem() {
-		log.Print("Mount path ", s.Path)
+		log.Println("Mount path", s.Path)
 		_, err := u.Mount(s)
 		u.pendingMounts = append(u.pendingMounts[:pos], u.pendingMounts[pos+1:]...)
 		return err
