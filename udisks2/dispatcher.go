@@ -8,7 +8,7 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; version 3.
  *
- * nuntium is distributed in the hope that it will be useful,
+ * ciborium is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
@@ -41,7 +41,7 @@ type Event struct {
 	Interfaces Interfaces
 }
 
-// siRemovalEvent returns if an event represent an InterfacesRemoved signal from the dbus ObjectManager
+// isRemovalEvent returns if an event represents an InterfacesRemoved signal from the dbus ObjectManager
 // dbus interface. An event is a removal event when it carries a set of the interfaces that have been lost
 // in a dbus object path.
 func (e *Event) isRemovalEvent() bool {
@@ -68,9 +68,8 @@ func connectToSignal(conn *dbus.Connection, path dbus.ObjectPath, inter, member 
 	return w, err
 }
 
-// newDispatcher tires to return a dispatcher instance that is connected to the dbus signal that must be listen
-// to correctly interact with UDisk. If the dispatcher is not correctly connected, a nil pointer is returned
-// with the error that was found when trying to connect to dbus.
+// newDispatcher tries to return a dispatcher instance that is connected to the dbus signal that must be listened
+// in order to interact with UDisk. If the dispatcher is not correctly connected.
 func newDispatcher(conn *dbus.Connection) (*dispatcher, error) {
 	log.Print("Creating new dispatcher.")
 	add_w, err := connectToSignal(conn, dbusObject, dbusObjectManagerInterface, dbusAddedSignal)
