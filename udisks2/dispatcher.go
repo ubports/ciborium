@@ -69,7 +69,7 @@ func connectToSignal(conn *dbus.Connection, path dbus.ObjectPath, inter, member 
 }
 
 // newDispatcher tries to return a dispatcher instance that is connected to the dbus signal that must be listened
-// in order to interact with UDisk. If the dispatcher is not correctly connected.
+// in order to interact with UDisk. If the connection with the signals could not be performed an error is returned.
 func newDispatcher(conn *dbus.Connection) (*dispatcher, error) {
 	log.Print("Creating new dispatcher.")
 	add_w, err := connectToSignal(conn, dbusObject, dbusObjectManagerInterface, dbusAddedSignal)
