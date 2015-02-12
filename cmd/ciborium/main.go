@@ -108,6 +108,8 @@ func init() {
 }
 
 func main() {
+	// set default logger flags to get more useful info
+	log.SetFlags(log.LstdFlags | log.Lshortfile)
 
 	// Initialize i18n
 	gettext.SetLocale(gettext.LC_ALL, "")
