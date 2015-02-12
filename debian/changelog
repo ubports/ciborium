@@ -1,3 +1,17 @@
+ciborium (0.2.12+15.04.20150212-0ubuntu1) vivid; urgency=medium
+
+  [ Ubuntu daily release ]
+  * New rebuild forced
+
+  [ Albert Astals Cid ]
+  * Fix crash if context.file is null (LP: #1418544)
+
+  [ Manuel de la Pena ]
+  * Ensure that we remount the drives after we format them. Remove
+    deadlocks.
+
+ -- Ubuntu daily release <ps-jenkins@lists.canonical.com>  Thu, 12 Feb 2015 16:02:52 +0000
+
 ciborium (0.2.12+15.04.20141201-0ubuntu1) vivid; urgency=low
 
   [ Sergio Schvezov ]
