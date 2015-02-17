@@ -312,7 +312,11 @@ func (u *UDisks2) processAddEvent(s *Event) error {
 		log.Println("Mount path", s.Path)
 		_, err := u.Mount(s)
 		u.pendingMounts = append(u.pendingMounts[:pos], u.pendingMounts[pos+1:]...)
-		return err
+		if err != nil {
+			u.blockError <- err
+		} else {
+			u.blockAdded <- s
+		}
 	}
 	if isBlockDevice, err := u.drives.addInterface(s); err != nil {
 		return err
