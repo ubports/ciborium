@@ -119,6 +119,7 @@ func (u *UDisks2) Mount(s *Event) (mountpoint string, err error) {
 	}
 
 	u.mountpoints[s.Path] = mountpoint
+	log.Println("Mounth path for '", s.Path, "' set to be", mountpoint)
 	return mountpoint, err
 }
 
@@ -305,17 +306,19 @@ func (u *UDisks2) emitExistingDevices() {
 }
 
 func (u *UDisks2) processAddEvent(s *Event) error {
+	log.Println("processAddEvents(", s.Path, ")")
 	u.mapLock.Lock()
 	defer u.mapLock.Unlock()
+
 	pos := sort.SearchStrings(u.pendingMounts, string(s.Path))
 	if pos != len(u.pendingMounts) && s.Props.isFilesystem() {
 		log.Println("Mount path", s.Path)
 		_, err := u.Mount(s)
 		u.pendingMounts = append(u.pendingMounts[:pos], u.pendingMounts[pos+1:]...)
 		if err != nil {
+			log.Println("Error mounting new path")
 			u.blockError <- err
-		} else {
-			u.blockAdded <- s
+			return err
 		}
 	}
 	if isBlockDevice, err := u.drives.addInterface(s); err != nil {
