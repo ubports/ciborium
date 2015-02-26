@@ -306,7 +306,7 @@ func (u *UDisks2) emitExistingDevices() {
 }
 
 func (u *UDisks2) processAddEvent(s *Event) error {
-	log.Println("processAddEvents(", s.Path, ")")
+	log.Println("processAddEvents(", s.Path, s.Props, s.Interfaces, ")")
 	u.mapLock.Lock()
 	defer u.mapLock.Unlock()
 
@@ -316,7 +316,7 @@ func (u *UDisks2) processAddEvent(s *Event) error {
 		_, err := u.Mount(s)
 		u.pendingMounts = append(u.pendingMounts[:pos], u.pendingMounts[pos+1:]...)
 		if err != nil {
-			log.Println("Error mounting new path")
+			log.Println("Error mounting new path", err)
 			u.blockError <- err
 			return err
 		}
