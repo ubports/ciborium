@@ -236,7 +236,7 @@ func main() {
 // createStandardHomeDirs creates directories reflecting a standard home, these
 // directories are Documents, Downloads, Music, Pictures and Videos
 func createStandardHomeDirs(mountpoint string) error {
-	log.Println("createStandardHomeDirs(", mountPoint, ")")
+	log.Println("createStandardHomeDirs(", mountpoint, ")")
 	for _, node := range []string{"Documents", "Downloads", "Music", "Pictures", "Videos"} {
 		dir := filepath.Join(mountpoint, node)
 
