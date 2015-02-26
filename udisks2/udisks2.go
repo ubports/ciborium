@@ -318,8 +318,8 @@ func (u *UDisks2) processAddEvent(s *Event) error {
 		if err != nil {
 			log.Println("Error mounting new path", err)
 			u.blockError <- err
-			return err
 		}
+		return nil
 	}
 	if isBlockDevice, err := u.drives.addInterface(s); err != nil {
 		return err
