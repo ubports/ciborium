@@ -151,10 +151,11 @@ func (ctrl *driveControl) DriveFormat(index int) {
 		}()
 
 		drive := ctrl.ExternalDrives[index]
-		log.Println("Format drive on index", index, "model", drive.Model())
+		log.Println("Format drive on index", index, "model", drive.Model(), "path", drive.path)
 		if err := ctrl.udisks.Format(&drive); err != nil {
 			log.Println("Error while trying to format", drive.Model(), ":", err)
 		}
+		log.Println("Format call done")
 	}()
 }
 
