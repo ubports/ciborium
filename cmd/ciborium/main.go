@@ -202,7 +202,7 @@ func main() {
 					errorIcon,
 				)
 			case f := <-formatCompleted:
-				log.Println("Remounting", s)
+				log.Println("Remounting", f)
 				udisks2.Mount(f)
 			case m := <-mountRemoved:
 				log.Println("Path removed", m)
