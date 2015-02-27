@@ -203,7 +203,7 @@ func main() {
 				)
 			case f := <-formatCompleted:
 				log.Println("Remounting", f)
-				err = udisks2.Mount(f)
+				_, err = udisks2.Mount(f)
 				if err != nil {
 					log.Print("Error while remounting drive", err)
 				}
