@@ -140,7 +140,9 @@ func (ctrl *driveControl) DriveFormat(index int) {
 	qml.Changed(ctrl, &ctrl.Formatting)
 
 	go func() {
+		log.Println("Format in go function.")
 		defer func() {
+			log.Println("Defer function setting formatting to false")
 			ctrl.Formatting = false
 			qml.Changed(ctrl, &ctrl.Formatting)
 		}()
