@@ -203,7 +203,7 @@ func main() {
 				)
 			case f := <-formatCompleted:
 				if m, err := udisks2.Mount(f); err != nil {
-					log.Println("Cannot mount", a.Path, "due to:", err)
+					log.Println("Cannot mount", f.Path, "due to:", err)
 					n = notificationHandler.NewStandardPushMessage(
 						msgStorageFail.Summary,
 						msgStorageFail.Body,
