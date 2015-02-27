@@ -71,6 +71,9 @@ func goSource() string {
 }
 
 func main() {
+	// set default logger flags to get more useful info
+	log.SetFlags(log.LstdFlags | log.Lshortfile)
+
 	qml.Init(nil)
 	engine := qml.NewEngine()
 	component, err := engine.LoadFile(mainQmlPath)
@@ -140,9 +143,7 @@ func (ctrl *driveControl) DriveFormat(index int) {
 	qml.Changed(ctrl, &ctrl.Formatting)
 
 	go func() {
-		log.Println("Format in go function.")
 		defer func() {
-			log.Println("Defer function setting formatting to false")
 			ctrl.Formatting = false
 			qml.Changed(ctrl, &ctrl.Formatting)
 		}()
