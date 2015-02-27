@@ -165,7 +165,7 @@ func main() {
 	notificationHandler := notifications.NewLegacyHandler(sessionBus, "ciborium")
 	notifyFree := buildFreeNotify(notificationHandler)
 
-	blockAdded, blockError := udisks2.SubscribeAddEvents()
+	blockAdded, formatCompleted, blockError := udisks2.SubscribeAddEvents()
 	mountRemoved := udisks2.SubscribeRemoveEvents()
 
 	go func() {
@@ -201,6 +201,9 @@ func main() {
 					msgStorageFail.Body,
 					errorIcon,
 				)
+			case f := <-formatCompleted:
+				log.Println("Remounting", s)
+				udisks2.Mount(f)
 			case m := <-mountRemoved:
 				log.Println("Path removed", m)
 				n = notificationHandler.NewStandardPushMessage(
