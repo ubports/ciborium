@@ -202,10 +202,26 @@ func main() {
 					errorIcon,
 				)
 			case f := <-formatCompleted:
-				log.Println("Remounting", f)
-				_, err = udisks2.Mount(f)
-				if err != nil {
-					log.Print("Error while remounting drive", err)
+				if m, err := udisks2.Mount(f); err != nil {
+					log.Println("Cannot mount", a.Path, "due to:", err)
+					n = notificationHandler.NewStandardPushMessage(
+						msgStorageFail.Summary,
+						msgStorageFail.Body,
+						errorIcon,
+					)
+				} else {
+					log.Println("Mounted", f.Path, "as", m)
+					n = notificationHandler.NewStandardPushMessage(
+						msgStorageSuccess.Summary,
+						msgStorageSuccess.Body,
+						sdCardIcon,
+					)
+
+					if err := createStandardHomeDirs(m); err != nil {
+						log.Println("Failed to create standard dir layout:", err)
+					}
+
+					mw.set(mountpoint(m), true)
 				}
 			case m := <-mountRemoved:
 				log.Println("Path removed", m)
