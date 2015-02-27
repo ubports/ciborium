@@ -203,7 +203,10 @@ func main() {
 				)
 			case f := <-formatCompleted:
 				log.Println("Remounting", f)
-				udisks2.Mount(f)
+				err = udisks2.Mount(f)
+				if err != nil {
+					log.Print("Error while remounting drive", err)
+				}
 			case m := <-mountRemoved:
 				log.Println("Path removed", m)
 				n = notificationHandler.NewStandardPushMessage(
