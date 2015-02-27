@@ -144,8 +144,10 @@ func (ctrl *driveControl) DriveFormat(index int) {
 
 	go func() {
 		defer func() {
+			log.Println("Defer function used to close the dialog called.")
 			ctrl.Formatting = false
 			qml.Changed(ctrl, &ctrl.Formatting)
+			log.Println("Dialog should be gone.")
 		}()
 
 		drive := ctrl.ExternalDrives[index]
