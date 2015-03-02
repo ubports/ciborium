@@ -317,8 +317,8 @@ func (u *UDisks2) processAddEvent(s *Event) error {
 	if pos != len(u.pendingMounts) && s.Props.isFilesystem() {
 		log.Println("Path", s.Path, "must be remounted.")
 		u.formatCompleted <- s
-		return nil
 	}
+
 	if isBlockDevice, err := u.drives.addInterface(s); err != nil {
 		return err
 	} else if isBlockDevice {
