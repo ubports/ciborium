@@ -38,6 +38,7 @@ type jobManager struct {
 	onGoingJobs     map[dbus.ObjectPath]job
 	FormatEraseJobs chan job
 	FormatMkfsJobs  chan job
+	UnmountJobs     chan job
 }
 
 func newJobManager(d *dispatcher) *jobManager {
@@ -45,7 +46,8 @@ func newJobManager(d *dispatcher) *jobManager {
 	ongoing := make(map[dbus.ObjectPath]job)
 	eraseChan := make(chan job)
 	mkfsChan := make(chan job)
-	m := &jobManager{ongoing, eraseChan, mkfsChan}
+	unmountChan := make(chan job)
+	m := &jobManager{ongoing, eraseChan, mkfsChan, unmountChan}
 	runtime.SetFinalizer(m, cleanJobData)
 
 	// create a go routine that will filter the diff jobs
@@ -87,6 +89,11 @@ func (m *jobManager) processRemovalEvent(e Event) {
 				m.FormatMkfsJobs <- job
 			}
 
+			if job.Operation == unmountFs {
+				log.Print("Sending completed unmount job")
+				m.UnmountJobs <- job
+			}
+
 			log.Print("Removed ongoing job for path", e.Path)
 			delete(m.onGoingJobs, e.Path)
 			return
@@ -107,7 +114,7 @@ func (m *jobManager) processAdditionEvent(e Event) {
 		log.Println("New job operation", e.Props.jobOperation())
 		operation := e.Props.jobOperation()
 		var paths []string
-		if e.Props.isMkfsFormatJob() {
+		if e.Props.isMkfsFormatJob() || e.Props.isUnmountJob() {
 			log.Print("Get paths from formatMkfs event.")
 			paths = e.Props.getFormattedPaths()
 		}
@@ -132,6 +139,9 @@ func (m *jobManager) processAdditionEvent(e Event) {
 	} else if j.Operation == formateMkfs {
 		log.Print("Sending format job from addition.")
 		m.FormatMkfsJobs <- j
+	} else if j.Operation == unmountFs {
+		log.Print("Sending nmount job from addition.")
+		m.UnmountJobs <- j
 	} else {
 		log.Println("Ignoring job event with operation", j.Operation)
 	}

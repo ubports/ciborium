@@ -77,17 +77,21 @@ type UDisks2 struct {
 	dispatcher      *dispatcher
 	jobs            *jobManager
 	pendingMounts   []string
+	pendingUnmounts []string
 	formatCompleted chan *Event
 	formatErrors    chan error
+	umountCompleted chan *Event
+	unmountErrors   chan error
 }
 
 func NewStorageWatcher(conn *dbus.Connection, filesystems ...string) (u *UDisks2) {
 	u = &UDisks2{
-		conn:          conn,
-		validFS:       sort.StringSlice(filesystems),
-		drives:        make(driveMap),
-		mountpoints:   make(mountpointMap),
-		pendingMounts: make([]string, 0, 0),
+		conn:            conn,
+		validFS:         sort.StringSlice(filesystems),
+		drives:          make(driveMap),
+		mountpoints:     make(mountpointMap),
+		pendingMounts:   make([]string, 0, 0),
+		pendingUnmounts: make([]string, 0, 0),
 	}
 	runtime.SetFinalizer(u, cleanDriveWatch)
 	return u
@@ -113,6 +117,12 @@ func (u *UDisks2) SubscribeFormatEvents() (<-chan *Event, <-chan error) {
 	u.formatCompleted = make(chan *Event)
 	u.formatErrors = make(chan error)
 	return u.formatCompleted, u.formatErrors
+}
+
+func (u *UDisks2) SubscribeUnmountEvents() (<-chan *Event, <-chan error) {
+	u.umountCompleted = make(chan *Event)
+	u.unmountErrors = make(chan error)
+	return u.umountCompleted, u.unmountErrors
 }
 
 func (u *UDisks2) Mount(s *Event) (mountpoint string, err error) {
@@ -250,6 +260,14 @@ func (u *UDisks2) Init() (err error) {
 					} else {
 						log.Print("Format job started.")
 					}
+				case j := <-u.jobs.UnmountJobs:
+					if j.WasCompleted {
+						log.Println("Unmount job was finished for", j.Event.Path)
+						u.pendingUnmounts = append(u.pendingUnmounts, j.Paths...)
+						sort.Strings(u.pendingMounts)
+					} else {
+						log.Print("Unmount job started.")
+					}
 				}
 			}
 		}()
@@ -326,6 +344,11 @@ func (u *UDisks2) processAddEvent(s *Event) error {
 	if pos != len(u.pendingMounts) && s.Props.isFilesystem() {
 		log.Println("Path", s.Path, "must be remounted.")
 		u.formatCompleted <- s
+	}
+	pos = sort.SearchStrings(u.pendingUnmounts, string(s.Path))
+	if pos != len(u.pendingMounts) {
+		log.Println("Path", s.Path, "was unmounted.")
+		u.umountCompleted <- s
 	}
 
 	if isBlockDevice, err := u.drives.addInterface(s); err != nil {

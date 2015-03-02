@@ -37,8 +37,9 @@ func (s *JobManagerTestSuite) SetUpTest(c *C) {
 	s.ongoing = make(map[dbus.ObjectPath]job)
 	eraseChan := make(chan job)
 	mkfsChan := make(chan job)
+	unmountChan := make(chan job)
 
-	s.manager = &jobManager{s.ongoing, eraseChan, mkfsChan}
+	s.manager = &jobManager{s.ongoing, eraseChan, mkfsChan, unmountChan}
 	s.completed = make(chan bool)
 }
 

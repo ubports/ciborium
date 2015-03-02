@@ -29,6 +29,7 @@ import (
 const (
 	formatErase           = "format-erase"
 	formateMkfs           = "format-mkfs"
+	unmountFs             = "filesystem-unmount"
 	mountPointsProperty   = "MountPoints"
 	uuidProperty          = "UUID"
 	tableProperty         = "Table"
@@ -109,6 +110,10 @@ func (i InterfacesAndProperties) isEraseFormatJob() bool {
 
 func (i InterfacesAndProperties) isMkfsFormatJob() bool {
 	return i.jobOperation() == formateMkfs
+}
+
+func (i InterfacesAndProperties) isUnmountJob() bool {
+	return i.jobOperation() == unmountFs
 }
 
 func (i InterfacesAndProperties) getFormattedPaths() []string {
