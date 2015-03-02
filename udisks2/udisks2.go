@@ -77,21 +77,19 @@ type UDisks2 struct {
 	dispatcher      *dispatcher
 	jobs            *jobManager
 	pendingMounts   []string
-	pendingUnmounts []string
 	formatCompleted chan *Event
 	formatErrors    chan error
-	umountCompleted chan *Event
+	umountCompleted chan string
 	unmountErrors   chan error
 }
 
 func NewStorageWatcher(conn *dbus.Connection, filesystems ...string) (u *UDisks2) {
 	u = &UDisks2{
-		conn:            conn,
-		validFS:         sort.StringSlice(filesystems),
-		drives:          make(driveMap),
-		mountpoints:     make(mountpointMap),
-		pendingMounts:   make([]string, 0, 0),
-		pendingUnmounts: make([]string, 0, 0),
+		conn:          conn,
+		validFS:       sort.StringSlice(filesystems),
+		drives:        make(driveMap),
+		mountpoints:   make(mountpointMap),
+		pendingMounts: make([]string, 0, 0),
 	}
 	runtime.SetFinalizer(u, cleanDriveWatch)
 	return u
@@ -119,8 +117,8 @@ func (u *UDisks2) SubscribeFormatEvents() (<-chan *Event, <-chan error) {
 	return u.formatCompleted, u.formatErrors
 }
 
-func (u *UDisks2) SubscribeUnmountEvents() (<-chan *Event, <-chan error) {
-	u.umountCompleted = make(chan *Event)
+func (u *UDisks2) SubscribeUnmountEvents() (<-chan string, <-chan error) {
+	u.umountCompleted = make(chan string)
 	u.unmountErrors = make(chan error)
 	return u.umountCompleted, u.unmountErrors
 }
@@ -263,8 +261,9 @@ func (u *UDisks2) Init() (err error) {
 				case j := <-u.jobs.UnmountJobs:
 					if j.WasCompleted {
 						log.Println("Unmount job was finished for", j.Event.Path, "for paths", j.Paths)
-						u.pendingUnmounts = append(u.pendingUnmounts, j.Paths...)
-						sort.Strings(u.pendingMounts)
+						for _, path := range j.Paths {
+							u.umountCompleted <- path
+						}
 					} else {
 						log.Print("Unmount job started.")
 					}
@@ -343,13 +342,6 @@ func (u *UDisks2) processAddEvent(s *Event) error {
 	pos := sort.SearchStrings(u.pendingMounts, string(s.Path))
 	if pos != len(u.pendingMounts) && s.Props.isFilesystem() {
 		log.Println("Path", s.Path, "must be remounted.")
-		u.formatCompleted <- s
-	}
-
-	pos = sort.SearchStrings(u.pendingUnmounts, string(s.Path))
-	if pos != len(u.pendingUnmounts) {
-		log.Println("Path", s.Path, "must be remounted.")
-		log.Println("Mount points", u.mountpoints)
 		u.formatCompleted <- s
 	}
 
