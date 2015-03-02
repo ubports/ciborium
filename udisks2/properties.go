@@ -128,7 +128,7 @@ func (i InterfacesAndProperties) getFormattedPaths() []string {
 	}
 
 	operationStr := reflect.ValueOf(operationVariant.Value).String()
-	if operationStr == formateMkfs {
+	if operationStr == formateMkfs || operationStr == unmountFs {
 		objs, ok := prop[objectsProperty]
 		if ok {
 			objsVal := reflect.ValueOf(objs.Value)

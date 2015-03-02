@@ -115,7 +115,7 @@ func (m *jobManager) processAdditionEvent(e Event) {
 		operation := e.Props.jobOperation()
 		var paths []string
 		if e.Props.isMkfsFormatJob() || e.Props.isUnmountJob() {
-			log.Print("Get paths from formatMkfs event.")
+			log.Print("Get paths from formatMkfs or unmountFs event.")
 			paths = e.Props.getFormattedPaths()
 		}
 

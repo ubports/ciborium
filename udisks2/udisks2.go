@@ -346,6 +346,13 @@ func (u *UDisks2) processAddEvent(s *Event) error {
 		u.formatCompleted <- s
 	}
 
+	pos = sort.SearchStrings(u.pendingUnmounts, string(s.Path))
+	if pos != len(u.pendingUnmounts) {
+		log.Println("Path", s.Path, "must be remounted.")
+		log.Println("Mount points", u.mountpoints)
+		u.formatCompleted <- s
+	}
+
 	if isBlockDevice, err := u.drives.addInterface(s); err != nil {
 		return err
 	} else if isBlockDevice {
