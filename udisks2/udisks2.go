@@ -143,13 +143,7 @@ func (u *UDisks2) Mount(s *Event) (mountpoint string, err error) {
 func (u *UDisks2) Unmount(d *Drive) error {
 	for blockPath, block := range d.blockDevices {
 		if block.isMounted() {
-			if err := u.umount(blockPath); err != nil {
-				log.Println("Issues while unmounting", blockPath, ":", err)
-				return err
-			}
-			if _, ok := u.mountpoints[blockPath]; ok {
-				delete(u.mountpoints, blockPath)
-			}
+			u.umount(blockPath)
 		} else {
 			log.Println(blockPath, "is not mounted")
 		}
@@ -157,12 +151,18 @@ func (u *UDisks2) Unmount(d *Drive) error {
 	return nil
 }
 
-func (u *UDisks2) umount(o dbus.ObjectPath) error {
-	obj := u.conn.Object(dbusName, o)
-	options := make(VariantMap)
-	options["auth.no_user_interaction"] = dbus.Variant{true}
-	_, err := obj.Call(dbusFilesystemInterface, "Unmount", options)
-	return err
+func (u *UDisks2) umount(o dbus.ObjectPath) {
+	go func() {
+		log.Println("Unmounting", o)
+		log.Println("Dbus format operation was done.")
+		obj := u.conn.Object(dbusName, o)
+		options := make(VariantMap)
+		options["auth.no_user_interaction"] = dbus.Variant{true}
+		_, err := obj.Call(dbusFilesystemInterface, "Unmount", options)
+		if err != nil {
+			u.unmountErrors <- err
+		}
+	}()
 }
 
 func (u *UDisks2) Format(d *Drive) error {
@@ -263,6 +263,8 @@ func (u *UDisks2) Init() (err error) {
 						log.Println("Unmount job was finished for", j.Event.Path, "for paths", j.Paths)
 						for _, path := range j.Paths {
 							u.umountCompleted <- path
+							log.Println("Removing", path, "from", u.mountpoints)
+							delete(u.mountpoints, dbus.ObjectPath(path))
 						}
 					} else {
 						log.Print("Unmount job started.")
