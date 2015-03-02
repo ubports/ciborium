@@ -110,7 +110,7 @@ func (m *jobManager) processRemovalEvent(e Event) {
 func (m *jobManager) processAdditionEvent(e Event) {
 	j, ok := m.onGoingJobs[e.Path]
 	if !ok {
-		log.Println("Creating job for new path", e.Path)
+		log.Println("Creating job for new path", e.Path, "details are", e)
 		log.Println("New job operation", e.Props.jobOperation())
 		operation := e.Props.jobOperation()
 		var paths []string
