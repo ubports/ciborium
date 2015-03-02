@@ -170,10 +170,12 @@ func (ctrl *driveControl) DriveFormat(index int) {
 }
 
 func (ctrl *driveControl) DriveUnmount(index int) bool {
+	log.Println("Unmounting device.")
 	drive := ctrl.ExternalDrives[index]
 	if err := ctrl.udisks.Unmount(&drive); err != nil {
 		log.Println("Error while trying to unmount", drive.Model(), ":", err)
 		return false
 	}
+	log.Println("Device unmounted.")
 	return true
 }
