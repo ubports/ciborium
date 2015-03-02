@@ -350,6 +350,7 @@ func (u *UDisks2) processAddEvent(s *Event) error {
 	if isBlockDevice, err := u.drives.addInterface(s); err != nil {
 		return err
 	} else if isBlockDevice {
+		log.Println("New block device added.")
 		if u.blockAdded != nil && u.blockError != nil {
 			if ok, err := u.desiredMountableEvent(s); err != nil {
 				u.blockError <- err
@@ -411,33 +412,34 @@ func (u *UDisks2) desiredMountableEvent(s *Event) (bool, error) {
 	// No file system interface means we can't mount it even if we wanted to
 	_, ok := s.Props[dbusFilesystemInterface]
 	if !ok {
+		log.Println("Filesystem interface is missing.")
 		return false, nil
 	}
 
 	drivePath, err := s.getDrive()
 	if err != nil {
-		//log.Println("Issues while getting drive:", err)
+		log.Println("Issues while getting drive:", err)
 		return false, nil
 	}
 
 	drive := u.drives[drivePath]
 	if ok := drive.hasSystemBlockDevices(); ok {
-		//log.Println(drivePath, "which contains", s.Path, "has HintSystem set")
+		log.Println(drivePath, "which contains", s.Path, "has HintSystem set")
 		return false, nil
 	}
 
 	driveProps, ok := drive.driveInfo[dbusDriveInterface]
 	if !ok {
-		//log.Println(drivePath, "doesn't hold a Drive interface")
+		log.Println(drivePath, "doesn't hold a Drive interface")
 		return false, nil
 	}
 	if mediaRemovableVariant, ok := driveProps["MediaRemovable"]; !ok {
-		//log.Println(drivePath, "which holds", s.Path, "doesn't have MediaRemovable")
+		log.Println(drivePath, "which holds", s.Path, "doesn't have MediaRemovable")
 		return false, nil
 	} else {
 		mediaRemovable := reflect.ValueOf(mediaRemovableVariant.Value).Bool()
 		if !mediaRemovable {
-			//log.Println(drivePath, "which holds", s.Path, "is not MediaRemovable")
+			log.Println(drivePath, "which holds", s.Path, "is not MediaRemovable")
 			return false, nil
 		}
 	}
