@@ -80,7 +80,7 @@ type UDisks2 struct {
 	pendingUnmounts []string
 	formatCompleted chan *Event
 	formatErrors    chan error
-	umountCompleted chan string
+	umountCompleted chan *Event
 	unmountErrors   chan error
 }
 
@@ -119,8 +119,8 @@ func (u *UDisks2) SubscribeFormatEvents() (<-chan *Event, <-chan error) {
 	return u.formatCompleted, u.formatErrors
 }
 
-func (u *UDisks2) SubscribeUnmountEvents() (<-chan string, <-chan error) {
-	u.umountCompleted = make(chan string)
+func (u *UDisks2) SubscribeUnmountEvents() (<-chan *Event, <-chan error) {
+	u.umountCompleted = make(chan *Event)
 	u.unmountErrors = make(chan error)
 	return u.umountCompleted, u.unmountErrors
 }
@@ -345,6 +345,11 @@ func (u *UDisks2) processAddEvent(s *Event) error {
 		log.Println("Path", s.Path, "must be remounted.")
 		u.formatCompleted <- s
 	}
+	pos = sort.SearchStrings(u.pendingUnmounts, string(s.Path))
+	if pos != len(u.pendingMounts) {
+		log.Println("Path", s.Path, "was unmounted.")
+		u.umountCompleted <- s
+	}
 
 	if isBlockDevice, err := u.drives.addInterface(s); err != nil {
 		return err
@@ -366,13 +371,6 @@ func (u *UDisks2) processAddEvent(s *Event) error {
 
 func (u *UDisks2) processRemoveEvent(objectPath dbus.ObjectPath, interfaces Interfaces) error {
 	log.Println("Remove event for", objectPath)
-
-	pos := sort.SearchStrings(u.pendingUnmounts, string(objectPath))
-	if pos != len(u.pendingUnmounts) {
-		log.Println("Path", objectPath, "was unmounted.")
-		u.umountCompleted <- string(objectPath)
-	}
-
 	mountpoint, mounted := u.mountpoints[objectPath]
 	if mounted {
 		log.Println("Removing mountpoint", mountpoint)
