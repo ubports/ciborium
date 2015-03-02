@@ -78,6 +78,7 @@ type UDisks2 struct {
 	jobs            *jobManager
 	pendingMounts   []string
 	formatCompleted chan *Event
+	formatErrors    chan error
 }
 
 func NewStorageWatcher(conn *dbus.Connection, filesystems ...string) (u *UDisks2) {
@@ -92,11 +93,10 @@ func NewStorageWatcher(conn *dbus.Connection, filesystems ...string) (u *UDisks2
 	return u
 }
 
-func (u *UDisks2) SubscribeAddEvents() (<-chan *Event, <-chan *Event, <-chan error) {
+func (u *UDisks2) SubscribeAddEvents() (<-chan *Event, <-chan error) {
 	u.blockAdded = make(chan *Event)
 	u.blockError = make(chan error)
-	u.formatCompleted = make(chan *Event)
-	return u.blockAdded, u.formatCompleted, u.blockError
+	return u.blockAdded, u.blockError
 }
 
 func (u *UDisks2) SubscribeRemoveEvents() <-chan string {
@@ -107,6 +107,12 @@ func (u *UDisks2) SubscribeRemoveEvents() <-chan string {
 func (u *UDisks2) SubscribeBlockDeviceEvents() <-chan bool {
 	u.blockDevice = make(chan bool)
 	return u.blockDevice
+}
+
+func (u *UDisks2) SubscribeFormatEvents() (<-chan *Event, <-chan error) {
+	u.formatCompleted = make(chan *Event)
+	u.formatErrors = make(chan error)
+	return u.formatCompleted, u.formatErrors
 }
 
 func (u *UDisks2) Mount(s *Event) (mountpoint string, err error) {
@@ -173,21 +179,24 @@ func (u *UDisks2) Format(d *Drive) error {
 		if !block.isPartitionable() {
 			continue
 		}
-		if err := u.format(blockPath); err != nil {
-			return err
-		}
+		u.format(blockPath)
 	}
 
 	return nil
 }
 
-func (u *UDisks2) format(o dbus.ObjectPath) error {
-	log.Println("Formatting", o)
-	obj := u.conn.Object(dbusName, o)
-	options := make(VariantMap)
-	options["auth.no_user_interaction"] = dbus.Variant{true}
-	_, err := obj.Call(dbusBlockInterface, "Format", "vfat", options)
-	return err
+func (u *UDisks2) format(o dbus.ObjectPath) {
+	go func() {
+		log.Println("Formatting", o)
+		obj := u.conn.Object(dbusName, o)
+		options := make(VariantMap)
+		options["auth.no_user_interaction"] = dbus.Variant{true}
+		_, err := obj.Call(dbusBlockInterface, "Format", "vfat", options)
+		log.Println("Dbus format operation was done.")
+		if err != nil {
+			u.formatErrors <- err
+		}
+	}()
 }
 
 func (u *UDisks2) deletePartition(o dbus.ObjectPath) error {

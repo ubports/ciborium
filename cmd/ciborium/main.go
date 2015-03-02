@@ -165,7 +165,8 @@ func main() {
 	notificationHandler := notifications.NewLegacyHandler(sessionBus, "ciborium")
 	notifyFree := buildFreeNotify(notificationHandler)
 
-	blockAdded, formatCompleted, blockError := udisks2.SubscribeAddEvents()
+	blockAdded, blockError := udisks2.SubscribeAddEvents()
+	formatCompleted, _ := udisks2.SubscribeFormatEvents()
 	mountRemoved := udisks2.SubscribeRemoveEvents()
 
 	go func() {
