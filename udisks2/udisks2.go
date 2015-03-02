@@ -262,7 +262,7 @@ func (u *UDisks2) Init() (err error) {
 					}
 				case j := <-u.jobs.UnmountJobs:
 					if j.WasCompleted {
-						log.Println("Unmount job was finished for", j.Event.Path)
+						log.Println("Unmount job was finished for", j.Event.Path, "for paths", j.Paths)
 						u.pendingUnmounts = append(u.pendingUnmounts, j.Paths...)
 						sort.Strings(u.pendingMounts)
 					} else {
@@ -344,11 +344,6 @@ func (u *UDisks2) processAddEvent(s *Event) error {
 	if pos != len(u.pendingMounts) && s.Props.isFilesystem() {
 		log.Println("Path", s.Path, "must be remounted.")
 		u.formatCompleted <- s
-	}
-	pos = sort.SearchStrings(u.pendingUnmounts, string(s.Path))
-	if pos != len(u.pendingMounts) {
-		log.Println("Path", s.Path, "was unmounted.")
-		u.umountCompleted <- s
 	}
 
 	if isBlockDevice, err := u.drives.addInterface(s); err != nil {
