@@ -129,7 +129,7 @@ func (ctrl *driveControl) Watch() {
 		for {
 			select {
 			case d := <-formatDone:
-				log.Println("Formatting job done")
+				log.Println("Formatting job done", d)
 				ctrl.Formatting = false
 				qml.Changed(ctrl, &ctrl.Formatting)
 			case e := <-formatErrors:
