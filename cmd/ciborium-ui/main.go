@@ -123,6 +123,22 @@ func (ctrl *driveControl) Watch() {
 			ctrl.Drives()
 		}
 	}()
+	// deal with the format jobs so that we do show the dialog correctly
+	go func() {
+		formatDone, formatErrors := ctrl.udisks.SubscribeFormatEvents()
+		for {
+			select {
+			case d := <-formatDone:
+				log.Println("Formatting job done")
+				ctrl.Formatting = false
+				qml.Changed(ctrl, &ctrl.Formatting)
+			case e := <-formatErrors:
+				log.Println("Formatting job error", e)
+				ctrl.Formatting = false
+				qml.Changed(ctrl, &ctrl.Formatting)
+			}
+		}
+	}()
 }
 
 func (ctrl *driveControl) Drives() {
@@ -142,14 +158,8 @@ func (ctrl *driveControl) DriveFormat(index int) {
 	ctrl.Formatting = true
 	qml.Changed(ctrl, &ctrl.Formatting)
 
+	// TODO: really need the go routine?
 	go func() {
-		defer func() {
-			log.Println("Defer function used to close the dialog called.")
-			ctrl.Formatting = false
-			qml.Changed(ctrl, &ctrl.Formatting)
-			log.Println("Dialog should be gone.")
-		}()
-
 		drive := ctrl.ExternalDrives[index]
 		log.Println("Format drive on index", index, "model", drive.Model(), "path", drive.Path())
 		if err := ctrl.udisks.Format(&drive); err != nil {
