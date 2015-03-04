@@ -166,7 +166,8 @@ func main() {
 	notifyFree := buildFreeNotify(notificationHandler)
 
 	blockAdded, blockError := udisks2.SubscribeAddEvents()
-	formatCompleted, _ := udisks2.SubscribeFormatEvents()
+	formatCompleted, formatErrors := udisks2.SubscribeFormatEvents()
+	mountCompleted, mountErrors := udisks2.SubscribeMountEvents()
 	mountRemoved := udisks2.SubscribeRemoveEvents()
 
 	go func() {
@@ -174,28 +175,7 @@ func main() {
 			var n *notifications.PushMessage
 			select {
 			case a := <-blockAdded:
-				log.Println("Block added")
-				if m, err := udisks2.Mount(a); err != nil {
-					log.Println("Cannot mount", a.Path, "due to:", err)
-					n = notificationHandler.NewStandardPushMessage(
-						msgStorageFail.Summary,
-						msgStorageFail.Body,
-						errorIcon,
-					)
-				} else {
-					log.Println("Mounted", a.Path, "as", m)
-					n = notificationHandler.NewStandardPushMessage(
-						msgStorageSuccess.Summary,
-						msgStorageSuccess.Body,
-						sdCardIcon,
-					)
-
-					if err := createStandardHomeDirs(m); err != nil {
-						log.Println("Failed to create standard dir layout:", err)
-					}
-
-					mw.set(mountpoint(m), true)
-				}
+				udisks2.Mount(a)
 			case e := <-blockError:
 				log.Println("Issues in block for added drive:", e)
 				n = notificationHandler.NewStandardPushMessage(
@@ -204,27 +184,35 @@ func main() {
 					errorIcon,
 				)
 			case f := <-formatCompleted:
-				if m, err := udisks2.Mount(f); err != nil {
-					log.Println("Cannot mount", f.Path, "due to:", err)
-					n = notificationHandler.NewStandardPushMessage(
-						msgStorageFail.Summary,
-						msgStorageFail.Body,
-						errorIcon,
-					)
-				} else {
-					log.Println("Mounted", f.Path, "as", m)
-					n = notificationHandler.NewStandardPushMessage(
-						msgStorageSuccess.Summary,
-						msgStorageSuccess.Body,
-						sdCardIcon,
-					)
+				udisks2.Mount(f)
+			case e := <-formatErrors:
+				log.Println("There was an error while formatting", e)
+				n = notificationHandler.NewStandardPushMessage(
+					msgStorageFail.Summary,
+					msgStorageFail.Body,
+					errorIcon,
+				)
+			case m := <-mountCompleted:
+				log.Println("Mounted", m)
+				n = notificationHandler.NewStandardPushMessage(
+					msgStorageSuccess.Summary,
+					msgStorageSuccess.Body,
+					sdCardIcon,
+				)
 
-					if err := createStandardHomeDirs(m); err != nil {
-						log.Println("Failed to create standard dir layout:", err)
-					}
-
-					mw.set(mountpoint(m), true)
+				if err := createStandardHomeDirs(m); err != nil {
+					log.Println("Failed to create standard dir layout:", err)
 				}
+
+				mw.set(mountpoint(m), true)
+			case e := <-mountErrors:
+				log.Println("Error while mounting device", e)
+
+				n = notificationHandler.NewStandardPushMessage(
+					msgStorageFail.Summary,
+					msgStorageFail.Body,
+					errorIcon,
+				)
 			case m := <-mountRemoved:
 				log.Println("Path removed", m)
 				n = notificationHandler.NewStandardPushMessage(
