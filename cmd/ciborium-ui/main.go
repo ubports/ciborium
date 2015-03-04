@@ -142,6 +142,7 @@ func (ctrl *driveControl) Watch() {
 }
 
 func (ctrl *driveControl) Drives() {
+	log.Println("Get present drives.")
 	go func() {
 		ctrl.ExternalDrives = ctrl.udisks.ExternalDrives()
 		ctrl.Len = len(ctrl.ExternalDrives)

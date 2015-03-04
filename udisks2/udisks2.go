@@ -359,6 +359,7 @@ func (u *UDisks2) processAddEvent(s *Event) error {
 			}
 		}
 		if u.blockDevice != nil {
+			log.Println("Sedding block device to channel")
 			u.blockDevice <- true
 		}
 	}
@@ -387,6 +388,7 @@ func (u *UDisks2) processRemoveEvent(objectPath dbus.ObjectPath, interfaces Inte
 	}
 	u.mapLock.Unlock()
 	if u.blockDevice != nil {
+		log.Println("Removing block device to channel.")
 		u.blockDevice <- false
 	}
 	return nil
