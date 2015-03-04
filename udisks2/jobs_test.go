@@ -38,8 +38,9 @@ func (s *JobManagerTestSuite) SetUpTest(c *C) {
 	eraseChan := make(chan job)
 	mkfsChan := make(chan job)
 	unmountChan := make(chan job)
+	mountChan := make(chan job)
 
-	s.manager = &jobManager{s.ongoing, eraseChan, mkfsChan, unmountChan}
+	s.manager = &jobManager{s.ongoing, eraseChan, mkfsChan, unmountChan, mountChan}
 	s.completed = make(chan bool)
 }
 

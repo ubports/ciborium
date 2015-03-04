@@ -30,6 +30,7 @@ const (
 	formatErase           = "format-erase"
 	formateMkfs           = "format-mkfs"
 	unmountFs             = "filesystem-unmount"
+	mountFs               = "filesystem-mount"
 	mountPointsProperty   = "MountPoints"
 	uuidProperty          = "UUID"
 	tableProperty         = "Table"
@@ -116,6 +117,10 @@ func (i InterfacesAndProperties) isUnmountJob() bool {
 	return i.jobOperation() == unmountFs
 }
 
+func (i InterfacesAndProperties) isMountJob() bool {
+	return i.jobOperation() == mountFs
+}
+
 func (i InterfacesAndProperties) getFormattedPaths() []string {
 	var objectPaths []string
 	prop, ok := i[dbusJobInterface]
@@ -128,7 +133,7 @@ func (i InterfacesAndProperties) getFormattedPaths() []string {
 	}
 
 	operationStr := reflect.ValueOf(operationVariant.Value).String()
-	if operationStr == formateMkfs || operationStr == unmountFs {
+	if operationStr == formateMkfs || operationStr == unmountFs || operationStr == mountFs {
 		objs, ok := prop[objectsProperty]
 		if ok {
 			objsVal := reflect.ValueOf(objs.Value)

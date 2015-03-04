@@ -174,6 +174,7 @@ func main() {
 			var n *notifications.PushMessage
 			select {
 			case a := <-blockAdded:
+				log.Println("Block added")
 				if m, err := udisks2.Mount(a); err != nil {
 					log.Println("Cannot mount", a.Path, "due to:", err)
 					n = notificationHandler.NewStandardPushMessage(

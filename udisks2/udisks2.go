@@ -81,6 +81,8 @@ type UDisks2 struct {
 	formatErrors    chan error
 	umountCompleted chan string
 	unmountErrors   chan error
+	mountCompleted  chan string
+	mountErrors     chan error
 }
 
 func NewStorageWatcher(conn *dbus.Connection, filesystems ...string) (u *UDisks2) {
@@ -123,21 +125,29 @@ func (u *UDisks2) SubscribeUnmountEvents() (<-chan string, <-chan error) {
 	return u.umountCompleted, u.unmountErrors
 }
 
-func (u *UDisks2) Mount(s *Event) (mountpoint string, err error) {
-	obj := u.conn.Object(dbusName, s.Path)
-	options := make(VariantMap)
-	options["auth.no_user_interaction"] = dbus.Variant{true}
-	reply, err := obj.Call(dbusFilesystemInterface, "Mount", options)
-	if err != nil {
-		return "", err
-	}
-	if err := reply.Args(&mountpoint); err != nil {
-		return "", err
-	}
+func (u *UDisks2) SubscribeMountEvents() (<-chan string, <-chan error) {
+	u.mountCompleted = make(chan string)
+	u.mountErrors = make(chan error)
+	return u.mountCompleted, u.mountErrors
+}
 
-	u.mountpoints[s.Path] = mountpoint
-	log.Println("Mounth path for '", s.Path, "' set to be", mountpoint)
-	return mountpoint, err
+func (u *UDisks2) Mount(s *Event) {
+	go func() {
+		var mountpoint string
+		obj := u.conn.Object(dbusName, s.Path)
+		options := make(VariantMap)
+		options["auth.no_user_interaction"] = dbus.Variant{true}
+		reply, err := obj.Call(dbusFilesystemInterface, "Mount", options)
+		if err != nil {
+			u.mountErrors <- err
+		}
+		if err := reply.Args(&mountpoint); err != nil {
+			u.mountErrors <- err
+		}
+
+		u.mountpoints[s.Path] = mountpoint
+		log.Println("Mounth path for '", s.Path, "' set to be", mountpoint)
+	}()
 }
 
 func (u *UDisks2) Unmount(d *Drive) error {
@@ -268,6 +278,20 @@ func (u *UDisks2) Init() (err error) {
 						}
 					} else {
 						log.Print("Unmount job started.")
+					}
+				case j := <-u.jobs.MountJobs:
+					if j.WasCompleted {
+						log.Println("Mount job was finished for", j.Event.Path, "for paths", j.Paths)
+						for _, path := range j.Paths {
+							mp, ok := u.mountpoints[dbus.ObjectPath(path)]
+							if ok {
+								u.mountCompleted <- mp
+							} else {
+								log.Println("Mount completed for path", path, "but mount point was missing.")
+							}
+						}
+					} else {
+						log.Print("Mount job started.")
 					}
 				}
 			}

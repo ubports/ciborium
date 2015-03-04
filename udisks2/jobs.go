@@ -39,6 +39,7 @@ type jobManager struct {
 	FormatEraseJobs chan job
 	FormatMkfsJobs  chan job
 	UnmountJobs     chan job
+	MountJobs       chan job
 }
 
 func newJobManager(d *dispatcher) *jobManager {
@@ -47,7 +48,8 @@ func newJobManager(d *dispatcher) *jobManager {
 	eraseChan := make(chan job)
 	mkfsChan := make(chan job)
 	unmountChan := make(chan job)
-	m := &jobManager{ongoing, eraseChan, mkfsChan, unmountChan}
+	mountChan := make(chan job)
+	m := &jobManager{ongoing, eraseChan, mkfsChan, unmountChan, mountChan}
 	runtime.SetFinalizer(m, cleanJobData)
 
 	// create a go routine that will filter the diff jobs
@@ -94,6 +96,11 @@ func (m *jobManager) processRemovalEvent(e Event) {
 				m.UnmountJobs <- job
 			}
 
+			if job.Operation == mountFs {
+				log.Print("Sending complete mount job")
+				m.MountJobs <- job
+			}
+
 			log.Print("Removed ongoing job for path", e.Path)
 			delete(m.onGoingJobs, e.Path)
 			return
@@ -114,7 +121,7 @@ func (m *jobManager) processAdditionEvent(e Event) {
 		log.Println("New job operation", e.Props.jobOperation())
 		operation := e.Props.jobOperation()
 		var paths []string
-		if e.Props.isMkfsFormatJob() || e.Props.isUnmountJob() {
+		if e.Props.isMkfsFormatJob() || e.Props.isUnmountJob() || e.Props.isMountJob() {
 			log.Print("Get paths from formatMkfs or unmountFs event.")
 			paths = e.Props.getFormattedPaths()
 		}
