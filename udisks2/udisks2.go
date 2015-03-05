@@ -151,21 +151,17 @@ func (u *UDisks2) Mount(s *Event) {
 	}()
 }
 
-func (u *UDisks2) Unmount(d *Drive) error {
+func (u *UDisks2) Unmount(d *Drive) {
 	for blockPath, block := range d.blockDevices {
 		if block.isMounted() {
 			u.umount(blockPath)
-		} else {
-			log.Println(blockPath, "is not mounted")
 		}
 	}
-	return nil
 }
 
 func (u *UDisks2) umount(o dbus.ObjectPath) {
 	go func() {
 		log.Println("Unmounting", o)
-		log.Println("Dbus format operation was done.")
 		obj := u.conn.Object(dbusName, o)
 		options := make(VariantMap)
 		options["auth.no_user_interaction"] = dbus.Variant{true}
@@ -177,45 +173,54 @@ func (u *UDisks2) umount(o dbus.ObjectPath) {
 }
 
 func (u *UDisks2) Format(d *Drive) error {
-	if err := u.Unmount(d); err != nil {
-		log.Println("Error while unmounting:", err)
-		return err
-	}
-	// delete all the partitions
-	for blockPath, block := range d.blockDevices {
-		if block.hasPartition() {
-			if err := u.deletePartition(blockPath); err != nil {
-				log.Println("Issues while deleting partition on", blockPath, ":", err)
-				return err
-			}
-			// delete the block from the map as it shouldn't exist anymore
-			delete(d.blockDevices, blockPath)
-		}
-	}
-
-	// format the blocks with PartitionTable
-	for blockPath, block := range d.blockDevices {
-		if !block.isPartitionable() {
-			continue
-		}
-		u.format(blockPath)
-	}
-
-	return nil
-}
-
-func (u *UDisks2) format(o dbus.ObjectPath) {
 	go func() {
-		log.Println("Formatting", o)
-		obj := u.conn.Object(dbusName, o)
-		options := make(VariantMap)
-		options["auth.no_user_interaction"] = dbus.Variant{true}
-		_, err := obj.Call(dbusBlockInterface, "Format", "vfat", options)
-		log.Println("Dbus format operation was done.")
-		if err != nil {
-			u.formatErrors <- err
+		// do a sync call to unmount
+		for blockPath, _ := range d.blockDevices {
+			log.Println("Unmounting", blockPath)
+			obj := u.conn.Object(dbusName, blockPath)
+			options := make(VariantMap)
+			options["auth.no_user_interaction"] = dbus.Variant{true}
+			_, err := obj.Call(dbusFilesystemInterface, "Unmount", options)
+			if err != nil {
+				log.Println("Error while unmounting:", err)
+				u.formatErrors <- err
+				return
+			}
+		}
+
+		// delete all the partitions
+		for blockPath, block := range d.blockDevices {
+			if block.hasPartition() {
+				if err := u.deletePartition(blockPath); err != nil {
+					log.Println("Issues while deleting partition on", blockPath, ":", err)
+					u.formatErrors <- err
+					return
+				}
+				// delete the block from the map as it shouldn't exist anymore
+				delete(d.blockDevices, blockPath)
+			}
+		}
+
+		// format the blocks with PartitionTable
+		for blockPath, block := range d.blockDevices {
+			if !block.isPartitionable() {
+				continue
+			}
+
+			// perform sync call to format the device
+			log.Println("Formatting", blockPath)
+			obj := u.conn.Object(dbusName, blockPath)
+			options := make(VariantMap)
+			options["auth.no_user_interaction"] = dbus.Variant{true}
+			_, err := obj.Call(dbusBlockInterface, "Format", "vfat", options)
+			log.Println("Dbus format operation was done.")
+			if err != nil {
+				u.formatErrors <- err
+			}
 		}
 	}()
+
+	return nil
 }
 
 func (u *UDisks2) deletePartition(o dbus.ObjectPath) error {
