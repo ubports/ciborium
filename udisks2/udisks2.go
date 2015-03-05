@@ -194,7 +194,7 @@ func (u *UDisks2) Format(d *Drive) error {
 			if block.isMounted() {
 				err := u.syncUmount(blockPath)
 				if err != nil {
-					log.Println("Error while unmounting:", err)
+					log.Println("Error while doing a pre-format unmount:", err)
 					u.formatErrors <- err
 					return
 				}

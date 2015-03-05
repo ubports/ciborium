@@ -171,6 +171,12 @@ func main() {
 	mountCompleted, mountErrors := udisks2.SubscribeMountEvents()
 	mountRemoved := udisks2.SubscribeRemoveEvents()
 
+	// create a routine per couple of channels, the select algorithm will make use
+	// ignore some events if more than one channels is being written to the algorithm
+	// will pick one at random but we want to make sure that we always react, the pairs
+	// are safe since the deal with complementary events
+
+	// block additions
 	go func() {
 		for {
 			var n *notifications.PushMessage
@@ -184,15 +190,35 @@ func main() {
 					msgStorageFail.Body,
 					errorIcon,
 				)
-			case f := <-formatCompleted:
-				udisks2.Mount(f)
-			case e := <-formatErrors:
-				log.Println("There was an error while formatting", e)
+			case m := <-mountRemoved:
+				log.Println("Path removed", m)
 				n = notificationHandler.NewStandardPushMessage(
-					msgStorageFail.Summary,
-					msgStorageFail.Body,
-					errorIcon,
+					msgStorageRemoved.Summary,
+					msgStorageRemoved.Body,
+					sdCardIcon,
 				)
+				mw.remove(mountpoint(m))
+			case <-time.After(time.Minute):
+				for _, m := range mw.getMountpoints() {
+					err = notifyFree(m)
+					if err != nil {
+						log.Print("Error while querying free space for ", m, ": ", err)
+					}
+				}
+			}
+			if n != nil {
+				if err := notificationHandler.Send(n); err != nil {
+					log.Println(err)
+				}
+			}
+		}
+	}()
+
+	// mount operations
+	go func() {
+		for {
+			var n *notifications.PushMessage
+			select {
 			case m := <-mountCompleted:
 				log.Println("Mounted", m)
 				n = notificationHandler.NewStandardPushMessage(
@@ -230,22 +256,32 @@ func main() {
 					msgStorageFail.Body,
 					errorIcon,
 				)
-			case m := <-mountRemoved:
-				log.Println("Path removed", m)
-				n = notificationHandler.NewStandardPushMessage(
-					msgStorageRemoved.Summary,
-					msgStorageRemoved.Body,
-					sdCardIcon,
-				)
-				mw.remove(mountpoint(m))
-			case <-time.After(time.Minute):
-				for _, m := range mw.getMountpoints() {
-					err = notifyFree(m)
-					if err != nil {
-						log.Print("Error while querying free space for ", m, ": ", err)
-					}
+			}
+
+			if n != nil {
+				if err := notificationHandler.Send(n); err != nil {
+					log.Println(err)
 				}
 			}
+		}
+	}()
+
+	// format operations
+	go func() {
+		for {
+			var n *notifications.PushMessage
+			select {
+			case f := <-formatCompleted:
+				udisks2.Mount(f)
+			case e := <-formatErrors:
+				log.Println("There was an error while formatting", e)
+				n = notificationHandler.NewStandardPushMessage(
+					msgStorageFail.Summary,
+					msgStorageFail.Body,
+					errorIcon,
+				)
+			}
+
 			if n != nil {
 				if err := notificationHandler.Send(n); err != nil {
 					log.Println(err)
