@@ -147,7 +147,7 @@ func (u *UDisks2) Mount(s *Event) {
 
 		log.Println("Mounth path for '", s.Path, "' set to be", mountpoint)
 		u.mountpoints[s.Path] = mountpoint
-		u.mountCompleted <- mp
+		u.mountCompleted <- mountpoint
 	}()
 }
 
