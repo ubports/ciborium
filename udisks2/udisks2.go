@@ -159,17 +159,32 @@ func (u *UDisks2) Unmount(d *Drive) {
 	}
 }
 
+func (u *UDisks2) syncUmount(o dbus.ObjectPath) error {
+	log.Println("Unmounting", o)
+	obj := u.conn.Object(dbusName, o)
+	options := make(VariantMap)
+	options["auth.no_user_interaction"] = dbus.Variant{true}
+	_, err := obj.Call(dbusFilesystemInterface, "Unmount", options)
+	return err
+}
+
 func (u *UDisks2) umount(o dbus.ObjectPath) {
 	go func() {
-		log.Println("Unmounting", o)
-		obj := u.conn.Object(dbusName, o)
-		options := make(VariantMap)
-		options["auth.no_user_interaction"] = dbus.Variant{true}
-		_, err := obj.Call(dbusFilesystemInterface, "Unmount", options)
+		err := u.syncUmount(o)
 		if err != nil {
 			u.unmountErrors <- err
 		}
 	}()
+}
+
+func (u *UDisks2) syncFormat(o dbus.ObjectPath) error {
+	// perform sync call to format the device
+	log.Println("Formatting", o)
+	obj := u.conn.Object(dbusName, o)
+	options := make(VariantMap)
+	options["auth.no_user_interaction"] = dbus.Variant{true}
+	_, err := obj.Call(dbusBlockInterface, "Format", "vfat", options)
+	return err
 }
 
 func (u *UDisks2) Format(d *Drive) error {
@@ -177,11 +192,7 @@ func (u *UDisks2) Format(d *Drive) error {
 		// do a sync call to unmount
 		for blockPath, block := range d.blockDevices {
 			if block.isMounted() {
-				log.Println("Unmounting", blockPath)
-				obj := u.conn.Object(dbusName, blockPath)
-				options := make(VariantMap)
-				options["auth.no_user_interaction"] = dbus.Variant{true}
-				_, err := obj.Call(dbusFilesystemInterface, "Unmount", options)
+				err := u.syncUmount(blockPath)
 				if err != nil {
 					log.Println("Error while unmounting:", err)
 					u.formatErrors <- err
@@ -210,12 +221,7 @@ func (u *UDisks2) Format(d *Drive) error {
 			}
 
 			// perform sync call to format the device
-			log.Println("Formatting", blockPath)
-			obj := u.conn.Object(dbusName, blockPath)
-			options := make(VariantMap)
-			options["auth.no_user_interaction"] = dbus.Variant{true}
-			_, err := obj.Call(dbusBlockInterface, "Format", "vfat", options)
-			log.Println("Dbus format operation was done.")
+			err := u.syncFormat(blockPath)
 			if err != nil {
 				u.formatErrors <- err
 			}
