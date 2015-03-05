@@ -175,16 +175,18 @@ func (u *UDisks2) umount(o dbus.ObjectPath) {
 func (u *UDisks2) Format(d *Drive) error {
 	go func() {
 		// do a sync call to unmount
-		for blockPath, _ := range d.blockDevices {
-			log.Println("Unmounting", blockPath)
-			obj := u.conn.Object(dbusName, blockPath)
-			options := make(VariantMap)
-			options["auth.no_user_interaction"] = dbus.Variant{true}
-			_, err := obj.Call(dbusFilesystemInterface, "Unmount", options)
-			if err != nil {
-				log.Println("Error while unmounting:", err)
-				u.formatErrors <- err
-				return
+		for blockPath, block := range d.blockDevices {
+			if block.isMounted() {
+				log.Println("Unmounting", blockPath)
+				obj := u.conn.Object(dbusName, blockPath)
+				options := make(VariantMap)
+				options["auth.no_user_interaction"] = dbus.Variant{true}
+				_, err := obj.Call(dbusFilesystemInterface, "Unmount", options)
+				if err != nil {
+					log.Println("Error while unmounting:", err)
+					u.formatErrors <- err
+					return
+				}
 			}
 		}
 
