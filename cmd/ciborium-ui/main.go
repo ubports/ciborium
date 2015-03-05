@@ -143,7 +143,7 @@ func (ctrl *driveControl) Watch() {
 	// deal with mount and unmount events so that the ui is updated accordingly
 	go func() {
 		mountCompleted, _ := ctrl.udisks2.SubscribeMountEvents()
-		unmountCompleted, _ := udisks2.SubscribeUnmountEvents()
+		unmountCompleted, _ := ctrl.udisks2.SubscribeUnmountEvents()
 		for {
 			select {
 			case d := <-mountCompleted:
