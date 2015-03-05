@@ -222,7 +222,7 @@ func main() {
 					sdCardIcon,
 				)
 				mw.remove(mountpoint(m))
-			case e := <-mountErrors:
+			case e := <-unmountErrors:
 				log.Println("Error while unmounting device", e)
 
 				n = notificationHandler.NewStandardPushMessage(
