@@ -322,6 +322,7 @@ func (u *UDisks2) connectToSignalInterfacesRemoved() (*dbus.SignalWatch, error) 
 }
 
 func (u *UDisks2) emitExistingDevices() {
+	log.Println("emitExistingDevices")
 	u.startLock.Lock()
 	defer u.startLock.Unlock()
 	obj := u.conn.Object(dbusName, dbusObject)
@@ -329,6 +330,7 @@ func (u *UDisks2) emitExistingDevices() {
 	if err != nil {
 		log.Println("Cannot get initial state for devices:", err)
 	}
+	log.Println("GetManagedObjects was done")
 
 	allDevices := make(map[dbus.ObjectPath]InterfacesAndProperties)
 	if err := reply.Args(&allDevices); err != nil {

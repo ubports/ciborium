@@ -122,7 +122,7 @@ func (m *jobManager) processAdditionEvent(e Event) {
 		operation := e.Props.jobOperation()
 		var paths []string
 		if e.Props.isMkfsFormatJob() || e.Props.isUnmountJob() || e.Props.isMountJob() {
-			log.Print("Get paths from formatMkfs or unmountFs event.")
+			log.Print("Get paths from formatMkfs or unmountFs or mountFs event.")
 			paths = e.Props.getFormattedPaths()
 		}
 
@@ -141,7 +141,7 @@ func (m *jobManager) processAdditionEvent(e Event) {
 	}
 
 	if j.Operation == formatErase {
-		log.Print("Sending rease job from addition.")
+		log.Print("Sending erase job from addition.")
 		m.FormatEraseJobs <- j
 	} else if j.Operation == formateMkfs {
 		log.Print("Sending format job from addition.")
