@@ -187,11 +187,13 @@ func (u *UDisks2) syncFormat(o dbus.ObjectPath) error {
 	return err
 }
 
-func (u *UDisks2) Format(d *Drive) error {
+func (u *UDisks2) Format(d *Drive) {
 	go func() {
+		log.Println("Format", d)
 		// do a sync call to unmount
 		for blockPath, block := range d.blockDevices {
 			if block.isMounted() {
+				log.Println("Unmounting", blockPath)
 				err := u.syncUmount(blockPath)
 				if err != nil {
 					log.Println("Error while doing a pre-format unmount:", err)
@@ -221,14 +223,15 @@ func (u *UDisks2) Format(d *Drive) error {
 			}
 
 			// perform sync call to format the device
+			log.Println("Formatting", blockPath)
 			err := u.syncFormat(blockPath)
 			if err != nil {
 				u.formatErrors <- err
 			}
 		}
+		// no, we do not send a success because it should be done ONLY when we get a format job done
+		// event from the dispatcher.
 	}()
-
-	return nil
 }
 
 func (u *UDisks2) deletePartition(o dbus.ObjectPath) error {

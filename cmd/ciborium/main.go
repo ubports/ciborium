@@ -179,6 +179,7 @@ func main() {
 	// block additions
 	go func() {
 		for {
+			log.Println("Listening for addition and removal events.")
 			var n *notifications.PushMessage
 			select {
 			case a := <-blockAdded:
@@ -217,6 +218,7 @@ func main() {
 	// mount operations
 	go func() {
 		for {
+			log.Println("Listening for mount and unmount events.")
 			var n *notifications.PushMessage
 			select {
 			case m := <-mountCompleted:
@@ -269,9 +271,11 @@ func main() {
 	// format operations
 	go func() {
 		for {
+			log.Println("Listening for format events.")
 			var n *notifications.PushMessage
 			select {
 			case f := <-formatCompleted:
+				log.Println("Format done. Trying to mount.")
 				udisks2.Mount(f)
 			case e := <-formatErrors:
 				log.Println("There was an error while formatting", e)
