@@ -139,6 +139,20 @@ func (ctrl *driveControl) Watch() {
 			}
 		}
 	}()
+
+	// deal with mount and unmount events so that the ui is updated accordingly
+	go func() {
+		mountCompleted, _ := ctrl.udisks2.SubscribeMountEvents()
+		unmountCompleted, _ := udisks2.SubscribeUnmountEvents()
+		for {
+			select {
+			case d := <-mountCompleted:
+				log.Println("Mount job done", d)
+			case d := <-unmountCompleted:
+				log.Println("Unmount job done", d)
+			}
+		}
+	}()
 }
 
 func (ctrl *driveControl) Drives() {

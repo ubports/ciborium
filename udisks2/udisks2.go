@@ -145,8 +145,9 @@ func (u *UDisks2) Mount(s *Event) {
 			u.mountErrors <- err
 		}
 
-		u.mountpoints[s.Path] = mountpoint
 		log.Println("Mounth path for '", s.Path, "' set to be", mountpoint)
+		u.mountpoints[s.Path] = mountpoint
+		u.mountCompleted <- mp
 	}()
 }
 
@@ -282,14 +283,6 @@ func (u *UDisks2) Init() (err error) {
 				case j := <-u.jobs.MountJobs:
 					if j.WasCompleted {
 						log.Println("Mount job was finished for", j.Event.Path, "for paths", j.Paths)
-						for _, path := range j.Paths {
-							mp, ok := u.mountpoints[dbus.ObjectPath(path)]
-							if ok {
-								u.mountCompleted <- mp
-							} else {
-								log.Println("Mount completed for path", path, "but mount point was missing.")
-							}
-						}
 					} else {
 						log.Print("Mount job started.")
 					}
