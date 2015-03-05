@@ -59,4 +59,35 @@ Item {
         text: i18n.tr("Format")
         onClicked: PopupUtils.open(dialogFormat)
     }
+
+    Component {
+        id: dialogFormatError
+
+        Dialog {
+            id: dialogueFormatError
+
+            title: i18n.tr("Format error")
+            text: i18n.tr("There was an error when formatting the device.")
+
+            ActivityIndicator {
+                id: formatErrorActivity
+                error: driveCtrl.formatError
+                onRunningChanged: {
+                    if (erro) {
+                        PopupUtils.open(dialogueFormatError);
+                    } else {
+                        PopupUtils.close(dialogueFormatError);
+		    }
+                }
+            }
+
+            Button {
+                text: i18n.tr("Ok")
+                color: UbuntuColors.orange
+                onClicked: {
+                    PopupUtils.close(dialogueFormatError)
+                }
+            }
+        }
+    }
 }

@@ -39,6 +39,7 @@ type driveControl struct {
 	ExternalDrives []udisks2.Drive
 	Len            int
 	Formatting     bool
+	FormatError    bool
 }
 
 type DriveList struct {
@@ -131,10 +132,12 @@ func (ctrl *driveControl) Watch() {
 			case d := <-formatDone:
 				log.Println("Formatting job done", d)
 				ctrl.Formatting = false
+				ctrl.FormatError = false
 				qml.Changed(ctrl, &ctrl.Formatting)
 			case e := <-formatErrors:
 				log.Println("Formatting job error", e)
 				ctrl.Formatting = false
+				ctrl.FormatError = true
 				qml.Changed(ctrl, &ctrl.Formatting)
 			}
 		}
@@ -171,6 +174,7 @@ func (ctrl *driveControl) DriveModel(index int) string {
 
 func (ctrl *driveControl) DriveFormat(index int) {
 	ctrl.Formatting = true
+	ctrl.FormatError = false
 	qml.Changed(ctrl, &ctrl.Formatting)
 
 	// TODO: really need the go routine?
