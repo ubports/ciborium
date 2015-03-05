@@ -167,6 +167,7 @@ func main() {
 
 	blockAdded, blockError := udisks2.SubscribeAddEvents()
 	formatCompleted, formatErrors := udisks2.SubscribeFormatEvents()
+	unmountCompleted, unmountErrors := udisks2.SubscribeUnmountEvents()
 	mountCompleted, mountErrors := udisks2.SubscribeMountEvents()
 	mountRemoved := udisks2.SubscribeRemoveEvents()
 
@@ -207,6 +208,22 @@ func main() {
 				mw.set(mountpoint(m), true)
 			case e := <-mountErrors:
 				log.Println("Error while mounting device", e)
+
+				n = notificationHandler.NewStandardPushMessage(
+					msgStorageFail.Summary,
+					msgStorageFail.Body,
+					errorIcon,
+				)
+			case m := <-unmountCompleted:
+				log.Println("Path removed", m)
+				n = notificationHandler.NewStandardPushMessage(
+					msgStorageRemoved.Summary,
+					msgStorageRemoved.Body,
+					sdCardIcon,
+				)
+				mw.remove(mountpoint(m))
+			case e := <-mountErrors:
+				log.Println("Error while unmounting device", e)
 
 				n = notificationHandler.NewStandardPushMessage(
 					msgStorageFail.Summary,
