@@ -178,8 +178,8 @@ func main() {
 
 	// block additions
 	go func() {
+		log.Println("Listening for addition and removal events.")
 		for {
-			log.Println("Listening for addition and removal events.")
 			var n *notifications.PushMessage
 			select {
 			case a := <-blockAdded:
@@ -217,8 +217,8 @@ func main() {
 
 	// mount operations
 	go func() {
+		log.Println("Listening for mount and unmount events.")
 		for {
-			log.Println("Listening for mount and unmount events.")
 			var n *notifications.PushMessage
 			select {
 			case m := <-mountCompleted:
@@ -270,8 +270,8 @@ func main() {
 
 	// format operations
 	go func() {
+		log.Println("Listening for format events.")
 		for {
-			log.Println("Listening for format events.")
 			var n *notifications.PushMessage
 			select {
 			case f := <-formatCompleted:
