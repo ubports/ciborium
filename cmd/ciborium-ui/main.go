@@ -40,6 +40,7 @@ type driveControl struct {
 	Len            int
 	Formatting     bool
 	FormatError    bool
+	UnmountError   bool
 }
 
 type DriveList struct {
@@ -155,6 +156,8 @@ func (ctrl *driveControl) Watch() {
 				log.Println("Unmount job done", d)
 			case e := <-unmountErrors:
 				log.Println("Unmount job erro", e)
+				ctrl.UnmountError = true
+				qml.Changed(ctrl, &ctrl.UnmountError)
 			}
 		}
 	}()
@@ -177,6 +180,7 @@ func (ctrl *driveControl) DriveModel(index int) string {
 func (ctrl *driveControl) DriveFormat(index int) {
 	ctrl.Formatting = true
 	ctrl.FormatError = false
+	ctrl.UnmountError = false
 	qml.Changed(ctrl, &ctrl.Formatting)
 
 	// TODO: really need the go routine?

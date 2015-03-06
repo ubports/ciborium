@@ -13,6 +13,8 @@ Item {
 
         Dialog {
             id: dialogueRemoved
+            property bool isError: driveCtrl.unmountError
+
 
             title: i18n.tr("Safe to remove")
             text: i18n.tr("You can now safely remove the device")
@@ -24,6 +26,16 @@ Item {
                     PopupUtils.close(dialogueRemoved)
                 }
             }
+
+            onIsErrorChanged: {
+	    	if (isError) {
+			dialogueRemoved.title = i18n.tr("Unmount Error");
+			dialogueRemoved.text = i18n.tr("The device could not be unmounted because is busy");
+		} else {
+			dialogueRemoved.title = i18n.tr("Safe to remove");
+			dialogueRemoved.text = i18n.tr("You can now safely remove the device");
+		}
+	    }
         }
     }
 
