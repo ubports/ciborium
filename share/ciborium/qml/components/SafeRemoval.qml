@@ -18,6 +18,15 @@ Item {
 
             title: i18n.tr("Unmounting")
 
+            Button {
+	    	id: unmountOkButton
+		visible: false
+                text: i18n.tr("Ok")
+                color: UbuntuColors.orange
+                onClicked: {
+                    PopupUtils.close(dialogueRemoved)
+                }
+            }
 
             ActivityIndicator {
                 id: unmountActivity
@@ -34,15 +43,6 @@ Item {
                 }
             }
 
-            Button {
-	    	id: unmountOkButton
-		visible: false
-                text: i18n.tr("Ok")
-                color: UbuntuColors.orange
-                onClicked: {
-                    PopupUtils.close(dialogueRemoved)
-                }
-            }
 
             onIsErrorChanged: {
 	    	if (isError) {
@@ -52,6 +52,7 @@ Item {
 			dialogueRemoved.title = i18n.tr("Safe to remove");
 			dialogueRemoved.text = i18n.tr("You can now safely remove the device");
 		}
+		unmountOkButton.visible = true;
 	    }
         }
     }
