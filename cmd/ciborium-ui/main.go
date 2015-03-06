@@ -40,6 +40,7 @@ type driveControl struct {
 	Len            int
 	Formatting     bool
 	FormatError    bool
+	Unmounting     bool
 	UnmountError   bool
 }
 
@@ -132,10 +133,10 @@ func (ctrl *driveControl) Watch() {
 			select {
 			case d := <-formatDone:
 				log.Println("Formatting job done", d)
-				ctrl.FormatError = false
-				qml.Changed(ctrl, &ctrl.FormatError)
 				ctrl.Formatting = false
 				qml.Changed(ctrl, &ctrl.Formatting)
+				ctrl.FormatError = false
+				qml.Changed(ctrl, &ctrl.FormatError)
 			case e := <-formatErrors:
 				log.Println("Formatting job error", e)
 				ctrl.FormatError = true
@@ -156,6 +157,8 @@ func (ctrl *driveControl) Watch() {
 				log.Println("Mount job error", e)
 			case d := <-unmountCompleted:
 				log.Println("Unmount job done", d)
+				ctrl.Unmounting = false
+				qml.Changed(ctrl, &ctrl.Unmounting)
 			case e := <-unmountErrors:
 				log.Println("Unmount job erro", e)
 				ctrl.UnmountError = true
@@ -193,10 +196,10 @@ func (ctrl *driveControl) DriveFormat(index int) {
 	}()
 }
 
-func (ctrl *driveControl) DriveUnmount(index int) bool {
+func (ctrl *driveControl) DriveUnmount(index int) {
 	log.Println("Unmounting device.")
 	drive := ctrl.ExternalDrives[index]
+	ctrl.Unmounting = false
+	qml.Changed(ctrl, &ctrl.Unmounting)
 	ctrl.udisks.Unmount(&drive)
-	// TODO: deal with the ui estate in the select
-	return true
 }
