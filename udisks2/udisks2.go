@@ -55,6 +55,12 @@ type Drive struct {
 	path         dbus.ObjectPath
 	blockDevices map[dbus.ObjectPath]InterfacesAndProperties
 	driveInfo    InterfacesAndProperties
+	mounted      bool
+}
+
+type MountEvent struct {
+	path       dbus.ObjectPath
+	mountpoint string
 }
 
 type driveMap map[dbus.ObjectPath]*Drive
@@ -81,7 +87,7 @@ type UDisks2 struct {
 	formatErrors    chan error
 	umountCompleted chan string
 	unmountErrors   chan error
-	mountCompleted  chan string
+	mountCompleted  chan MountEvent
 	mountErrors     chan error
 }
 
@@ -125,8 +131,8 @@ func (u *UDisks2) SubscribeUnmountEvents() (<-chan string, <-chan error) {
 	return u.umountCompleted, u.unmountErrors
 }
 
-func (u *UDisks2) SubscribeMountEvents() (<-chan string, <-chan error) {
-	u.mountCompleted = make(chan string)
+func (u *UDisks2) SubscribeMountEvents() (<-chan MountEvent, <-chan error) {
+	u.mountCompleted = make(chan MountEvent)
 	u.mountErrors = make(chan error)
 	return u.mountCompleted, u.mountErrors
 }
@@ -147,7 +153,8 @@ func (u *UDisks2) Mount(s *Event) {
 
 		log.Println("Mounth path for '", s.Path, "' set to be", mountpoint)
 		u.mountpoints[s.Path] = mountpoint
-		u.mountCompleted <- mountpoint
+		e := MountEvent{s.Path, mountpoint}
+		u.mountCompleted <- e
 	}()
 }
 

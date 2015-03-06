@@ -153,12 +153,27 @@ func (ctrl *driveControl) Watch() {
 			select {
 			case d := <-mountCompleted:
 				log.Println("Mount job done", d)
+				// get the drive and state that it was mounted
+				for index, drive := range ctrl.ExternalDrives {
+					if drive.path == d.path {
+						// grab the drive, set it to mounted and update the qml
+						log.Println("Drive", drive.path, "set to be mounted.")
+						drive.mounted = true
+					}
+				}
 			case e := <-mountErrors:
 				log.Println("Mount job error", e)
 			case d := <-unmountCompleted:
 				log.Println("Unmount job done", d)
 				ctrl.Unmounting = false
 				qml.Changed(ctrl, &ctrl.Unmounting)
+				for index, drive := range ctrl.ExternalDrives {
+					if drive.path == d.path {
+						// grab the drive, set it to mounted and update the qml
+						log.Println("Drive", drive.path, "set to be unmounted.")
+						drive.mounted = false
+					}
+				}
 			case e := <-unmountErrors:
 				log.Println("Unmount job error", e)
 				ctrl.UnmountError = true
@@ -188,12 +203,10 @@ func (ctrl *driveControl) DriveFormat(index int) {
 	ctrl.UnmountError = false
 	qml.Changed(ctrl, &ctrl.Formatting)
 
-	// TODO: really need the go routine?
-	go func() {
-		drive := ctrl.ExternalDrives[index]
-		log.Println("Format drive on index", index, "model", drive.Model(), "path", drive.Path())
-		ctrl.udisks.Format(&drive)
-	}()
+	drive := ctrl.ExternalDrives[index]
+
+	log.Println("Format drive on index", index, "model", drive.Model(), "path", drive.Path())
+	ctrl.udisks.Format(&drive)
 }
 
 func (ctrl *driveControl) DriveUnmount(index int) {
