@@ -132,13 +132,11 @@ func (ctrl *driveControl) Watch() {
 			case d := <-formatDone:
 				log.Println("Formatting job done", d)
 				ctrl.Formatting = false
-				ctrl.FormatError = false
 				qml.Changed(ctrl, &ctrl.Formatting)
 			case e := <-formatErrors:
 				log.Println("Formatting job error", e)
-				ctrl.Formatting = false
 				ctrl.FormatError = true
-				qml.Changed(ctrl, &ctrl.Formatting)
+				qml.Changed(ctrl, &ctrl.FormatError)
 			}
 		}
 	}()
