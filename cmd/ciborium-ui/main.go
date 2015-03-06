@@ -160,7 +160,7 @@ func (ctrl *driveControl) Watch() {
 				ctrl.Unmounting = false
 				qml.Changed(ctrl, &ctrl.Unmounting)
 			case e := <-unmountErrors:
-				log.Println("Unmount job erro", e)
+				log.Println("Unmount job error", e)
 				ctrl.UnmountError = true
 				qml.Changed(ctrl, &ctrl.UnmountError)
 			}
@@ -199,7 +199,7 @@ func (ctrl *driveControl) DriveFormat(index int) {
 func (ctrl *driveControl) DriveUnmount(index int) {
 	log.Println("Unmounting device.")
 	drive := ctrl.ExternalDrives[index]
-	ctrl.Unmounting = false
+	ctrl.Unmounting = true
 	qml.Changed(ctrl, &ctrl.Unmounting)
 	ctrl.udisks.Unmount(&drive)
 }

@@ -16,22 +16,12 @@ Item {
             property bool isError: driveCtrl.unmountError
 
 
-            title: i18n.tr("Safe to remove")
-            text: i18n.tr("Unmounting device")
+            title: i18n.tr("Unmounting")
 
-            Button {
-	    	id: unmountOkButton
-		visible: false
-                text: i18n.tr("Ok")
-                color: UbuntuColors.orange
-                onClicked: {
-                    PopupUtils.close(dialogueRemoved)
-                }
-            }
 
             ActivityIndicator {
                 id: unmountActivity
-		visible:  driveCtrl.unmounting && !isError
+		visible: driveCtrl.unmounting && !isError
                 running: driveCtrl.unmounting && !isError
                 onRunningChanged: {
                     if (!running) {
@@ -41,6 +31,16 @@ Item {
 				dialogueRemoved.text = i18n.tr("You can now safely remove the device");
 			}
                     }
+                }
+            }
+
+            Button {
+	    	id: unmountOkButton
+		visible: false
+                text: i18n.tr("Ok")
+                color: UbuntuColors.orange
+                onClicked: {
+                    PopupUtils.close(dialogueRemoved)
                 }
             }
 
