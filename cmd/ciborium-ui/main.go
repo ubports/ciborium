@@ -145,14 +145,18 @@ func (ctrl *driveControl) Watch() {
 
 	// deal with mount and unmount events so that the ui is updated accordingly
 	go func() {
-		mountCompleted, _ := ctrl.udisks.SubscribeMountEvents()
-		unmountCompleted, _ := ctrl.udisks.SubscribeUnmountEvents()
+		mountCompleted, mountErrors := ctrl.udisks.SubscribeMountEvents()
+		unmountCompleted, unmountErrors := ctrl.udisks.SubscribeUnmountEvents()
 		for {
 			select {
 			case d := <-mountCompleted:
 				log.Println("Mount job done", d)
+			case e := <-mountErrors:
+				log.Println("Mount job error", e)
 			case d := <-unmountCompleted:
 				log.Println("Unmount job done", d)
+			case e := <-unmountErrors:
+				log.Println("Unmount job erro", e)
 			}
 		}
 	}()
