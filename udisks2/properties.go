@@ -21,6 +21,7 @@
 package udisks2
 
 import (
+	"log"
 	"reflect"
 
 	"launchpad.net/go-dbus/v1"
