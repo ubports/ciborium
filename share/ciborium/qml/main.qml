@@ -70,8 +70,8 @@ MainView {
 		        console.log("FormatConfirmation button clicked");
 		        PopupUtils.close(formatConfirmationDialog)
                     }
-                    onFormattingChanged: function() {
-                        if (!formatConfirmationDialog.running && !formatConfirmationDialog.isError) {
+                    onFormattingChanged: {
+                        if (!formatConfirmationDialog.formatting && !formatConfirmationDialog.isError) {
                             PopupUtils.close(formatConfirmationDialog);
                         }
 		    }
