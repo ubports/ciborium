@@ -40,7 +40,7 @@ Item {
         Dialog {
             id: dialogueFormatting
             property bool isError: driveCtrl.formatError
-	    property bool devicePresent: driveCtrl.DevicePrenset
+	    property bool devicePresent: driveCtrl.devicePresent
 
             title: i18n.tr("Formatting")
 

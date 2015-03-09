@@ -42,7 +42,7 @@ type driveControl struct {
 	FormatError    bool
 	Unmounting     bool
 	UnmountError   bool
-	DevicePrenset  bool
+	DevicePresent  bool
 }
 
 type DriveList struct {
@@ -121,13 +121,13 @@ func (ctrl *driveControl) Watch() {
 		for block := range c {
 			if block {
 				log.Println("Block device added")
-				ctrl.DevicePrenset = true
-				qml.Changed(ctrl, &ctrl.DevicePrenset)
+				ctrl.DevicePresent = true
+				qml.Changed(ctrl, &ctrl.DevicePresent)
 			} else {
 				log.Println("Block device removed")
 				// TODO: keep track of the removed device
-				ctrl.DevicePrenset = false
-				qml.Changed(ctrl, &ctrl.DevicePrenset)
+				ctrl.DevicePresent = false
+				qml.Changed(ctrl, &ctrl.DevicePresent)
 			}
 			ctrl.Drives()
 		}
