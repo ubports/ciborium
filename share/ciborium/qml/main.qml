@@ -43,8 +43,7 @@ MainView {
 
 	    Component {
                 id: safeRemovalDialog
-                SaveRemoval {
-                    parentWindow: mainPage
+                SafeRemoval {
                     removalDialog: safeRemovalDialog
                     confirmationDialog: safeRemovalConfirmationDialog
                 }
@@ -58,10 +57,10 @@ MainView {
 	    }
 
 	    Component {
-	    	id: formatDialog
+	    	id: formatDialogue
                 FormatDialog {
                     parentWindow: mainPage
-                    formatDialog: formatDialog
+                    formatDialog: formatDialogue
                     formattingDialog: formatConfirmationDialog
 		}
 	    }
@@ -88,10 +87,10 @@ MainView {
                         bottomMargin: units.gu(1)
                     }
 
-		    DriveDeleage {
+		    DriveDelegate {
                         driverIndex: index
                         parentWindow: mainPage
-                        formatDialog: formatDialog
+                        formatDialog: formatDialogue
                         removeDialog: safeRemovalDialog
 
                         anchors {
