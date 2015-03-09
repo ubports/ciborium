@@ -5,7 +5,7 @@ import Ubuntu.Components.Popups 1.0
 Dialog {
     property bool isError: driveCtrl.formatError
     property bool formatting: driveCtrl.formatting 
-    property var formattingDialog
+    property var onButtonClicked
 
     title: i18n.tr("Formatting")
 
@@ -25,10 +25,7 @@ Dialog {
         visible: false
         text: i18n.tr("Ok")
         color: UbuntuColors.orange
-        onClicked: {
-            PopupUtils.close(formattingDialog)
-        }
-
+        onClicked: onButtonClicked()
     }
 
     onIsErrorChanged: {

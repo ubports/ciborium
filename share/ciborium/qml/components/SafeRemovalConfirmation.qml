@@ -14,7 +14,7 @@ Dialog {
         visible: false
         text: i18n.tr("Ok")
         color: UbuntuColors.orange
-        onClicked: onButtonClicked
+        onClicked: onButtonClicked()
     }  // Button unmountOkButton
 
     ActivityIndicator {

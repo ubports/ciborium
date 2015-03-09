@@ -4,21 +4,20 @@ import Ubuntu.Components.Popups 1.0
 
 Dialog {
     property int driveIndex
-    property var parentWindow
-    property var formatDialog
-    property var formattingDialog
+    property var onCancelClicked
+    property var onContinueClicked
 
     title: i18n.tr("Format")
     text: i18n.tr("This action will wipe the content from the device")
 
     Button {
         text: i18n.tr("Cancel")
-        onClicked: PopupUtils.close(dialogueFormat)
+        onClicked: onCancelClicked()
     }
     Button {
         text: i18n.tr("Continue with format")
         color: UbuntuColors.orange
-        onClicked: {
+        onClicked: onContinueClicked() {
             driveCtrl.driveFormat(driveIndex)                     
             PopupUtils.close(formatDialog, parentWindow)
             PopupUtils.open(formattingDialog, parentWindow)

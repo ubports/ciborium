@@ -13,12 +13,12 @@ Dialog {
 
     Button {
         text: i18n.tr("Cancel")
-        onClicked: PopupUtils.close(id)
+        onClicked: onCancelClicked() 
     } // Button Cancel
 
     Button {
         text: i18n.tr("Continue")
         color: UbuntuColors.orange
-        onClicked: onContinueClicked 
+        onClicked: onContinueClicked()
    }
 }
