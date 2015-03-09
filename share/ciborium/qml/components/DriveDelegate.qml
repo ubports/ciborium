@@ -8,6 +8,7 @@ UbuntuShape {
     property var formatDialog
     property var removeDialog
 
+    height: childrenRect.height + (2 *units.gu(1))
     color: driverIndex % 2 === 0 ? "white" : "#DECAE3"
 
     Icon {
@@ -47,27 +48,25 @@ UbuntuShape {
 
 	anchors {
 	    top: driveIcon.bottom
-	    topMaring: units.gu(2)
+	    topMargin: units.gu(1)
 	    left: parent.left
-	    leftMargin: units.gu(2)
+	    leftMargin: units.gu(1)
 
 	}
     }
 
     Button {
         id: removalButton
-        anchors.centerIn: parent
         text: i18n.tr("Safely Remove")
-        // TODO: pass index and dialog id
         onClicked: {
             PopupUtils.open(removeDialog, parentWindows, {"driverIndex": driverIndex})
         }
 
 	anchors {
 	    top: driveIcon.bottom
-	    topMaring: units.gu(2)
+	    topMargin: units.gu(1)
 	    left: formatButton.left
-	    leftMargin: units.gu(2)
+	    leftMargin: units.gu(1)
 	}
     }
 }
