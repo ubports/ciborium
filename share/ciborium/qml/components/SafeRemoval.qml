@@ -14,7 +14,7 @@ Item {
         Dialog {
             id: dialogueRemoved
             property bool isError: driveCtrl.unmountError
-	    property bool unmounting: driveCtrl.unmounting 
+	    property bool devicePresent: driveCtrl.DevicePrenset
 
 
             title: i18n.tr("Unmounting")
@@ -56,8 +56,8 @@ Item {
 		unmountOkButton.visible = true;
 	    }
 
-	    onUnmountingChanged: {
-	    	if (!unmounting && !isError) {
+	    onDevicePresentChanged: {
+	    	if (!devicePresent) {
                     PopupUtils.close(dialogueRemoved)
 		}
 	    }
