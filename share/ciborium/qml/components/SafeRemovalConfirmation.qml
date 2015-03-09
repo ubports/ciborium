@@ -5,7 +5,7 @@ import Ubuntu.Components.Popups 1.0
 Dialog {
     property bool isError: driveCtrl.unmountError
     property int driveCount: driveCtrl.len
-    property var confirmationDialog
+    property var onButtonClicked
 
     title: i18n.tr("Unmounting")
 
@@ -14,9 +14,7 @@ Dialog {
         visible: false
         text: i18n.tr("Ok")
         color: UbuntuColors.orange
-        onClicked: {
-            PopupUtils.close(id)
-        }
+        onClicked: onButtonClicked
     }  // Button unmountOkButton
 
     ActivityIndicator {

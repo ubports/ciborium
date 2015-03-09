@@ -4,9 +4,9 @@ import Ubuntu.Components.Popups 1.0
 
 
 Dialog {
-    property int driverIndex
-    property var removalDialog
-    property var confirmationDialog
+    property int driveIndex
+    property var onCancelClicked
+    property var onContinueClicked
 
     title: i18n.tr("Confirm remove")
     text: i18n.tr("Files on the device can't be accessed after removing")
@@ -19,11 +19,6 @@ Dialog {
     Button {
         text: i18n.tr("Continue")
         color: UbuntuColors.orange
-        onClicked: {
-            driveCtrl.driveUnmount(driverIndex)
-            PopupUtils.close(removalDialog)
-            saferemoval.enabled= false
-            PopupUtils.open(unmountinDialog)
-        }
+        onClicked: onContinueClicked 
    }
 }

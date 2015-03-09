@@ -33,11 +33,11 @@ MainView {
             title: i18n.tr("SD Card Management")
             Component.onCompleted: driveCtrl.watch()
 
-	    // dialogs required to show progress information to the user
 	    Component {
                 id: safeRemovalConfirmationDialog
                 SafeRemovalConfirmation {
                     confirmationDialog: safeRemovalConfirmationDialog
+		    onButtonClicked: PopupUtils.close(safeRemovalConfirmationDialog)
 		}
 	    }
 
@@ -45,7 +45,12 @@ MainView {
                 id: safeRemovalDialog
                 SafeRemoval {
                     removalDialog: safeRemovalDialog
-                    confirmationDialog: safeRemovalConfirmationDialog
+                    onCancelClicked: PopupUtils.close(safeRemovalDialog)
+                    onContinueClicked: {
+                        driveCtrl.driveUnmount(safeRemovalDialog.driveIndex)
+                        PopupUtils.close(safeRemovalDialog)
+                        PopupUtils.open(safeRemovalConfirmationDialog)
+		    }
                 }
 	    }
 
@@ -91,7 +96,7 @@ MainView {
                     }
 
 		    DriveDelegate {
-                        driverIndex: index
+                        driveIndex: index
                         parentWindow: mainPage
                         formatDialog: formatDialogue
                         removeDialog: safeRemovalDialog
