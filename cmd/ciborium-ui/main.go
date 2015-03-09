@@ -149,6 +149,9 @@ func (ctrl *driveControl) Watch() {
 	go func() {
 		mountCompleted, mountErrors := ctrl.udisks.SubscribeMountEvents()
 		unmountCompleted, unmountErrors := ctrl.udisks.SubscribeUnmountEvents()
+		// is a drive is remove we are going to make sure that the ui is not left waiting for
+		// jobs to be completed
+		removals := ctrl.udisks.SubscribeRemoveEvents()
 		for {
 			select {
 			case d := <-mountCompleted:
@@ -178,9 +181,21 @@ func (ctrl *driveControl) Watch() {
 				log.Println("Unmount job error", e)
 				ctrl.UnmountError = true
 				qml.Changed(ctrl, &ctrl.UnmountError)
+			case d := <-removals:
+				// TODO: This must take into account the fact that we can have more than
+				// one sd card.
+				ctrl.Formatting = false
+				qml.Changed(ctrl, &ctrl.Formatting)
+				ctrl.FormatError = false
+				qml.Changed(ctrl, &ctrl.FormatError)
+				ctrl.UnmountError = false
+				qml.Changed(ctrl, &ctrl.UnmountError)
+				ctrl.UnmountError = false
+				qml.Changed(ctrl, &ctrl.UnmountError)
 			}
 		}
 	}()
+
 }
 
 func (ctrl *driveControl) Drives() {
