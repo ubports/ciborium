@@ -17,10 +17,6 @@ Dialog {
     Button {
         text: i18n.tr("Continue with format")
         color: UbuntuColors.orange
-        onClicked: onContinueClicked() {
-            driveCtrl.driveFormat(driveIndex)                     
-            PopupUtils.close(formatDialog, parentWindow)
-            PopupUtils.open(formattingDialog, parentWindow)
-        }
+        onClicked: onContinueClicked()
     }
 }

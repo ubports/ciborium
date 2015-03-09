@@ -1,11 +1,11 @@
 import QtQuick 2.0
 import Ubuntu.Components 1.1
-import Ubuntu.Components.Popups 1.0
 
 Dialog {
     property bool isError: driveCtrl.formatError
     property bool formatting: driveCtrl.formatting 
     property var onButtonClicked
+    property var onFormattingChanged
 
     title: i18n.tr("Formatting")
 
