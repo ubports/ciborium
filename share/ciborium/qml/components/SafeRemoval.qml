@@ -14,7 +14,7 @@ Item {
         Dialog {
             id: dialogueRemoved
             property bool isError: driveCtrl.unmountError
-	    property bool devicePresent: driveCtrl.DevicePrenset
+	    property bool devicePresent: driveCtrl.devicePresent
 
 
             title: i18n.tr("Unmounting")
