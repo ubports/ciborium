@@ -3,13 +3,13 @@ import Ubuntu.Components 1.1
 import Ubuntu.Components.Popups 1.0
 
 UbuntuShape {
-    property int driverIndex
+    property int driveIndex
     property var parentWindow
     property var formatDialog
     property var removeDialog
 
     height: childrenRect.height + (2 *units.gu(1))
-    color: driverIndex % 2 === 0 ? "white" : "#DECAE3"
+    color: driveIndex % 2 === 0 ? "white" : "#DECAE3"
 
     Icon {
     	id: driveIcon
@@ -44,7 +44,7 @@ UbuntuShape {
     Button {
         id: formatButton
         text: i18n.tr("Format")
-        onClicked: PopupUtils.open(formatDialog, parentWindow, {"driverIndex": driverIndex})
+        onClicked: PopupUtils.open(formatDialog, parentWindow, {"driveIndex": driveIndex})
 
 	anchors {
 	    top: driveIcon.bottom
@@ -59,13 +59,13 @@ UbuntuShape {
         id: removalButton
         text: i18n.tr("Safely Remove")
         onClicked: {
-            PopupUtils.open(removeDialog, parentWindows, {"driverIndex": driverIndex})
+            PopupUtils.open(removeDialog, parentWindows, {"driveIndex": driveIndex})
         }
 
 	anchors {
 	    top: driveIcon.bottom
 	    topMargin: units.gu(1)
-	    left: formatButton.left
+	    left: formatButton.right
 	    leftMargin: units.gu(1)
 	}
     }
