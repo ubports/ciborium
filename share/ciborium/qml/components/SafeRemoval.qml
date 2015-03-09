@@ -14,6 +14,7 @@ Item {
         Dialog {
             id: dialogueRemoved
             property bool isError: driveCtrl.unmountError
+	    property bool unmounting: driveCtrl.unmounting 
 
 
             title: i18n.tr("Unmounting")
@@ -53,6 +54,12 @@ Item {
 			dialogueRemoved.text = i18n.tr("You can now safely remove the device");
 		}
 		unmountOkButton.visible = true;
+	    }
+
+	    onUnmountingChanged: {
+	    	if (!unmounting && !isError) {
+                    PopupUtils.close(dialogueRemoved)
+		}
 	    }
         }
     }
