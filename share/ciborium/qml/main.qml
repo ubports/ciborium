@@ -1,6 +1,7 @@
 import QtQuick 2.0
 import Ubuntu.Components 1.1
 import Ubuntu.Components.ListItems 0.1 as ListItem
+import Ubuntu.Components.Popups 1.0
 
 import "components"
 
@@ -34,39 +35,64 @@ MainView {
             Component.onCompleted: driveCtrl.watch()
 
 	    Component {
-                id: safeRemovalConfirmationDialog
+                id: safeRemovalConfirmation
                 SafeRemovalConfirmation {
-                    confirmationDialog: safeRemovalConfirmationDialog
-		    onButtonClicked: PopupUtils.close(safeRemovalConfirmationDialog)
+                    id: safeRemovalConfirmationDialog
+		    onButtonClicked: function() {
+		        console.log("SafeRemovalDialog button clicked");
+		        PopupUtils.close(safeRemovalConfirmationDialog)
+                    }
 		}
 	    }
 
 	    Component {
-                id: safeRemovalDialog
+                id: safeRemoval
                 SafeRemoval {
-                    removalDialog: safeRemovalDialog
-                    onCancelClicked: PopupUtils.close(safeRemovalDialog)
-                    onContinueClicked: {
+                    id: safeRemovalDialog
+                    onCancelClicked: function() {
+		        console.log("SafeRemoval cancelation button clicked");
+		        PopupUtils.close(safeRemovalDialog);
+	            }
+                    onContinueClicked: function() {
+		        console.log("SafeRemoval continue button clicked.")
                         driveCtrl.driveUnmount(safeRemovalDialog.driveIndex)
                         PopupUtils.close(safeRemovalDialog)
-                        PopupUtils.open(safeRemovalConfirmationDialog)
+                        PopupUtils.open(safeRemovalConfirmation, mainPage)
 		    }
                 }
 	    }
 
 	    Component {
-	    	id: formatConfirmationDialog
+	    	id: formatConfirmation
 		FormatConfirmation {
-                    formattingDialog: formatConfirmationDialog
+	    	    id: formatConfirmationDialog
+		    onButtonClicked: function() {
+		        console.log("FormatConfirmation button clicked");
+		        PopupUtils.close(formatConfirmationDialog)
+                    }
+                    onFormattingChanged: function() {
+                        if (!formatConfirmationDialog.running && !formatConfirmationDialog.isError) {
+                            PopupUtils.close(formatConfirmationDialog);
+                        }
+		    }
 		}
 	    }
 
 	    Component {
-	    	id: formatDialogue
+	    	id: format
                 FormatDialog {
-                    parentWindow: mainPage
-                    formatDialog: formatDialogue
-                    formattingDialog: formatConfirmationDialog
+	    	    id: formatDialog
+                    onCancelClicked: function() {
+		        console.log("Format cancelation button clicked");
+		        PopupUtils.close(formatDialog);
+	            }
+
+                    onContinueClicked: function() {
+		        console.log("Format continue button clicked.")
+                        driveCtrl.driveFormat(formatDialog.driveIndex)                     
+                        PopupUtils.close(formatDialog)
+                        PopupUtils.open(formatConfirmation, mainPage)
+		    }
 		}
 	    }
 
@@ -96,10 +122,13 @@ MainView {
                     }
 
 		    DriveDelegate {
-                        driveIndex: index
-                        parentWindow: mainPage
-                        formatDialog: formatDialogue
-                        removeDialog: safeRemovalDialog
+                        onFormatClicked: function() {
+                            PopupUtils.open(format, mainPage, {"driveIndex": index})
+			}
+
+                        onSafeRemovalClicked: function() {
+                            PopupUtils.open(safeRemoval, mainPage, {"driveIndex": index})
+			}
 
                         anchors {
                             leftMargin: units.gu(2)
