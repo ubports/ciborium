@@ -40,7 +40,7 @@ Item {
         Dialog {
             id: dialogueFormatting
             property bool isError: driveCtrl.formatError
-	    property bool formatting: driveCtrl.formatting
+	    property bool devicePresent: driveCtrl.DevicePrenset
 
             title: i18n.tr("Formatting")
 
@@ -78,8 +78,8 @@ Item {
 		}
 	    }
 
-	    onFormattingChanged: {
-	    	if (!formatting && !isError) {
+	    onDevicePresentChanged: {
+	    	if (!devicePresent) {
                     PopupUtils.close(dialogueFormatting)
 		}
 	    }

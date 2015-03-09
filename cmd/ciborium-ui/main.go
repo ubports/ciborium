@@ -42,6 +42,7 @@ type driveControl struct {
 	FormatError    bool
 	Unmounting     bool
 	UnmountError   bool
+	DevicePrenset  bool
 }
 
 type DriveList struct {
@@ -120,8 +121,13 @@ func (ctrl *driveControl) Watch() {
 		for block := range c {
 			if block {
 				log.Println("Block device added")
+				ctrl.DevicePrenset = true
+				qml.Changed(ctrl, &ctrl.DevicePrenset)
 			} else {
 				log.Println("Block device removed")
+				// TODO: keep track of the removed device
+				ctrl.DevicePrenset = false
+				qml.Changed(ctrl, &ctrl.DevicePrenset)
 			}
 			ctrl.Drives()
 		}
@@ -149,9 +155,6 @@ func (ctrl *driveControl) Watch() {
 	go func() {
 		mountCompleted, mountErrors := ctrl.udisks.SubscribeMountEvents()
 		unmountCompleted, unmountErrors := ctrl.udisks.SubscribeUnmountEvents()
-		// is a drive is remove we are going to make sure that the ui is not left waiting for
-		// jobs to be completed
-		removals := ctrl.udisks.SubscribeRemoveEvents()
 		for {
 			select {
 			case d := <-mountCompleted:
@@ -165,18 +168,6 @@ func (ctrl *driveControl) Watch() {
 			case e := <-unmountErrors:
 				log.Println("Unmount job error", e)
 				ctrl.UnmountError = true
-				qml.Changed(ctrl, &ctrl.UnmountError)
-			case d := <-removals:
-				// TODO: This must take into account the fact that we can have more than
-				// one sd card.
-				log.Println("Device was removed", d)
-				ctrl.Formatting = false
-				qml.Changed(ctrl, &ctrl.Formatting)
-				ctrl.FormatError = false
-				qml.Changed(ctrl, &ctrl.FormatError)
-				ctrl.UnmountError = false
-				qml.Changed(ctrl, &ctrl.UnmountError)
-				ctrl.UnmountError = false
 				qml.Changed(ctrl, &ctrl.UnmountError)
 			}
 		}
