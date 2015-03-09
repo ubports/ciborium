@@ -80,9 +80,12 @@ MainView {
 
                 delegate: UbuntuShape {
                     height: childrenRect.height
-                    width: parent.width
                     color: index % 2 === 0 ? "white" : "#DECAE3"
                     anchors {
+		        left: parent.left
+			leftMargin: units.gu(1)
+			right: parent.right
+			rightMargin: units.gu(1)
                         topMargin: units.gu(1)
                         bottomMargin: units.gu(1)
                     }
