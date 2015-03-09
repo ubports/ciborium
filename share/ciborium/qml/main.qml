@@ -33,16 +33,51 @@ MainView {
             title: i18n.tr("SD Card Management")
             Component.onCompleted: driveCtrl.watch()
 
+	    // dialogs required to show progress information to the user
+	    Component {
+                id: safeRemovalConfirmationDialog
+                SafeRemovalConfirmation {
+                    confirmationDialog: safeRemovalConfirmationDialog
+		}
+	    }
+
+	    Component {
+                id: safeRemovalDialog
+                SaveRemoval {
+                    parentWindow: mainPage
+                    removalDialog: safeRemovalDialog
+                    confirmationDialog: safeRemovalConfirmationDialog
+                }
+	    }
+
+	    Component {
+	    	id: formatConfirmationDialog
+		FormatConfirmation {
+                    formattingDialog: formatConfirmationDialog
+		}
+	    }
+
+	    Component {
+	    	id: formatDialog
+                FormatDialog {
+                    parentWindow: mainPage
+                    formatDialog: formatDialog
+                    formattingDialog: formatConfirmationDialog
+		}
+	    }
+
+
             ListView {
                 model: driveCtrl.len
                 spacing: units.gu(1)
+
                 anchors {
                     top: parent.top
                     bottom: parent.bottom
                     left: parent.left
                     right: parent.right
                     topMargin: units.gu(1)
-                }
+                } // anchors
 
                 delegate: UbuntuShape {
                     height: childrenRect.height
@@ -53,45 +88,22 @@ MainView {
                         bottomMargin: units.gu(1)
                     }
 
-                    Column {
-                        spacing: units.gu(2)
+		    DriveDeleage {
+                        driverIndex: index
+                        parentWindow: mainPage
+                        formatDialog: formatDialog
+                        removeDialog: safeRemovalDialog
+
                         anchors {
                             leftMargin: units.gu(2)
                             topMargin: units.gu(1)
                             bottomMargin: units.gu(1)
                         }
+		    }
 
-                        Row {
-                            spacing: units.gu(1)
-                            height: units.gu(2)
-                            width: childrenRect.width
-
-                            Icon {
-                                width: 24
-                                height: 24
-                                name: "media-memory-sd"
-                                //source: "file:///usr/share/icons/Humanity/devices/48/media-memory-sd.svg"
-                            }
-                            Label {
-                                width: paintedWidth       
-                                text: driveCtrl.driveModel(index)
-                            }
-                        }
-                        Row {
-                            spacing: units.gu(1)
-                            height: childrenRect.height
-                            width: childrenRect.width
-                            FormatDialog {
-                                driveIndex: index
-                            }
-                            SafeRemoval {
-                                driveIndex: index
-                            }
-                        }
-                    }
-                }
-            }
-        }
+                } // delegate
+            } // ListView
+        } // Page
     }
 }
 
