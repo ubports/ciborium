@@ -169,6 +169,7 @@ func (ctrl *driveControl) Watch() {
 			case d := <-removals:
 				// TODO: This must take into account the fact that we can have more than
 				// one sd card.
+				log.Println("Device was removed", d)
 				ctrl.Formatting = false
 				qml.Changed(ctrl, &ctrl.Formatting)
 				ctrl.FormatError = false

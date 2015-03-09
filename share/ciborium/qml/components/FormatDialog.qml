@@ -40,6 +40,7 @@ Item {
         Dialog {
             id: dialogueFormatting
             property bool isError: driveCtrl.formatError
+	    property bool formatting: driveCtrl.formatting
 
             title: i18n.tr("Formatting")
 
@@ -74,6 +75,12 @@ Item {
 		} else {
 			okFormatErrorButton.visible= false;
                         formatActivity.visible= true;
+		}
+	    }
+
+	    onFormattingChanged: {
+	    	if (!formatting && !isError) {
+                    PopupUtils.close(dialogueFormatting)
 		}
 	    }
         }
