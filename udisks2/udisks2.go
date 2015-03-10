@@ -597,7 +597,9 @@ func (dm *driveMap) addInterface(s *Event) (bool, error) {
 			return blockDevice, err
 		}
 		if _, ok := (*dm)[driveObjectPath]; !ok {
-			return blockDevice, errors.New("drive holding block device is not mapped")
+			drive := newDrive(s)
+			log.Println("Creating new drive", drive)
+			(*dm)[s.Path] = drive
 		}
 		(*dm)[driveObjectPath].blockDevices[s.Path] = s.Props
 		blockDevice = true
