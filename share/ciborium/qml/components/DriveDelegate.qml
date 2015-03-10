@@ -42,7 +42,7 @@ UbuntuShape {
     Button {
         id: formatButton
         text: i18n.tr("Format")
-        onClicked: onFormatClicked() 
+        onClicked: onFormatClicked(formatButton) 
 
 	anchors {
 	    top: driveIcon.bottom
