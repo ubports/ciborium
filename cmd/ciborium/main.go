@@ -229,11 +229,11 @@ func main() {
 					sdCardIcon,
 				)
 
-				if err := createStandardHomeDirs(m); err != nil {
+				if err := createStandardHomeDirs(m.Mountpoint); err != nil {
 					log.Println("Failed to create standard dir layout:", err)
 				}
 
-				mw.set(mountpoint(m), true)
+				mw.set(mountpoint(m.Mountpoint), true)
 			case e := <-mountErrors:
 				log.Println("Error while mounting device", e)
 
