@@ -319,11 +319,24 @@ func (u *UDisks2) Init() (err error) {
 								continue
 							}
 
-							mountpoints := make([][]byte, 0)
-							if err = reply.Args(&mountpoints); err != nil {
+							mountpointsVar := dbus.Variant{}
+							if err = reply.Args(&mountpointsVar); err != nil {
 								log.Println("Error reading arg", err)
 								continue
 							}
+
+							// grab the mointpoints from the variant
+							var mountpoints []string
+
+							mountPointsVal := reflect.ValueOf(mountpointsVar.Value)
+							length := mountPointsVal.Len()
+							mountpoints = make([]string, length, length)
+							for i := 0; i < length; i++ {
+								mp := string(mountPointsVal.Index(i).Elem().Bytes())
+								log.Println("New mp found", mp)
+								mountpoints[i] = mp
+							}
+
 							log.Println("Mount points are", mountpoints)
 							if len(mountpoints) > 0 {
 								p := dbus.ObjectPath(path)
@@ -495,7 +508,12 @@ func (u *UDisks2) desiredMountableEvent(s *Event) (bool, error) {
 		return false, nil
 	}
 
-	drive := u.drives[drivePath]
+	drive, ok := u.drives[drivePath]
+	if !ok {
+		log.Println("Drive with path", drivePath, "not found")
+		return false, nil
+	}
+
 	if ok := drive.hasSystemBlockDevices(); ok {
 		log.Println(drivePath, "which contains", s.Path, "has HintSystem set")
 		return false, nil
