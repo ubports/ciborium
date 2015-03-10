@@ -628,7 +628,7 @@ func (dm *driveMap) addInterface(s *Event) (bool, error) {
 			(*dm)[s.Path] = drive
 		} else {
 			(*dm)[driveObjectPath].blockDevices[s.Path] = s.Props
-			(*dm)[driveObjectPath].Mounted = s.Props.isMounted()
+                        (*dm)[driveObjectPath].Mounted = s.Props.isMounted()
 		}
 		blockDevice = true
 	default:
