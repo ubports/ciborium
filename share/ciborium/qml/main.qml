@@ -49,16 +49,16 @@ MainView {
                 id: safeRemoval
                 SafeRemoval {
                     id: safeRemovalDialog
-                    onCancelClicked: function() {
+                    onCancelClicked: function(button) {
 		        console.log("SafeRemoval cancelation button clicked");
-                        safeRemovalDialog.removeButton.enabled = true;
+                        button.enabled = true;
 		        PopupUtils.close(safeRemovalDialog);
 	            }
-                    onContinueClicked: function() {
+                    onContinueClicked: function(button) {
 		        console.log("SafeRemoval continue button clicked.")
                         driveCtrl.driveUnmount(safeRemovalDialog.driveIndex)
                         PopupUtils.close(safeRemovalDialog)
-                        PopupUtils.open(safeRemovalConfirmation, mainPage)
+                        PopupUtils.open(safeRemovalConfirmation, mainPage, {"removeButton": button})
 		    }
                 }
 	    }
@@ -128,8 +128,6 @@ MainView {
                             topMargin: units.gu(1)
                             bottomMargin: units.gu(1)
                         }
-
-		    }
 
                 } // delegate
             } // ListView
