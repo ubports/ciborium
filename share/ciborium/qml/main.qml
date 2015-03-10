@@ -61,6 +61,8 @@ MainView {
                             driveCtrl.driveUnmount(safeRemovalDialog.driveIndex)
                             PopupUtils.close(safeRemovalDialog)
                             PopupUtils.open(safeRemovalConfirmation, mainPage, {"removeButton": button})
+			} else {
+                            PopupUtils.close(safeRemovalDialog)
 			}
 		    }
                 }
@@ -91,11 +93,15 @@ MainView {
 		        PopupUtils.close(formatDialog);
 	            }
 
-                    onContinueClicked: function() {
-		        console.log("Format continue button clicked.")
-                        driveCtrl.driveFormat(formatDialog.driveIndex)                     
-                        PopupUtils.close(formatDialog)
-                        PopupUtils.open(formatConfirmation, mainPage)
+                    onContinueClicked: function(button) {
+		        if (button) {
+                            console.log("Format continue button clicked.")
+                            driveCtrl.driveFormat(formatDialog.driveIndex)                     
+                            PopupUtils.close(formatDialog)
+                            PopupUtils.open(formatConfirmation, mainPage)
+			} else {
+                            PopupUtils.close(formatDialog)
+			}
 		    }
 		}
 	    }
@@ -114,8 +120,8 @@ MainView {
                 } // anchors
 
                 delegate: DriveDelegate {
-                        onFormatClicked: function() {
-                            PopupUtils.open(format, mainPage, {"driveIndex": index})
+                        onFormatClicked: function(button) {
+                            PopupUtils.open(format, mainPage, {"driveIndex": index, "formatButton": button})
 			}
 
                         onSafeRemovalClicked: function(button) {

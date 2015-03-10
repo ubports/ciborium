@@ -4,6 +4,7 @@ import Ubuntu.Components.Popups 1.0
 
 Dialog {
     property int driveIndex
+    property var formatButton
     property var onCancelClicked
     property var onContinueClicked
 
@@ -17,6 +18,6 @@ Dialog {
     Button {
         text: i18n.tr("Continue with format")
         color: UbuntuColors.orange
-        onClicked: onContinueClicked()
+        onClicked: onContinueClicked(formatButton)
     }
 }
