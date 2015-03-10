@@ -165,6 +165,8 @@ func (ctrl *driveControl) Watch() {
 						// grab the drive, set it to mounted and update the qml
 						log.Println("Drive", drive.Path, "set to be mounted.")
 						drive.Mounted = true
+						qml.Changed(ctrl, &drive.Mounted)
+						log.Println("Update ui.")
 					}
 				}
 			case e := <-mountErrors:
@@ -178,6 +180,8 @@ func (ctrl *driveControl) Watch() {
 						// grab the drive, set it to mounted and update the qml
 						log.Println("Drive", drive.Path, "set to be unmounted.")
 						drive.Mounted = false
+						qml.Changed(ctrl, &drive.Mounted)
+						log.Println("Update ui.")
 					}
 				}
 			case e := <-unmountErrors:
@@ -224,6 +228,6 @@ func (ctrl *driveControl) DriveUnmount(index int) {
 	ctrl.udisks.Unmount(&drive)
 }
 
-func (ctrl *driveControl) DriveAt(index int) udisks2.Drive {
-	return ctrl.ExternalDrives[index]
+func (ctrl *driveControl) DriveAt(index int) *udisks2.Drive {
+	return &ctrl.ExternalDrives[index]
 }

@@ -559,6 +559,7 @@ func newDrive(s *Event) *Drive {
 		Path:         s.Path,
 		blockDevices: make(map[dbus.ObjectPath]InterfacesAndProperties),
 		driveInfo:    s.Props,
+		Mounted:      s.Props.isMounted(),
 	}
 }
 

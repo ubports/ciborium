@@ -43,6 +43,7 @@ UbuntuShape {
 
     Button {
         id: formatButton
+	enabled: drive.mounted
         text: i18n.tr("Format")
         onClicked: onFormatClicked(formatButton) 
 
@@ -57,7 +58,7 @@ UbuntuShape {
 
     Button {
         id: removalButton
-	enabled: false
+	enabled: drive.mounted
         text: i18n.tr("Safely Remove")
         onClicked: onSafeRemovalClicked(removalButton)
 
