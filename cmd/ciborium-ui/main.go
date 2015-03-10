@@ -164,7 +164,7 @@ func (ctrl *driveControl) Watch() {
 					if drive.Path == d.Path {
 						// grab the drive, set it to mounted and update the qml
 						log.Println("Drive", drive.Path, "set to be mounted.")
-						drive.mounted = true
+						drive.Mounted = true
 					}
 				}
 			case e := <-mountErrors:
@@ -174,7 +174,7 @@ func (ctrl *driveControl) Watch() {
 				ctrl.Unmounting = false
 				qml.Changed(ctrl, &ctrl.Unmounting)
 				for index, drive := range ctrl.ExternalDrives {
-					if drive.Path == d.Path {
+					if drive.Path == d {
 						// grab the drive, set it to mounted and update the qml
 						log.Println("Drive", drive.Path, "set to be unmounted.")
 						drive.Mounted = false
