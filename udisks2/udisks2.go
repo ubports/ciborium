@@ -45,6 +45,7 @@ const (
 	dbusPartitionInterface      = "org.freedesktop.UDisks2.Partition"
 	dbusPartitionTableInterface = "org.freedesktop.UDisks2.PartitionTable"
 	dbusJobInterface            = "org.freedesktop.UDisks2.Job"
+	dbusPropertiesInterface     = "org.freedesktop.DBus.Properties"
 	dbusAddedSignal             = "InterfacesAdded"
 	dbusRemovedSignal           = "InterfacesRemoved"
 )
@@ -152,9 +153,6 @@ func (u *UDisks2) Mount(s *Event) {
 		}
 
 		log.Println("Mounth path for '", s.Path, "' set to be", mountpoint)
-		u.mountpoints[s.Path] = mountpoint
-		e := MountEvent{s.Path, mountpoint}
-		u.mountCompleted <- e
 	}()
 }
 
@@ -309,6 +307,34 @@ func (u *UDisks2) Init() (err error) {
 				case j := <-u.jobs.MountJobs:
 					if j.WasCompleted {
 						log.Println("Mount job was finished for", j.Event.Path, "for paths", j.Paths)
+						for _, path := range j.Paths {
+							proxy := u.conn.Object(dbusName, dbus.ObjectPath(path))
+							reply, err := proxy.Call(dbusPropertiesInterface, "Get", dbusFilesystemInterface, mountPointsProperty)
+							if err != nil {
+								log.Println("Error getting mount points")
+								continue
+							}
+							if reply.Type == dbus.TypeError {
+								log.Println("dbus error: %", reply.ErrorName)
+								continue
+							}
+
+							mountpoints := make([][]byte, 0)
+							if err = reply.Args(&mountpoints); err != nil {
+								log.Println("Error reading arg", err)
+								continue
+							}
+							log.Println("Mount points are", mountpoints)
+							if len(mountpoints) > 0 {
+								p := dbus.ObjectPath(path)
+								mp := string(mountpoints[0])
+								u.mountpoints[p] = string(mp)
+								e := MountEvent{p, mp}
+								u.mountCompleted <- e
+
+							}
+
+						}
 					} else {
 						log.Print("Mount job started.")
 					}
@@ -602,6 +628,7 @@ func (dm *driveMap) addInterface(s *Event) (bool, error) {
 			(*dm)[s.Path] = drive
 		} else {
 			(*dm)[driveObjectPath].blockDevices[s.Path] = s.Props
+			(*dm)[driveObjectPath].Mounted = s.Props.isMounted()
 		}
 		blockDevice = true
 	default:
