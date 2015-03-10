@@ -36,11 +36,13 @@ Dialog {
         if (isError) {
             title = i18n.tr("Unmount Error");
             text = i18n.tr("The device could not be unmounted because is busy");
-            removeButton.enabled = true
+	    if (removeButton)
+                removeButton.enabled = true
         } else {
             title = i18n.tr("Safe to remove");
             text = i18n.tr("You can now safely remove the device");
-            removeButton.enabled = true
+	    if (removeButton)
+                removeButton.enabled = true
         }
         unmountOkButton.visible = true;
     } // onIsErrorChanged

@@ -51,7 +51,8 @@ MainView {
                     id: safeRemovalDialog
                     onCancelClicked: function(button) {
 		        console.log("SafeRemoval cancelation button clicked");
-                        button.enabled = true;
+			if (button)
+                            button.enabled = true;
 		        PopupUtils.close(safeRemovalDialog);
 	            }
                     onContinueClicked: function(button) {
