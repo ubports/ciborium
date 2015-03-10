@@ -6,6 +6,7 @@ UbuntuShape {
     property var onFormatClicked
     property var onSafeRemovalClicked
     property var drive
+    property int driveIndex 
     property bool mounted: (drive)?drive.Mounted:false
 
     height: childrenRect.height + (3 *units.gu(1))
