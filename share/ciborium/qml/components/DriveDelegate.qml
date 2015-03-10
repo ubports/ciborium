@@ -3,7 +3,6 @@ import Ubuntu.Components 1.1
 import Ubuntu.Components.Popups 1.0
 
 UbuntuShape {
-    property var parentWindow
     property var onFormatClicked
     property var onSafeRemovalClicked
 
@@ -57,7 +56,7 @@ UbuntuShape {
     Button {
         id: removalButton
         text: i18n.tr("Safely Remove")
-        onClicked: onSafeRemovalClicked()
+        onClicked: onSafeRemovalClicked(removalButton)
 
 	anchors {
 	    top: driveIcon.bottom

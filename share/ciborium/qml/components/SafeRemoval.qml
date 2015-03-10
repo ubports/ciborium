@@ -5,6 +5,7 @@ import Ubuntu.Components.Popups 1.0
 
 Dialog {
     property int driveIndex
+    property var removeButton
     property var onCancelClicked
     property var onContinueClicked
 
