@@ -330,8 +330,8 @@ func (u *UDisks2) Init() (err error) {
 								mp := string(mountpoints[0])
 								u.mountpoints[p] = string(mp)
 								e := MountEvent{p, mp}
+								log.Println("New mount event", e)
 								u.mountCompleted <- e
-
 							}
 
 						}
