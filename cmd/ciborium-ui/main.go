@@ -107,16 +107,13 @@ func newDriveControl() (*driveControl, error) {
 	}
 	udisks := udisks2.NewStorageWatcher(systemBus, supportedFS...)
 
-	if err := udisks.Init(); err != nil {
-		return nil, err
-	}
-
 	return &driveControl{udisks: udisks}, nil
 }
 
 func (ctrl *driveControl) Watch() {
 	c := ctrl.udisks.SubscribeBlockDeviceEvents()
 	go func() {
+		log.Println("Calling Drives from Watch first gorroutine")
 		ctrl.Drives()
 		for block := range c {
 			if block {
@@ -129,6 +126,8 @@ func (ctrl *driveControl) Watch() {
 				ctrl.DevicePresent = false
 				qml.Changed(ctrl, &ctrl.DevicePresent)
 			}
+
+			log.Println("Calling Drives from after a block was added or removed")
 			ctrl.Drives()
 		}
 	}()
@@ -192,6 +191,7 @@ func (ctrl *driveControl) Watch() {
 		}
 	}()
 
+	ctrl.udisks.Init()
 }
 
 func (ctrl *driveControl) Drives() {

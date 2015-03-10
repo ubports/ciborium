@@ -600,8 +600,9 @@ func (dm *driveMap) addInterface(s *Event) (bool, error) {
 			drive := newDrive(s)
 			log.Println("Creating new drive", drive)
 			(*dm)[s.Path] = drive
+		} else {
+			(*dm)[driveObjectPath].blockDevices[s.Path] = s.Props
 		}
-		(*dm)[driveObjectPath].blockDevices[s.Path] = s.Props
 		blockDevice = true
 	default:
 		// we don't care about other object paths
