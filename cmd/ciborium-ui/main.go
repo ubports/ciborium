@@ -161,9 +161,9 @@ func (ctrl *driveControl) Watch() {
 				log.Println("Mount job done", d)
 				// get the drive and state that it was mounted
 				for index, drive := range ctrl.ExternalDrives {
-					if drive.path == d.path {
+					if drive.Path == d.Path {
 						// grab the drive, set it to mounted and update the qml
-						log.Println("Drive", drive.path, "set to be mounted.")
+						log.Println("Drive", drive.Path, "set to be mounted.")
 						drive.mounted = true
 					}
 				}
@@ -176,7 +176,7 @@ func (ctrl *driveControl) Watch() {
 				for index, drive := range ctrl.ExternalDrives {
 					if drive.Path == d.Path {
 						// grab the drive, set it to mounted and update the qml
-						log.Println("Drive", drive.path, "set to be unmounted.")
+						log.Println("Drive", drive.Path, "set to be unmounted.")
 						drive.Mounted = false
 					}
 				}
@@ -212,7 +212,7 @@ func (ctrl *driveControl) DriveFormat(index int) {
 
 	drive := ctrl.ExternalDrives[index]
 
-	log.Println("Format drive on index", index, "model", drive.Model(), "path", drive.Path())
+	log.Println("Format drive on index", index, "model", drive.Model(), "path", drive.Path)
 	ctrl.udisks.Format(&drive)
 }
 

@@ -542,10 +542,6 @@ func (d *Drive) Model() string {
 	return reflect.ValueOf(modelVariant.Value).String()
 }
 
-func (d *Drive) Path() string {
-	return string(d.path)
-}
-
 func (s *Event) getDrive() (dbus.ObjectPath, error) {
 	propBlock, ok := s.Props[dbusBlockInterface]
 	if !ok {
@@ -560,7 +556,7 @@ func (s *Event) getDrive() (dbus.ObjectPath, error) {
 
 func newDrive(s *Event) *Drive {
 	return &Drive{
-		path:         s.Path,
+		Path:         s.Path,
 		blockDevices: make(map[dbus.ObjectPath]InterfacesAndProperties),
 		driveInfo:    s.Props,
 	}
