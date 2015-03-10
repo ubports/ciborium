@@ -52,15 +52,15 @@ const (
 var ErrUnhandledFileSystem = errors.New("unhandled filesystem")
 
 type Drive struct {
-	path         dbus.ObjectPath
+	Path         dbus.ObjectPath
 	blockDevices map[dbus.ObjectPath]InterfacesAndProperties
 	driveInfo    InterfacesAndProperties
-	mounted      bool
+	Mounted      bool
 }
 
 type MountEvent struct {
-	path       dbus.ObjectPath
-	mountpoint string
+	Path       dbus.ObjectPath
+	Mountpoint string
 }
 
 type driveMap map[dbus.ObjectPath]*Drive
