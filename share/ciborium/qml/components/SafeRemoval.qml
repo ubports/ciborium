@@ -14,12 +14,12 @@ Dialog {
 
     Button {
         text: i18n.tr("Cancel")
-        onClicked: onCancelClicked() 
+        onClicked: onCancelClicked(removeButton) 
     } // Button Cancel
 
     Button {
         text: i18n.tr("Continue")
         color: UbuntuColors.orange
-        onClicked: onContinueClicked()
+        onClicked: onContinueClicked(removeButton)
    }
 }
