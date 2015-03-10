@@ -120,7 +120,7 @@ MainView {
                 } // anchors
 
                 delegate: DriveDelegate {
-		        drive: driveCtrl.eternalDrives[index]
+		        drive: driveCtrl.driveAt(index)
                         onFormatClicked: function(button) {
                             PopupUtils.open(format, mainPage, {"driveIndex": index, "formatButton": button})
 			}

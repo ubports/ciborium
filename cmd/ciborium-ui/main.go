@@ -160,7 +160,7 @@ func (ctrl *driveControl) Watch() {
 			case d := <-mountCompleted:
 				log.Println("Mount job done", d)
 				// get the drive and state that it was mounted
-				for index, drive := range ctrl.ExternalDrives {
+				for _, drive := range ctrl.ExternalDrives {
 					if drive.Path == d.Path {
 						// grab the drive, set it to mounted and update the qml
 						log.Println("Drive", drive.Path, "set to be mounted.")
@@ -173,7 +173,7 @@ func (ctrl *driveControl) Watch() {
 				log.Println("Unmount job done", d)
 				ctrl.Unmounting = false
 				qml.Changed(ctrl, &ctrl.Unmounting)
-				for index, drive := range ctrl.ExternalDrives {
+				for _, drive := range ctrl.ExternalDrives {
 					if string(drive.Path) == d {
 						// grab the drive, set it to mounted and update the qml
 						log.Println("Drive", drive.Path, "set to be unmounted.")
@@ -222,4 +222,8 @@ func (ctrl *driveControl) DriveUnmount(index int) {
 	ctrl.Unmounting = true
 	qml.Changed(ctrl, &ctrl.Unmounting)
 	ctrl.udisks.Unmount(&drive)
+}
+
+func (ctrl *driveControl) DriveAt(index int) udisks2.Drive {
+	return ctrl.ExternalDrives[index]
 }
