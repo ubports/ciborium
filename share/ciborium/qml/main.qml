@@ -51,6 +51,7 @@ MainView {
                     id: safeRemovalDialog
                     onCancelClicked: function() {
 		        console.log("SafeRemoval cancelation button clicked");
+                        safeRemovalDialog.removeButton.enabled = true;
 		        PopupUtils.close(safeRemovalDialog);
 	            }
                     onContinueClicked: function() {
@@ -114,8 +115,9 @@ MainView {
                             PopupUtils.open(format, mainPage, {"driveIndex": index})
 			}
 
-                        onSafeRemovalClicked: function() {
-                            PopupUtils.open(safeRemoval, mainPage, {"driveIndex": index})
+                        onSafeRemovalClicked: function(button) {
+			    button.enabled = false
+                            PopupUtils.open(safeRemoval, mainPage, {"driveIndex": index, "removeButton": button})
 			}
 
                         anchors {
