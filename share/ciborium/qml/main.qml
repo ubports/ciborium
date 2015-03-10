@@ -109,19 +109,7 @@ MainView {
                     topMargin: units.gu(1)
                 } // anchors
 
-                delegate: UbuntuShape {
-                    height: childrenRect.height
-                    color: index % 2 === 0 ? "white" : "#DECAE3"
-                    anchors {
-		        left: parent.left
-			leftMargin: units.gu(1)
-			right: parent.right
-			rightMargin: units.gu(1)
-                        topMargin: units.gu(1)
-                        bottomMargin: units.gu(1)
-                    }
-
-		    DriveDelegate {
+                delegate: DriveDelegate {
                         onFormatClicked: function() {
                             PopupUtils.open(format, mainPage, {"driveIndex": index})
 			}
@@ -131,10 +119,14 @@ MainView {
 			}
 
                         anchors {
-                            leftMargin: units.gu(2)
+		            left: parent.left
+		            leftMargin: units.gu(1)
+		            right: parent.right
+		            rightMargin: units.gu(1)
                             topMargin: units.gu(1)
                             bottomMargin: units.gu(1)
                         }
+
 		    }
 
                 } // delegate
