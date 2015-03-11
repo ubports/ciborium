@@ -5,7 +5,7 @@ import Ubuntu.Components.Popups 1.0
 UbuntuShape {
     property var onFormatClicked
     property var onSafeRemovalClicked
-    property var drive
+    property var drive: nil
     property int driveIndex 
     property bool mounted: (drive)?drive.Mounted:false
 

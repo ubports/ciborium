@@ -159,12 +159,10 @@ func (u *UDisks2) Mount(s *Event) {
 func (u *UDisks2) Unmount(d *Drive) {
 	if d.Mounted {
 		for blockPath, block := range d.blockDevices {
-			if block.isMounted() {
-				u.umount(blockPath)
-			}
+			u.umount(blockPath)
 		}
 	} else {
-		log.Println("Block is not mounted", blockPath)
+		log.Println("Block is not mounted", d)
 		u.unmountErrors <- fmt.Errorf("Drive is not mounted ", d)
 	}
 }
