@@ -152,12 +152,7 @@ func (ctrl *driveControl) Watch() {
 			select {
 			case d := <-mountCompleted:
 				log.Println("Mount job done", d)
-				for _, drive := range ctrl.ExternalDrives {
-					changed := drive.SetMounted(d)
-					if changed {
-						qml.Changed(ctrl, &drive.Mounted)
-					}
-				}
+				ctrl.Drives()
 			case e := <-mountErrors:
 				log.Println("Mount job error", e)
 			case d := <-unmountCompleted:

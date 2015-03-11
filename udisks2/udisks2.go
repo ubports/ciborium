@@ -350,6 +350,10 @@ func (u *UDisks2) Init() (err error) {
 								u.mountpoints[p] = string(mp)
 								e := MountEvent{p, mp}
 								log.Println("New mount event", e)
+								// update the drives
+								for _, d := range u.drives {
+									d.SetMounted(e)
+								}
 								u.mountCompleted <- e
 							}
 
