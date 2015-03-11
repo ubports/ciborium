@@ -158,7 +158,7 @@ func (u *UDisks2) Mount(s *Event) {
 
 func (u *UDisks2) Unmount(d *Drive) {
 	if d.Mounted {
-		for blockPath, block := range d.blockDevices {
+		for blockPath, _ := range d.blockDevices {
 			u.umount(blockPath)
 		}
 	} else {
