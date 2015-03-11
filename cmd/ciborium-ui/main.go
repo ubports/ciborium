@@ -159,7 +159,6 @@ func (ctrl *driveControl) Watch() {
 				log.Println("Unmount job done", d)
 				ctrl.Unmounting = false
 				qml.Changed(ctrl, &ctrl.Unmounting)
-				ctrl.Drives()
 			case e := <-unmountErrors:
 				log.Println("Unmount job error", e)
 				ctrl.UnmountError = true

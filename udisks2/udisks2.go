@@ -157,13 +157,15 @@ func (u *UDisks2) Mount(s *Event) {
 }
 
 func (u *UDisks2) Unmount(d *Drive) {
-	for blockPath, block := range d.blockDevices {
-		if block.isMounted() {
-			u.umount(blockPath)
-		} else {
-			log.Println("Block is not mounted", blockPath)
-			u.unmountErrors <- fmt.Errorf("Drive is not mounted %s", blockPath)
+	if d.Mounted {
+		for blockPath, block := range d.blockDevices {
+			if block.isMounted() {
+				u.umount(blockPath)
+			}
 		}
+	} else {
+		log.Println("Block is not mounted", d)
+		u.unmountErrors <- fmt.Errorf("Drive is not mounted ", d)
 	}
 }
 
@@ -350,6 +352,13 @@ func (u *UDisks2) Init() (err error) {
 								u.mountpoints[p] = string(mp)
 								e := MountEvent{p, mp}
 								log.Println("New mount event", e)
+								// update the drives
+								for _, d := range u.drives {
+									changed := d.SetMounted(e)
+									if changed {
+										log.Println("Drive set to mounted", d)
+									}
+								}
 								u.mountCompleted <- e
 							}
 
@@ -590,6 +599,16 @@ func (d *Drive) Model() string {
 		return ""
 	}
 	return reflect.ValueOf(modelVariant.Value).String()
+}
+
+func (d *Drive) SetMounted(e MountEvent) bool {
+	for p, _ := range d.blockDevices {
+		if p == e.Path {
+			d.Mounted = true
+			return true
+		}
+	}
+	return false
 }
 
 func (s *Event) getDrive() (dbus.ObjectPath, error) {
