@@ -165,7 +165,7 @@ func (u *UDisks2) Unmount(d *Drive) {
 		}
 	} else {
 		log.Println("Block is not mounted", blockPath)
-		u.unmountErrors <- fmt.Errorf("Drive is not mounted %s", blockPath)
+		u.unmountErrors <- fmt.Errorf("Drive is not mounted ", d)
 	}
 }
 
