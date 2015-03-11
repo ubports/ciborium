@@ -332,7 +332,13 @@ func (u *UDisks2) Init() (err error) {
 							length := mountPointsVal.Len()
 							mountpoints = make([]string, length, length)
 							for i := 0; i < length; i++ {
-								mp := string(mountPointsVal.Index(i).Elem().Bytes())
+								array := reflect.ValueOf(mountPointsVal.Index(i).Interface())
+								arrayLenght := array.Len()
+								byteArray := make([]byte, arrayLenght, arrayLenght)
+								for j := 0; j < arrayLenght; j++ {
+									byteArray[j] = array.Index(j).Interface().(byte)
+								}
+								mp := string(byteArray)
 								log.Println("New mp found", mp)
 								mountpoints[i] = mp
 							}

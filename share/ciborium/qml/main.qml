@@ -121,6 +121,7 @@ MainView {
 
                 delegate: DriveDelegate {
 		        drive: driveCtrl.driveAt(index)
+                        driveIndex: index
                         onFormatClicked: function(button) {
                             PopupUtils.open(format, mainPage, {"driveIndex": index, "formatButton": button})
 			}
