@@ -90,8 +90,9 @@ MainView {
 	    	id: format
                 FormatDialog {
 	    	    id: formatDialog
-                    onCancelClicked: function() {
+                    onCancelClicked: function(button) {
 		        console.log("Format cancelation button clicked");
+                        button.enabled = true
 		        PopupUtils.close(formatDialog);
 	            }
 
