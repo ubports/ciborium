@@ -49,18 +49,20 @@ MainView {
                 id: safeRemoval
                 SafeRemoval {
                     id: safeRemovalDialog
-                    onCancelClicked: function(button) {
+                    onCancelClicked: function(formatButton, removeButton) {
 		        console.log("SafeRemoval cancelation button clicked");
-			if (button)
-                            button.enabled = true;
+			if (formatButton)
+                            formatButton.enabled = true;
+			if (removeButton)
+                            removeButton.enabled = true;
 		        PopupUtils.close(safeRemovalDialog);
 	            }
-                    onContinueClicked: function(button) {
-		        if (button) {
+                    onContinueClicked: function(formatButton, removeButton) {
+		        if (formatButton && removeButton) {
                             console.log("SafeRemoval continue button clicked.")
                             driveCtrl.driveUnmount(safeRemovalDialog.driveIndex)
                             PopupUtils.close(safeRemovalDialog)
-                            PopupUtils.open(safeRemovalConfirmation, mainPage, {"removeButton": button})
+                            PopupUtils.open(safeRemovalConfirmation, mainPage, {"removeButton": removeButton, "formatButton": formatButton})
 			} else {
                             PopupUtils.close(safeRemovalDialog)
 			}
@@ -123,12 +125,14 @@ MainView {
 		        drive: driveCtrl.driveAt(index)
                         driveIndex: index
                         onFormatClicked: function(button) {
+			    button.enabled = false;
                             PopupUtils.open(format, mainPage, {"driveIndex": index, "formatButton": button})
 			}
 
-                        onSafeRemovalClicked: function(button) {
-			    button.enabled = false
-                            PopupUtils.open(safeRemoval, mainPage, {"driveIndex": index, "removeButton": button})
+                        onSafeRemovalClicked: function(formatBurron, removeButton) {
+			    formatButton.enabled = false;
+			    removeButton.enabled = false;
+                            PopupUtils.open(safeRemoval, mainPage, {"driveIndex": index, "removeButton": button}, "formatButton": formatButton)
 			}
 
                         anchors {
