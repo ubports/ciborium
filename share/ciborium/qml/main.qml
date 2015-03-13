@@ -81,7 +81,7 @@ MainView {
                     onFormattingChanged: {
                         if (!formatConfirmationDialog.formatting && !formatConfirmationDialog.isError) {
                             PopupUtils.close(formatConfirmationDialog);
-                        }
+                        } 
 		    }
 		}
 	    }
@@ -122,17 +122,16 @@ MainView {
                 } // anchors
 
                 delegate: DriveDelegate {
-		        drive: driveCtrl.driveAt(index)
                         driveIndex: index
                         onFormatClicked: function(button) {
 			    button.enabled = false;
                             PopupUtils.open(format, mainPage, {"driveIndex": index, "formatButton": button})
 			}
 
-                        onSafeRemovalClicked: function(formatBurron, removeButton) {
+                        onSafeRemovalClicked: function(formatButton, removeButton) {
 			    formatButton.enabled = false;
 			    removeButton.enabled = false;
-                            PopupUtils.open(safeRemoval, mainPage, {"driveIndex": index, "removeButton": button}, "formatButton": formatButton)
+                            PopupUtils.open(safeRemoval, mainPage, {"driveIndex": index, "removeButton": removeButton, "formatButton": formatButton})
 			}
 
                         anchors {
