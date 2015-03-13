@@ -44,7 +44,6 @@ UbuntuShape {
 
     Button {
         id: formatButton
-	enabled: drive.mounted
         text: i18n.tr("Format")
         onClicked: onFormatClicked(formatButton) 
 

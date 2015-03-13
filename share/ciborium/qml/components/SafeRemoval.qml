@@ -5,6 +5,7 @@ import Ubuntu.Components.Popups 1.0
 
 Dialog {
     property int driveIndex
+    property var formatButton
     property var removeButton
     property var onCancelClicked
     property var onContinueClicked
@@ -14,12 +15,12 @@ Dialog {
 
     Button {
         text: i18n.tr("Cancel")
-        onClicked: onCancelClicked(removeButton) 
+        onClicked: onCancelClicked(formatButton, removeButton) 
     } // Button Cancel
 
     Button {
         text: i18n.tr("Continue")
         color: UbuntuColors.orange
-        onClicked: onContinueClicked(removeButton)
+        onClicked: onContinueClicked(formatButton, removeButton)
    }
 }
