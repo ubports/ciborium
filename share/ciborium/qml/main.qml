@@ -74,13 +74,18 @@ MainView {
 	    	id: formatConfirmation
 		FormatConfirmation {
 	    	    id: formatConfirmationDialog
-		    onButtonClicked: function() {
+		    onButtonClicked: function(button) {
+		    	if (button)
+			    button.enabled = true
 		        console.log("FormatConfirmation button clicked");
 		        PopupUtils.close(formatConfirmationDialog)
                     }
                     onFormattingChanged: {
                         if (!formatConfirmationDialog.formatting && !formatConfirmationDialog.isError) {
                             PopupUtils.close(formatConfirmationDialog);
+                            if(formatConfirmationDialog.formatButton) {
+				formatConfirmationDialog.formatButton.enabled = true;
+			    }
                         } 
 		    }
 		}
@@ -101,7 +106,7 @@ MainView {
                             console.log("Format continue button clicked.")
                             driveCtrl.driveFormat(formatDialog.driveIndex)                     
                             PopupUtils.close(formatDialog)
-                            PopupUtils.open(formatConfirmation, mainPage)
+                            PopupUtils.open(formatConfirmation, mainPage, {"formatButton": button})
 			} else {
                             PopupUtils.close(formatDialog)
 			}
