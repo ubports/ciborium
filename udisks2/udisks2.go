@@ -61,21 +61,22 @@ type driveMap map[dbus.ObjectPath]*Drive
 type mountpointMap map[dbus.ObjectPath]string
 
 type UDisks2 struct {
-	conn          *dbus.Connection
-	validFS       sort.StringSlice
-	blockAdded    chan *Event
-	driveAdded    *dbus.SignalWatch
-	mountRemoved  chan string
-	blockError    chan error
-	driveRemoved  *dbus.SignalWatch
-	blockDevice   chan bool
-	drives        driveMap
-	mountpoints   mountpointMap
-	mapLock       sync.Mutex
-	startLock     sync.Mutex
-	dispatcher    *dispatcher
-	jobs          *jobManager
-	pendingMounts []string
+	conn            *dbus.Connection
+	validFS         sort.StringSlice
+	blockAdded      chan *Event
+	driveAdded      *dbus.SignalWatch
+	mountRemoved    chan string
+	blockError      chan error
+	driveRemoved    *dbus.SignalWatch
+	blockDevice     chan bool
+	drives          driveMap
+	mountpoints     mountpointMap
+	mapLock         sync.Mutex
+	startLock       sync.Mutex
+	dispatcher      *dispatcher
+	jobs            *jobManager
+	pendingMounts   []string
+	formatCompleted chan *Event
 }
 
 func NewStorageWatcher(conn *dbus.Connection, filesystems ...string) (u *UDisks2) {
@@ -90,10 +91,11 @@ func NewStorageWatcher(conn *dbus.Connection, filesystems ...string) (u *UDisks2
 	return u
 }
 
-func (u *UDisks2) SubscribeAddEvents() (<-chan *Event, <-chan error) {
+func (u *UDisks2) SubscribeAddEvents() (<-chan *Event, <-chan *Event, <-chan error) {
 	u.blockAdded = make(chan *Event)
 	u.blockError = make(chan error)
-	return u.blockAdded, u.blockError
+	u.formatCompleted = make(chan *Event)
+	return u.blockAdded, u.formatCompleted, u.blockError
 }
 
 func (u *UDisks2) SubscribeRemoveEvents() <-chan string {
@@ -119,6 +121,7 @@ func (u *UDisks2) Mount(s *Event) (mountpoint string, err error) {
 	}
 
 	u.mountpoints[s.Path] = mountpoint
+	log.Println("Mounth path for '", s.Path, "' set to be", mountpoint)
 	return mountpoint, err
 }
 
@@ -305,18 +308,15 @@ func (u *UDisks2) emitExistingDevices() {
 }
 
 func (u *UDisks2) processAddEvent(s *Event) error {
+	log.Println("processAddEvents(", s.Path, s.Props, s.Interfaces, ")")
 	u.mapLock.Lock()
 	defer u.mapLock.Unlock()
+
 	pos := sort.SearchStrings(u.pendingMounts, string(s.Path))
 	if pos != len(u.pendingMounts) && s.Props.isFilesystem() {
-		log.Println("Mount path", s.Path)
-		_, err := u.Mount(s)
-		u.pendingMounts = append(u.pendingMounts[:pos], u.pendingMounts[pos+1:]...)
-		if err != nil {
-			u.blockError <- err
-		} else {
-			u.blockAdded <- s
-		}
+		log.Println("Path", s.Path, "must be remounted.")
+		u.formatCompleted <- s
+		return nil
 	}
 	if isBlockDevice, err := u.drives.addInterface(s); err != nil {
 		return err
