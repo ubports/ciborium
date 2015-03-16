@@ -349,6 +349,8 @@ func (u *UDisks2) Init() (err error) {
 							if len(mountpoints) > 0 {
 								p := dbus.ObjectPath(path)
 								mp := string(mountpoints[0])
+								// remove \nul from string
+								mp = mp[0 : len(mp)-1]
 								u.mountpoints[p] = string(mp)
 								// update the drives
 								for _, d := range u.drives {
@@ -360,7 +362,7 @@ func (u *UDisks2) Init() (err error) {
 											for _, t := range [...]int{1, 2, 3, 4, 5, 10} {
 												_, err := os.Stat(mp)
 												if err != nil {
-													log.Println("Mountpoint", mp, "not yet present. Wating", t, "seconds")
+													log.Println("Mountpoint", mp, "not yet present. Wating", t, "seconds due to", err)
 													time.Sleep(time.Duration(t) * time.Second)
 												} else {
 													break
