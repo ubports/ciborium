@@ -13,17 +13,47 @@ Item {
 
         Dialog {
             id: dialogueRemoved
+            property bool isError: driveCtrl.unmountError
 
-            title: i18n.tr("Safe to remove")
-            text: i18n.tr("You can now safely remove the device")
+
+            title: i18n.tr("Unmounting")
 
             Button {
+	    	id: unmountOkButton
+		visible: false
                 text: i18n.tr("Ok")
                 color: UbuntuColors.orange
                 onClicked: {
                     PopupUtils.close(dialogueRemoved)
                 }
             }
+
+            ActivityIndicator {
+                id: unmountActivity
+		visible: driveCtrl.unmounting && !isError
+                running: driveCtrl.unmounting && !isError
+                onRunningChanged: {
+                    if (!running) {
+		    	if (!isError) {
+				unmountOkButton.visible = true;
+				unmountActivity.visible = false;
+				dialogueRemoved.text = i18n.tr("You can now safely remove the device");
+			}
+                    }
+                }
+            }
+
+
+            onIsErrorChanged: {
+	    	if (isError) {
+			dialogueRemoved.title = i18n.tr("Unmount Error");
+			dialogueRemoved.text = i18n.tr("The device could not be unmounted because is busy");
+		} else {
+			dialogueRemoved.title = i18n.tr("Safe to remove");
+			dialogueRemoved.text = i18n.tr("You can now safely remove the device");
+		}
+		unmountOkButton.visible = true;
+	    }
         }
     }
 

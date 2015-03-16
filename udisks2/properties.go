@@ -21,6 +21,7 @@
 package udisks2
 
 import (
+	"log"
 	"reflect"
 
 	"launchpad.net/go-dbus/v1"
@@ -55,6 +56,7 @@ func (i InterfacesAndProperties) isMounted() bool {
 		return false
 	}
 	mountpoints := reflect.ValueOf(mountpointsVariant.Value).Len()
+	log.Println("Mount points found:", mountpoints)
 
 	return mountpoints > 0
 }

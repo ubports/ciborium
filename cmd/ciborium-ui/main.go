@@ -39,6 +39,9 @@ type driveControl struct {
 	ExternalDrives []udisks2.Drive
 	Len            int
 	Formatting     bool
+	FormatError    bool
+	Unmounting     bool
+	UnmountError   bool
 }
 
 type DriveList struct {
@@ -132,10 +135,12 @@ func (ctrl *driveControl) Watch() {
 				log.Println("Formatting job done", d)
 				ctrl.Formatting = false
 				qml.Changed(ctrl, &ctrl.Formatting)
+				ctrl.FormatError = false
+				qml.Changed(ctrl, &ctrl.FormatError)
 			case e := <-formatErrors:
 				log.Println("Formatting job error", e)
-				ctrl.Formatting = false
-				qml.Changed(ctrl, &ctrl.Formatting)
+				ctrl.FormatError = true
+				qml.Changed(ctrl, &ctrl.FormatError)
 			}
 		}
 	}()
@@ -152,8 +157,12 @@ func (ctrl *driveControl) Watch() {
 				log.Println("Mount job error", e)
 			case d := <-unmountCompleted:
 				log.Println("Unmount job done", d)
+				ctrl.Unmounting = false
+				qml.Changed(ctrl, &ctrl.Unmounting)
 			case e := <-unmountErrors:
-				log.Println("Unmount job erro", e)
+				log.Println("Unmount job error", e)
+				ctrl.UnmountError = true
+				qml.Changed(ctrl, &ctrl.UnmountError)
 			}
 		}
 	}()
@@ -175,6 +184,8 @@ func (ctrl *driveControl) DriveModel(index int) string {
 
 func (ctrl *driveControl) DriveFormat(index int) {
 	ctrl.Formatting = true
+	ctrl.FormatError = false
+	ctrl.UnmountError = false
 	qml.Changed(ctrl, &ctrl.Formatting)
 
 	// TODO: really need the go routine?
@@ -185,10 +196,10 @@ func (ctrl *driveControl) DriveFormat(index int) {
 	}()
 }
 
-func (ctrl *driveControl) DriveUnmount(index int) bool {
+func (ctrl *driveControl) DriveUnmount(index int) {
 	log.Println("Unmounting device.")
 	drive := ctrl.ExternalDrives[index]
+	ctrl.Unmounting = true
+	qml.Changed(ctrl, &ctrl.Unmounting)
 	ctrl.udisks.Unmount(&drive)
-	// TODO: deal with the ui estate in the select
-	return true
 }

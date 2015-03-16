@@ -5,6 +5,7 @@ import Ubuntu.Components.Popups 1.0
 Item {
     property int driveIndex
 
+
     height: childrenRect.height
     width: childrenRect.width
 
@@ -38,18 +39,43 @@ Item {
 
         Dialog {
             id: dialogueFormatting
+            property bool isError: driveCtrl.formatError
 
             title: i18n.tr("Formatting")
 
             ActivityIndicator {
                 id: formatActivity
-                running: driveCtrl.formatting
+		visible:  driveCtrl.formatting && !isError
+                running: driveCtrl.formatting && !isError
                 onRunningChanged: {
                     if (!running) {
-                        PopupUtils.close(dialogueFormatting);
+		    	if (!isError)
+                            PopupUtils.close(dialogueFormatting);
                     }
                 }
             }
+
+            Button {
+	    	id: okFormatErrorButton
+		visible: false
+                text: i18n.tr("Ok")
+                color: UbuntuColors.orange
+                onClicked: {
+                    PopupUtils.close(dialogueFormatting)
+                }
+
+            }
+
+            onIsErrorChanged: {
+	    	if (isError) {
+			okFormatErrorButton.visible = true;
+                        formatActivity.visible = false;
+                        dialogueFormatting.text= i18n.tr("There was an error when formatting the device");
+		} else {
+			okFormatErrorButton.visible= false;
+                        formatActivity.visible= true;
+		}
+	    }
         }
     }
 
@@ -59,4 +85,5 @@ Item {
         text: i18n.tr("Format")
         onClicked: PopupUtils.open(dialogFormat)
     }
+
 }
