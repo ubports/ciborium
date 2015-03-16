@@ -357,7 +357,7 @@ func (u *UDisks2) Init() (err error) {
 										e := MountEvent{d.Path, mp}
 										log.Println("New mount event", e)
 										go func() {
-											for t := range [...]int{1, 5, 10, 20, 50, 100, 200} {
+											for _, t := range [...]int{1, 5, 10, 20, 50, 100, 200} {
 												_, err := os.Stat(mp)
 												if err != nil {
 													log.Println("Mountpoint", mp, "not yet present. Wating", t, "miliseconds")
@@ -366,6 +366,7 @@ func (u *UDisks2) Init() (err error) {
 													break
 												}
 											}
+											log.Println("Sending new event to channel.")
 											u.mountCompleted <- e
 										}()
 									}
