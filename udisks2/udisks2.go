@@ -201,8 +201,9 @@ func (u *UDisks2) Format(d *Drive) {
 	go func() {
 		log.Println("Format", d)
 		// do a sync call to unmount
-		for blockPath, block := range d.blockDevices {
-			if block.isMounted() {
+		for blockPath, _ := range d.blockDevices {
+			mps := u.mountpointsForPath(blockPath)
+			if len(mps) > 0 {
 				log.Println("Unmounting", blockPath)
 				err := u.syncUmount(blockPath)
 				if err != nil {
@@ -251,6 +252,43 @@ func (u *UDisks2) deletePartition(o dbus.ObjectPath) error {
 	options["auth.no_user_interaction"] = dbus.Variant{true}
 	_, err := obj.Call(dbusPartitionInterface, "Delete", options)
 	return err
+}
+
+func (u *UDisks2) mountpointsForPath(p dbus.ObjectPath) []string {
+	var mountpoints []string
+	proxy := u.conn.Object(dbusName, p)
+	reply, err := proxy.Call(dbusPropertiesInterface, "Get", dbusFilesystemInterface, mountPointsProperty)
+	if err != nil {
+		log.Println("Error getting mount points")
+		return mountpoints
+	}
+	if reply.Type == dbus.TypeError {
+		log.Println("dbus error: %", reply.ErrorName)
+		return mountpoints
+	}
+
+	mountpointsVar := dbus.Variant{}
+	if err = reply.Args(&mountpointsVar); err != nil {
+		log.Println("Error reading arg", err)
+		return mountpoints
+	}
+
+	mountPointsVal := reflect.ValueOf(mountpointsVar.Value)
+	length := mountPointsVal.Len()
+	mountpoints = make([]string, length, length)
+	for i := 0; i < length; i++ {
+		array := reflect.ValueOf(mountPointsVal.Index(i).Interface())
+		arrayLenght := array.Len()
+		byteArray := make([]byte, arrayLenght, arrayLenght)
+		for j := 0; j < arrayLenght; j++ {
+			byteArray[j] = array.Index(j).Interface().(byte)
+		}
+		mp := string(byteArray)
+		mp = mp[0 : len(mp)-1]
+		log.Println("New mp found", mp)
+		mountpoints[i] = mp
+	}
+	return mountpoints
 }
 
 func (u *UDisks2) ExternalDrives() []Drive {
@@ -310,41 +348,8 @@ func (u *UDisks2) Init() (err error) {
 					if j.WasCompleted {
 						log.Println("Mount job was finished for", j.Event.Path, "for paths", j.Paths)
 						for _, path := range j.Paths {
-							proxy := u.conn.Object(dbusName, dbus.ObjectPath(path))
-							reply, err := proxy.Call(dbusPropertiesInterface, "Get", dbusFilesystemInterface, mountPointsProperty)
-							if err != nil {
-								log.Println("Error getting mount points")
-								continue
-							}
-							if reply.Type == dbus.TypeError {
-								log.Println("dbus error: %", reply.ErrorName)
-								continue
-							}
-
-							mountpointsVar := dbus.Variant{}
-							if err = reply.Args(&mountpointsVar); err != nil {
-								log.Println("Error reading arg", err)
-								continue
-							}
-
 							// grab the mointpoints from the variant
-							var mountpoints []string
-
-							mountPointsVal := reflect.ValueOf(mountpointsVar.Value)
-							length := mountPointsVal.Len()
-							mountpoints = make([]string, length, length)
-							for i := 0; i < length; i++ {
-								array := reflect.ValueOf(mountPointsVal.Index(i).Interface())
-								arrayLenght := array.Len()
-								byteArray := make([]byte, arrayLenght, arrayLenght)
-								for j := 0; j < arrayLenght; j++ {
-									byteArray[j] = array.Index(j).Interface().(byte)
-								}
-								mp := string(byteArray)
-								log.Println("New mp found", mp)
-								mountpoints[i] = mp
-							}
-
+							mountpoints := u.mountpointsForPath(dbus.ObjectPath(path))
 							log.Println("Mount points are", mountpoints)
 							if len(mountpoints) > 0 {
 								p := dbus.ObjectPath(path)
