@@ -49,18 +49,20 @@ MainView {
                 id: safeRemoval
                 SafeRemoval {
                     id: safeRemovalDialog
-                    onCancelClicked: function(button) {
+                    onCancelClicked: function(formatButton, removeButton) {
 		        console.log("SafeRemoval cancelation button clicked");
-			if (button)
-                            button.enabled = true;
+			if (formatButton)
+                            formatButton.enabled = true;
+			if (removeButton)
+                            removeButton.enabled = true;
 		        PopupUtils.close(safeRemovalDialog);
 	            }
-                    onContinueClicked: function(button) {
-		        if (button) {
+                    onContinueClicked: function(formatButton, removeButton) {
+		        if (formatButton && removeButton) {
                             console.log("SafeRemoval continue button clicked.")
                             driveCtrl.driveUnmount(safeRemovalDialog.driveIndex)
                             PopupUtils.close(safeRemovalDialog)
-                            PopupUtils.open(safeRemovalConfirmation, mainPage, {"removeButton": button})
+                            PopupUtils.open(safeRemovalConfirmation, mainPage, {"removeButton": removeButton, "formatButton": formatButton})
 			} else {
                             PopupUtils.close(safeRemovalDialog)
 			}
@@ -72,14 +74,19 @@ MainView {
 	    	id: formatConfirmation
 		FormatConfirmation {
 	    	    id: formatConfirmationDialog
-		    onButtonClicked: function() {
+		    onButtonClicked: function(button) {
+		    	if (button)
+			    button.enabled = true
 		        console.log("FormatConfirmation button clicked");
 		        PopupUtils.close(formatConfirmationDialog)
                     }
                     onFormattingChanged: {
                         if (!formatConfirmationDialog.formatting && !formatConfirmationDialog.isError) {
                             PopupUtils.close(formatConfirmationDialog);
-                        }
+                            if(formatConfirmationDialog.formatButton) {
+				formatConfirmationDialog.formatButton.enabled = true;
+			    }
+                        } 
 		    }
 		}
 	    }
@@ -88,8 +95,9 @@ MainView {
 	    	id: format
                 FormatDialog {
 	    	    id: formatDialog
-                    onCancelClicked: function() {
+                    onCancelClicked: function(button) {
 		        console.log("Format cancelation button clicked");
+                        button.enabled = true
 		        PopupUtils.close(formatDialog);
 	            }
 
@@ -98,7 +106,7 @@ MainView {
                             console.log("Format continue button clicked.")
                             driveCtrl.driveFormat(formatDialog.driveIndex)                     
                             PopupUtils.close(formatDialog)
-                            PopupUtils.open(formatConfirmation, mainPage)
+                            PopupUtils.open(formatConfirmation, mainPage, {"formatButton": button})
 			} else {
                             PopupUtils.close(formatDialog)
 			}
@@ -120,13 +128,16 @@ MainView {
                 } // anchors
 
                 delegate: DriveDelegate {
+                        driveIndex: index
                         onFormatClicked: function(button) {
+			    button.enabled = false;
                             PopupUtils.open(format, mainPage, {"driveIndex": index, "formatButton": button})
 			}
 
-                        onSafeRemovalClicked: function(button) {
-			    button.enabled = false
-                            PopupUtils.open(safeRemoval, mainPage, {"driveIndex": index, "removeButton": button})
+                        onSafeRemovalClicked: function(formatButton, removeButton) {
+			    formatButton.enabled = false;
+			    removeButton.enabled = false;
+                            PopupUtils.open(safeRemoval, mainPage, {"driveIndex": index, "removeButton": removeButton, "formatButton": formatButton})
 			}
 
                         anchors {

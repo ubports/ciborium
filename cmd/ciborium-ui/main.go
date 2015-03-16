@@ -42,7 +42,6 @@ type driveControl struct {
 	FormatError    bool
 	Unmounting     bool
 	UnmountError   bool
-	DevicePresent  bool
 }
 
 type DriveList struct {
@@ -107,28 +106,22 @@ func newDriveControl() (*driveControl, error) {
 	}
 	udisks := udisks2.NewStorageWatcher(systemBus, supportedFS...)
 
-	if err := udisks.Init(); err != nil {
-		return nil, err
-	}
-
 	return &driveControl{udisks: udisks}, nil
 }
 
 func (ctrl *driveControl) Watch() {
 	c := ctrl.udisks.SubscribeBlockDeviceEvents()
 	go func() {
+		log.Println("Calling Drives from Watch first gorroutine")
 		ctrl.Drives()
 		for block := range c {
 			if block {
 				log.Println("Block device added")
-				ctrl.DevicePresent = true
-				qml.Changed(ctrl, &ctrl.DevicePresent)
 			} else {
 				log.Println("Block device removed")
-				// TODO: keep track of the removed device
-				ctrl.DevicePresent = false
-				qml.Changed(ctrl, &ctrl.DevicePresent)
 			}
+
+			log.Println("Calling Drives from after a block was added or removed")
 			ctrl.Drives()
 		}
 	}()
@@ -159,6 +152,7 @@ func (ctrl *driveControl) Watch() {
 			select {
 			case d := <-mountCompleted:
 				log.Println("Mount job done", d)
+				ctrl.Drives()
 			case e := <-mountErrors:
 				log.Println("Mount job error", e)
 			case d := <-unmountCompleted:
@@ -173,6 +167,7 @@ func (ctrl *driveControl) Watch() {
 		}
 	}()
 
+	ctrl.udisks.Init()
 }
 
 func (ctrl *driveControl) Drives() {
@@ -195,12 +190,10 @@ func (ctrl *driveControl) DriveFormat(index int) {
 	ctrl.UnmountError = false
 	qml.Changed(ctrl, &ctrl.Formatting)
 
-	// TODO: really need the go routine?
-	go func() {
-		drive := ctrl.ExternalDrives[index]
-		log.Println("Format drive on index", index, "model", drive.Model(), "path", drive.Path())
-		ctrl.udisks.Format(&drive)
-	}()
+	drive := ctrl.ExternalDrives[index]
+
+	log.Println("Format drive on index", index, "model", drive.Model(), "path", drive.Path)
+	ctrl.udisks.Format(&drive)
 }
 
 func (ctrl *driveControl) DriveUnmount(index int) {
@@ -209,4 +202,8 @@ func (ctrl *driveControl) DriveUnmount(index int) {
 	ctrl.Unmounting = true
 	qml.Changed(ctrl, &ctrl.Unmounting)
 	ctrl.udisks.Unmount(&drive)
+}
+
+func (ctrl *driveControl) DriveAt(index int) *udisks2.Drive {
+	return &ctrl.ExternalDrives[index]
 }

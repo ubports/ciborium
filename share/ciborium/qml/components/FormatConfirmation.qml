@@ -6,6 +6,7 @@ Dialog {
     property bool isError: driveCtrl.formatError
     property bool formatting: driveCtrl.formatting 
     property var onButtonClicked
+    property var formatButton
 
     title: i18n.tr("Formatting")
 
@@ -20,7 +21,7 @@ Dialog {
         visible: false
         text: i18n.tr("Ok")
         color: UbuntuColors.orange
-        onClicked: onButtonClicked()
+        onClicked: onButtonClicked(formatButton)
     }
 
     onIsErrorChanged: {

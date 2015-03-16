@@ -5,6 +5,7 @@ import Ubuntu.Components.Popups 1.0
 UbuntuShape {
     property var onFormatClicked
     property var onSafeRemovalClicked
+    property int driveIndex 
 
     height: childrenRect.height + (3 *units.gu(1))
     color: driveIndex % 2 === 0 ? "white" : "#DECAE3"
@@ -56,7 +57,7 @@ UbuntuShape {
     Button {
         id: removalButton
         text: i18n.tr("Safely Remove")
-        onClicked: onSafeRemovalClicked(removalButton)
+        onClicked: onSafeRemovalClicked(formatButton, removalButton)
 
 	anchors {
 	    top: driveIcon.bottom
@@ -65,4 +66,5 @@ UbuntuShape {
 	    leftMargin: units.gu(1)
 	}
     }
+
 }

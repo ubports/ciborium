@@ -13,7 +13,7 @@ Dialog {
 
     Button {
         text: i18n.tr("Cancel")
-        onClicked: onCancelClicked()
+        onClicked: onCancelClicked(formatButton)
     }
     Button {
         text: i18n.tr("Continue with format")

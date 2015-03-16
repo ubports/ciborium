@@ -23,12 +23,14 @@ package udisks2
 import (
 	"errors"
 	"fmt"
+	"os"
 	"path"
 	"reflect"
 	"runtime"
 	"sort"
 	"strings"
 	"sync"
+	"time"
 
 	"log"
 
@@ -45,6 +47,7 @@ const (
 	dbusPartitionInterface      = "org.freedesktop.UDisks2.Partition"
 	dbusPartitionTableInterface = "org.freedesktop.UDisks2.PartitionTable"
 	dbusJobInterface            = "org.freedesktop.UDisks2.Job"
+	dbusPropertiesInterface     = "org.freedesktop.DBus.Properties"
 	dbusAddedSignal             = "InterfacesAdded"
 	dbusRemovedSignal           = "InterfacesRemoved"
 )
@@ -52,9 +55,15 @@ const (
 var ErrUnhandledFileSystem = errors.New("unhandled filesystem")
 
 type Drive struct {
-	path         dbus.ObjectPath
+	Path         dbus.ObjectPath
 	blockDevices map[dbus.ObjectPath]InterfacesAndProperties
 	driveInfo    InterfacesAndProperties
+	Mounted      bool
+}
+
+type MountEvent struct {
+	Path       dbus.ObjectPath
+	Mountpoint string
 }
 
 type driveMap map[dbus.ObjectPath]*Drive
@@ -81,7 +90,7 @@ type UDisks2 struct {
 	formatErrors    chan error
 	umountCompleted chan string
 	unmountErrors   chan error
-	mountCompleted  chan string
+	mountCompleted  chan MountEvent
 	mountErrors     chan error
 }
 
@@ -125,8 +134,8 @@ func (u *UDisks2) SubscribeUnmountEvents() (<-chan string, <-chan error) {
 	return u.umountCompleted, u.unmountErrors
 }
 
-func (u *UDisks2) SubscribeMountEvents() (<-chan string, <-chan error) {
-	u.mountCompleted = make(chan string)
+func (u *UDisks2) SubscribeMountEvents() (<-chan MountEvent, <-chan error) {
+	u.mountCompleted = make(chan MountEvent)
 	u.mountErrors = make(chan error)
 	return u.mountCompleted, u.mountErrors
 }
@@ -146,19 +155,17 @@ func (u *UDisks2) Mount(s *Event) {
 		}
 
 		log.Println("Mounth path for '", s.Path, "' set to be", mountpoint)
-		u.mountpoints[s.Path] = mountpoint
-		u.mountCompleted <- mountpoint
 	}()
 }
 
 func (u *UDisks2) Unmount(d *Drive) {
-	for blockPath, block := range d.blockDevices {
-		if block.isMounted() {
+	if d.Mounted {
+		for blockPath, _ := range d.blockDevices {
 			u.umount(blockPath)
-		} else {
-			log.Println("Block is not mounted", blockPath)
-			u.unmountErrors <- fmt.Errorf("Drive is not mounted %s", blockPath)
 		}
+	} else {
+		log.Println("Block is not mounted", d)
+		u.unmountErrors <- fmt.Errorf("Drive is not mounted ", d)
 	}
 }
 
@@ -194,8 +201,9 @@ func (u *UDisks2) Format(d *Drive) {
 	go func() {
 		log.Println("Format", d)
 		// do a sync call to unmount
-		for blockPath, block := range d.blockDevices {
-			if block.isMounted() {
+		for blockPath, _ := range d.blockDevices {
+			mps := u.mountpointsForPath(blockPath)
+			if len(mps) > 0 {
 				log.Println("Unmounting", blockPath)
 				err := u.syncUmount(blockPath)
 				if err != nil {
@@ -244,6 +252,43 @@ func (u *UDisks2) deletePartition(o dbus.ObjectPath) error {
 	options["auth.no_user_interaction"] = dbus.Variant{true}
 	_, err := obj.Call(dbusPartitionInterface, "Delete", options)
 	return err
+}
+
+func (u *UDisks2) mountpointsForPath(p dbus.ObjectPath) []string {
+	var mountpoints []string
+	proxy := u.conn.Object(dbusName, p)
+	reply, err := proxy.Call(dbusPropertiesInterface, "Get", dbusFilesystemInterface, mountPointsProperty)
+	if err != nil {
+		log.Println("Error getting mount points")
+		return mountpoints
+	}
+	if reply.Type == dbus.TypeError {
+		log.Println("dbus error: %", reply.ErrorName)
+		return mountpoints
+	}
+
+	mountpointsVar := dbus.Variant{}
+	if err = reply.Args(&mountpointsVar); err != nil {
+		log.Println("Error reading arg", err)
+		return mountpoints
+	}
+
+	mountPointsVal := reflect.ValueOf(mountpointsVar.Value)
+	length := mountPointsVal.Len()
+	mountpoints = make([]string, length, length)
+	for i := 0; i < length; i++ {
+		array := reflect.ValueOf(mountPointsVal.Index(i).Interface())
+		arrayLenght := array.Len()
+		byteArray := make([]byte, arrayLenght, arrayLenght)
+		for j := 0; j < arrayLenght; j++ {
+			byteArray[j] = array.Index(j).Interface().(byte)
+		}
+		mp := string(byteArray)
+		mp = mp[0 : len(mp)-1]
+		log.Println("New mp found", mp)
+		mountpoints[i] = mp
+	}
+	return mountpoints
 }
 
 func (u *UDisks2) ExternalDrives() []Drive {
@@ -302,6 +347,38 @@ func (u *UDisks2) Init() (err error) {
 				case j := <-u.jobs.MountJobs:
 					if j.WasCompleted {
 						log.Println("Mount job was finished for", j.Event.Path, "for paths", j.Paths)
+						for _, path := range j.Paths {
+							// grab the mointpoints from the variant
+							mountpoints := u.mountpointsForPath(dbus.ObjectPath(path))
+							log.Println("Mount points are", mountpoints)
+							if len(mountpoints) > 0 {
+								p := dbus.ObjectPath(path)
+								mp := string(mountpoints[0])
+								u.mountpoints[p] = string(mp)
+								// update the drives
+								for _, d := range u.drives {
+									changed := d.SetMounted(p)
+									if changed {
+										e := MountEvent{d.Path, mp}
+										log.Println("New mount event", e)
+										go func() {
+											for _, t := range [...]int{1, 2, 3, 4, 5, 10} {
+												_, err := os.Stat(mp)
+												if err != nil {
+													log.Println("Mountpoint", mp, "not yet present. Wating", t, "seconds due to", err)
+													time.Sleep(time.Duration(t) * time.Second)
+												} else {
+													break
+												}
+											}
+											log.Println("Sending new event to channel.")
+											u.mountCompleted <- e
+										}()
+									}
+								}
+							}
+
+						}
 					} else {
 						log.Print("Mount job started.")
 					}
@@ -462,7 +539,12 @@ func (u *UDisks2) desiredMountableEvent(s *Event) (bool, error) {
 		return false, nil
 	}
 
-	drive := u.drives[drivePath]
+	drive, ok := u.drives[drivePath]
+	if !ok {
+		log.Println("Drive with path", drivePath, "not found")
+		return false, nil
+	}
+
 	if ok := drive.hasSystemBlockDevices(); ok {
 		log.Println(drivePath, "which contains", s.Path, "has HintSystem set")
 		return false, nil
@@ -535,8 +617,14 @@ func (d *Drive) Model() string {
 	return reflect.ValueOf(modelVariant.Value).String()
 }
 
-func (d *Drive) Path() string {
-	return string(d.path)
+func (d *Drive) SetMounted(path dbus.ObjectPath) bool {
+	for p, _ := range d.blockDevices {
+		if p == path {
+			d.Mounted = true
+			return true
+		}
+	}
+	return false
 }
 
 func (s *Event) getDrive() (dbus.ObjectPath, error) {
@@ -553,9 +641,10 @@ func (s *Event) getDrive() (dbus.ObjectPath, error) {
 
 func newDrive(s *Event) *Drive {
 	return &Drive{
-		path:         s.Path,
+		Path:         s.Path,
 		blockDevices: make(map[dbus.ObjectPath]InterfacesAndProperties),
 		driveInfo:    s.Props,
+		Mounted:      s.Props.isMounted(),
 	}
 }
 
@@ -593,9 +682,13 @@ func (dm *driveMap) addInterface(s *Event) (bool, error) {
 			return blockDevice, err
 		}
 		if _, ok := (*dm)[driveObjectPath]; !ok {
-			return blockDevice, errors.New("drive holding block device is not mapped")
+			drive := newDrive(s)
+			log.Println("Creating new drive", drive)
+			(*dm)[s.Path] = drive
+		} else {
+			(*dm)[driveObjectPath].blockDevices[s.Path] = s.Props
+			(*dm)[driveObjectPath].Mounted = s.Props.isMounted()
 		}
-		(*dm)[driveObjectPath].blockDevices[s.Path] = s.Props
 		blockDevice = true
 	default:
 		// we don't care about other object paths

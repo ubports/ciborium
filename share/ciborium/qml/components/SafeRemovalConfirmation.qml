@@ -7,6 +7,7 @@ Dialog {
     property int driveCount: driveCtrl.len
     property var onButtonClicked
     property var removeButton
+    property var formatButton
 
     title: i18n.tr("Unmounting")
 
@@ -38,11 +39,15 @@ Dialog {
             text = i18n.tr("The device could not be unmounted because is busy");
 	    if (removeButton)
                 removeButton.enabled = true
+	    if (formatButton)
+                formatButton.enabled = false
         } else {
             title = i18n.tr("Safe to remove");
             text = i18n.tr("You can now safely remove the device");
 	    if (removeButton)
-                removeButton.enabled = true
+                removeButton.enabled = false
+	    if (formatButton)
+                formatButton.enabled = true
         }
         unmountOkButton.visible = true;
     } // onIsErrorChanged
