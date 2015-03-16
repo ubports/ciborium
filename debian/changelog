@@ -1,3 +1,29 @@
+ciborium (0.2.12+15.04.20150316.7-0ubuntu1) vivid; urgency=medium
+
+  [ CI Train Bot ]
+  * New rebuild forced.
+  * Resync trunk
+  * Resync trunk
+  * Resync trunk
+  * Resync trunk added: po/cs.po
+
+  [ Manuel de la Pena ]
+  * Add dialogs for the format an unmount errors.
+  * Ensure that more than one format operation can be performed in the
+    ciborium ui.
+  * Ensure that the default dirs are created after the sd card has been
+    formatted. (LP: #1421898)
+  * Ensure that we can format and safetly remove 10 times wihtout issues
+    by querying the drives after each action and updating the internal
+    cache. Improve UI to make sure that a format cannot be done when a
+    device is no mounted. (LP: #1414731)
+  * Improve the ui overall.
+  * Increase the test coverage.
+  * Track mount and unmount events. Allow to unmount and format a
+    unlimited number of times without living the application.
+
+ -- CI Train Bot <ci-train-bot@canonical.com>  Mon, 16 Mar 2015 21:36:32 +0000
+
 ciborium (0.2.12+15.04.20150213-0ubuntu1) vivid; urgency=medium
 
   * 
