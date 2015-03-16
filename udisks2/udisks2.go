@@ -354,8 +354,6 @@ func (u *UDisks2) Init() (err error) {
 							if len(mountpoints) > 0 {
 								p := dbus.ObjectPath(path)
 								mp := string(mountpoints[0])
-								// remove \nul from string
-								mp = mp[0 : len(mp)-1]
 								u.mountpoints[p] = string(mp)
 								// update the drives
 								for _, d := range u.drives {
