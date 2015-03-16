@@ -357,11 +357,11 @@ func (u *UDisks2) Init() (err error) {
 										e := MountEvent{d.Path, mp}
 										log.Println("New mount event", e)
 										go func() {
-											for _, t := range [...]int{1, 5, 10, 20, 50, 100, 200} {
+											for _, t := range [...]int{1, 2, 3, 4, 5, 10} {
 												_, err := os.Stat(mp)
 												if err != nil {
-													log.Println("Mountpoint", mp, "not yet present. Wating", t, "miliseconds")
-													time.Sleep(time.Duration(t) * time.Millisecond)
+													log.Println("Mountpoint", mp, "not yet present. Wating", t, "seconds")
+													time.Sleep(time.Duration(t) * time.Second)
 												} else {
 													break
 												}
