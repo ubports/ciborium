@@ -23,12 +23,14 @@ package udisks2
 import (
 	"errors"
 	"fmt"
+	"os"
 	"path"
 	"reflect"
 	"runtime"
 	"sort"
 	"strings"
 	"sync"
+	"time"
 
 	"log"
 
@@ -354,7 +356,18 @@ func (u *UDisks2) Init() (err error) {
 									if changed {
 										e := MountEvent{d.Path, mp}
 										log.Println("New mount event", e)
-										u.mountCompleted <- e
+										go func() {
+											for t := range [...]int{1, 5, 10, 20, 50, 100, 200} {
+												_, err := os.Stat(mp)
+												if err != nil {
+													log.Println("Mountpoint", mp, "not yet present. Wating", t, "miliseconds")
+													time.Sleep(time.Duration(t) * time.Millisecond)
+												} else {
+													break
+												}
+											}
+											u.mountCompleted <- e
+										}()
 									}
 								}
 							}
