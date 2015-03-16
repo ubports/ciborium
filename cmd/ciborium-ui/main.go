@@ -139,9 +139,28 @@ func (ctrl *driveControl) Watch() {
 			}
 		}
 	}()
+
+	// deal with mount and unmount events so that the ui is updated accordingly
+	go func() {
+		mountCompleted, mountErrors := ctrl.udisks.SubscribeMountEvents()
+		unmountCompleted, unmountErrors := ctrl.udisks.SubscribeUnmountEvents()
+		for {
+			select {
+			case d := <-mountCompleted:
+				log.Println("Mount job done", d)
+			case e := <-mountErrors:
+				log.Println("Mount job error", e)
+			case d := <-unmountCompleted:
+				log.Println("Unmount job done", d)
+			case e := <-unmountErrors:
+				log.Println("Unmount job erro", e)
+			}
+		}
+	}()
 }
 
 func (ctrl *driveControl) Drives() {
+	log.Println("Get present drives.")
 	go func() {
 		ctrl.ExternalDrives = ctrl.udisks.ExternalDrives()
 		ctrl.Len = len(ctrl.ExternalDrives)
@@ -162,18 +181,14 @@ func (ctrl *driveControl) DriveFormat(index int) {
 	go func() {
 		drive := ctrl.ExternalDrives[index]
 		log.Println("Format drive on index", index, "model", drive.Model(), "path", drive.Path())
-		if err := ctrl.udisks.Format(&drive); err != nil {
-			log.Println("Error while trying to format", drive.Model(), ":", err)
-		}
-		log.Println("Format call done")
+		ctrl.udisks.Format(&drive)
 	}()
 }
 
 func (ctrl *driveControl) DriveUnmount(index int) bool {
+	log.Println("Unmounting device.")
 	drive := ctrl.ExternalDrives[index]
-	if err := ctrl.udisks.Unmount(&drive); err != nil {
-		log.Println("Error while trying to unmount", drive.Model(), ":", err)
-		return false
-	}
+	ctrl.udisks.Unmount(&drive)
+	// TODO: deal with the ui estate in the select
 	return true
 }

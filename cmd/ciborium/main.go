@@ -166,35 +166,24 @@ func main() {
 	notifyFree := buildFreeNotify(notificationHandler)
 
 	blockAdded, blockError := udisks2.SubscribeAddEvents()
-	formatCompleted, _ := udisks2.SubscribeFormatEvents()
+	formatCompleted, formatErrors := udisks2.SubscribeFormatEvents()
+	unmountCompleted, unmountErrors := udisks2.SubscribeUnmountEvents()
+	mountCompleted, mountErrors := udisks2.SubscribeMountEvents()
 	mountRemoved := udisks2.SubscribeRemoveEvents()
 
+	// create a routine per couple of channels, the select algorithm will make use
+	// ignore some events if more than one channels is being written to the algorithm
+	// will pick one at random but we want to make sure that we always react, the pairs
+	// are safe since the deal with complementary events
+
+	// block additions
 	go func() {
+		log.Println("Listening for addition and removal events.")
 		for {
 			var n *notifications.PushMessage
 			select {
 			case a := <-blockAdded:
-				if m, err := udisks2.Mount(a); err != nil {
-					log.Println("Cannot mount", a.Path, "due to:", err)
-					n = notificationHandler.NewStandardPushMessage(
-						msgStorageFail.Summary,
-						msgStorageFail.Body,
-						errorIcon,
-					)
-				} else {
-					log.Println("Mounted", a.Path, "as", m)
-					n = notificationHandler.NewStandardPushMessage(
-						msgStorageSuccess.Summary,
-						msgStorageSuccess.Body,
-						sdCardIcon,
-					)
-
-					if err := createStandardHomeDirs(m); err != nil {
-						log.Println("Failed to create standard dir layout:", err)
-					}
-
-					mw.set(mountpoint(m), true)
-				}
+				udisks2.Mount(a)
 			case e := <-blockError:
 				log.Println("Issues in block for added drive:", e)
 				n = notificationHandler.NewStandardPushMessage(
@@ -202,28 +191,6 @@ func main() {
 					msgStorageFail.Body,
 					errorIcon,
 				)
-			case f := <-formatCompleted:
-				if m, err := udisks2.Mount(f); err != nil {
-					log.Println("Cannot mount", f.Path, "due to:", err)
-					n = notificationHandler.NewStandardPushMessage(
-						msgStorageFail.Summary,
-						msgStorageFail.Body,
-						errorIcon,
-					)
-				} else {
-					log.Println("Mounted", f.Path, "as", m)
-					n = notificationHandler.NewStandardPushMessage(
-						msgStorageSuccess.Summary,
-						msgStorageSuccess.Body,
-						sdCardIcon,
-					)
-
-					if err := createStandardHomeDirs(m); err != nil {
-						log.Println("Failed to create standard dir layout:", err)
-					}
-
-					mw.set(mountpoint(m), true)
-				}
 			case m := <-mountRemoved:
 				log.Println("Path removed", m)
 				n = notificationHandler.NewStandardPushMessage(
@@ -240,6 +207,85 @@ func main() {
 					}
 				}
 			}
+			if n != nil {
+				if err := notificationHandler.Send(n); err != nil {
+					log.Println(err)
+				}
+			}
+		}
+	}()
+
+	// mount operations
+	go func() {
+		log.Println("Listening for mount and unmount events.")
+		for {
+			var n *notifications.PushMessage
+			select {
+			case m := <-mountCompleted:
+				log.Println("Mounted", m)
+				n = notificationHandler.NewStandardPushMessage(
+					msgStorageSuccess.Summary,
+					msgStorageSuccess.Body,
+					sdCardIcon,
+				)
+
+				if err := createStandardHomeDirs(m); err != nil {
+					log.Println("Failed to create standard dir layout:", err)
+				}
+
+				mw.set(mountpoint(m), true)
+			case e := <-mountErrors:
+				log.Println("Error while mounting device", e)
+
+				n = notificationHandler.NewStandardPushMessage(
+					msgStorageFail.Summary,
+					msgStorageFail.Body,
+					errorIcon,
+				)
+			case m := <-unmountCompleted:
+				log.Println("Path removed", m)
+				n = notificationHandler.NewStandardPushMessage(
+					msgStorageRemoved.Summary,
+					msgStorageRemoved.Body,
+					sdCardIcon,
+				)
+				mw.remove(mountpoint(m))
+			case e := <-unmountErrors:
+				log.Println("Error while unmounting device", e)
+
+				n = notificationHandler.NewStandardPushMessage(
+					msgStorageFail.Summary,
+					msgStorageFail.Body,
+					errorIcon,
+				)
+			}
+
+			if n != nil {
+				if err := notificationHandler.Send(n); err != nil {
+					log.Println(err)
+				}
+			}
+		}
+	}()
+
+	// format operations
+	go func() {
+		log.Println("Listening for format events.")
+		for {
+			var n *notifications.PushMessage
+			select {
+			case f := <-formatCompleted:
+				log.Println("Format done. Trying to mount.")
+				udisks2.Mount(f)
+			case e := <-formatErrors:
+				log.Println("There was an error while formatting", e)
+				n = notificationHandler.NewStandardPushMessage(
+					msgStorageFail.Summary,
+					msgStorageFail.Body,
+					errorIcon,
+				)
+			}
+
 			if n != nil {
 				if err := notificationHandler.Send(n); err != nil {
 					log.Println(err)

@@ -79,6 +79,10 @@ type UDisks2 struct {
 	pendingMounts   []string
 	formatCompleted chan *Event
 	formatErrors    chan error
+	umountCompleted chan string
+	unmountErrors   chan error
+	mountCompleted  chan string
+	mountErrors     chan error
 }
 
 func NewStorageWatcher(conn *dbus.Connection, filesystems ...string) (u *UDisks2) {
@@ -115,41 +119,48 @@ func (u *UDisks2) SubscribeFormatEvents() (<-chan *Event, <-chan error) {
 	return u.formatCompleted, u.formatErrors
 }
 
-func (u *UDisks2) Mount(s *Event) (mountpoint string, err error) {
-	obj := u.conn.Object(dbusName, s.Path)
-	options := make(VariantMap)
-	options["auth.no_user_interaction"] = dbus.Variant{true}
-	reply, err := obj.Call(dbusFilesystemInterface, "Mount", options)
-	if err != nil {
-		return "", err
-	}
-	if err := reply.Args(&mountpoint); err != nil {
-		return "", err
-	}
-
-	u.mountpoints[s.Path] = mountpoint
-	log.Println("Mounth path for '", s.Path, "' set to be", mountpoint)
-	return mountpoint, err
+func (u *UDisks2) SubscribeUnmountEvents() (<-chan string, <-chan error) {
+	u.umountCompleted = make(chan string)
+	u.unmountErrors = make(chan error)
+	return u.umountCompleted, u.unmountErrors
 }
 
-func (u *UDisks2) Unmount(d *Drive) error {
+func (u *UDisks2) SubscribeMountEvents() (<-chan string, <-chan error) {
+	u.mountCompleted = make(chan string)
+	u.mountErrors = make(chan error)
+	return u.mountCompleted, u.mountErrors
+}
+
+func (u *UDisks2) Mount(s *Event) {
+	go func() {
+		var mountpoint string
+		obj := u.conn.Object(dbusName, s.Path)
+		options := make(VariantMap)
+		options["auth.no_user_interaction"] = dbus.Variant{true}
+		reply, err := obj.Call(dbusFilesystemInterface, "Mount", options)
+		if err != nil {
+			u.mountErrors <- err
+		}
+		if err := reply.Args(&mountpoint); err != nil {
+			u.mountErrors <- err
+		}
+
+		log.Println("Mounth path for '", s.Path, "' set to be", mountpoint)
+		u.mountpoints[s.Path] = mountpoint
+		u.mountCompleted <- mountpoint
+	}()
+}
+
+func (u *UDisks2) Unmount(d *Drive) {
 	for blockPath, block := range d.blockDevices {
 		if block.isMounted() {
-			if err := u.umount(blockPath); err != nil {
-				log.Println("Issues while unmounting", blockPath, ":", err)
-				return err
-			}
-			if _, ok := u.mountpoints[blockPath]; ok {
-				delete(u.mountpoints, blockPath)
-			}
-		} else {
-			log.Println(blockPath, "is not mounted")
+			u.umount(blockPath)
 		}
 	}
-	return nil
 }
 
-func (u *UDisks2) umount(o dbus.ObjectPath) error {
+func (u *UDisks2) syncUmount(o dbus.ObjectPath) error {
+	log.Println("Unmounting", o)
 	obj := u.conn.Object(dbusName, o)
 	options := make(VariantMap)
 	options["auth.no_user_interaction"] = dbus.Variant{true}
@@ -157,45 +168,69 @@ func (u *UDisks2) umount(o dbus.ObjectPath) error {
 	return err
 }
 
-func (u *UDisks2) Format(d *Drive) error {
-	if err := u.Unmount(d); err != nil {
-		log.Println("Error while unmounting:", err)
-		return err
-	}
-	// delete all the partitions
-	for blockPath, block := range d.blockDevices {
-		if block.hasPartition() {
-			if err := u.deletePartition(blockPath); err != nil {
-				log.Println("Issues while deleting partition on", blockPath, ":", err)
-				return err
-			}
-			// delete the block from the map as it shouldn't exist anymore
-			delete(d.blockDevices, blockPath)
+func (u *UDisks2) umount(o dbus.ObjectPath) {
+	go func() {
+		err := u.syncUmount(o)
+		if err != nil {
+			u.unmountErrors <- err
 		}
-	}
-
-	// format the blocks with PartitionTable
-	for blockPath, block := range d.blockDevices {
-		if !block.isPartitionable() {
-			continue
-		}
-		u.format(blockPath)
-	}
-
-	return nil
+	}()
 }
 
-func (u *UDisks2) format(o dbus.ObjectPath) {
+func (u *UDisks2) syncFormat(o dbus.ObjectPath) error {
+	// perform sync call to format the device
+	log.Println("Formatting", o)
+	obj := u.conn.Object(dbusName, o)
+	options := make(VariantMap)
+	options["auth.no_user_interaction"] = dbus.Variant{true}
+	_, err := obj.Call(dbusBlockInterface, "Format", "vfat", options)
+	return err
+}
+
+func (u *UDisks2) Format(d *Drive) {
 	go func() {
-		log.Println("Formatting", o)
-		obj := u.conn.Object(dbusName, o)
-		options := make(VariantMap)
-		options["auth.no_user_interaction"] = dbus.Variant{true}
-		_, err := obj.Call(dbusBlockInterface, "Format", "vfat", options)
-		log.Println("Dbus format operation was done.")
-		if err != nil {
-			u.formatErrors <- err
+		log.Println("Format", d)
+		// do a sync call to unmount
+		for blockPath, block := range d.blockDevices {
+			if block.isMounted() {
+				log.Println("Unmounting", blockPath)
+				err := u.syncUmount(blockPath)
+				if err != nil {
+					log.Println("Error while doing a pre-format unmount:", err)
+					u.formatErrors <- err
+					return
+				}
+			}
 		}
+
+		// delete all the partitions
+		for blockPath, block := range d.blockDevices {
+			if block.hasPartition() {
+				if err := u.deletePartition(blockPath); err != nil {
+					log.Println("Issues while deleting partition on", blockPath, ":", err)
+					u.formatErrors <- err
+					return
+				}
+				// delete the block from the map as it shouldn't exist anymore
+				delete(d.blockDevices, blockPath)
+			}
+		}
+
+		// format the blocks with PartitionTable
+		for blockPath, block := range d.blockDevices {
+			if !block.isPartitionable() {
+				continue
+			}
+
+			// perform sync call to format the device
+			log.Println("Formatting", blockPath)
+			err := u.syncFormat(blockPath)
+			if err != nil {
+				u.formatErrors <- err
+			}
+		}
+		// no, we do not send a success because it should be done ONLY when we get a format job done
+		// event from the dispatcher.
 	}()
 }
 
@@ -250,6 +285,23 @@ func (u *UDisks2) Init() (err error) {
 					} else {
 						log.Print("Format job started.")
 					}
+				case j := <-u.jobs.UnmountJobs:
+					if j.WasCompleted {
+						log.Println("Unmount job was finished for", j.Event.Path, "for paths", j.Paths)
+						for _, path := range j.Paths {
+							u.umountCompleted <- path
+							log.Println("Removing", path, "from", u.mountpoints)
+							delete(u.mountpoints, dbus.ObjectPath(path))
+						}
+					} else {
+						log.Print("Unmount job started.")
+					}
+				case j := <-u.jobs.MountJobs:
+					if j.WasCompleted {
+						log.Println("Mount job was finished for", j.Event.Path, "for paths", j.Paths)
+					} else {
+						log.Print("Mount job started.")
+					}
 				}
 			}
 		}()
@@ -279,6 +331,7 @@ func (u *UDisks2) connectToSignalInterfacesRemoved() (*dbus.SignalWatch, error) 
 }
 
 func (u *UDisks2) emitExistingDevices() {
+	log.Println("emitExistingDevices")
 	u.startLock.Lock()
 	defer u.startLock.Unlock()
 	obj := u.conn.Object(dbusName, dbusObject)
@@ -286,6 +339,7 @@ func (u *UDisks2) emitExistingDevices() {
 	if err != nil {
 		log.Println("Cannot get initial state for devices:", err)
 	}
+	log.Println("GetManagedObjects was done")
 
 	allDevices := make(map[dbus.ObjectPath]InterfacesAndProperties)
 	if err := reply.Args(&allDevices); err != nil {
@@ -331,6 +385,7 @@ func (u *UDisks2) processAddEvent(s *Event) error {
 	if isBlockDevice, err := u.drives.addInterface(s); err != nil {
 		return err
 	} else if isBlockDevice {
+		log.Println("New block device added.")
 		if u.blockAdded != nil && u.blockError != nil {
 			if ok, err := u.desiredMountableEvent(s); err != nil {
 				u.blockError <- err
@@ -339,6 +394,7 @@ func (u *UDisks2) processAddEvent(s *Event) error {
 			}
 		}
 		if u.blockDevice != nil {
+			log.Println("Sedding block device to channel")
 			u.blockDevice <- true
 		}
 	}
@@ -367,6 +423,7 @@ func (u *UDisks2) processRemoveEvent(objectPath dbus.ObjectPath, interfaces Inte
 	}
 	u.mapLock.Unlock()
 	if u.blockDevice != nil {
+		log.Println("Removing block device to channel.")
 		u.blockDevice <- false
 	}
 	return nil
@@ -392,33 +449,34 @@ func (u *UDisks2) desiredMountableEvent(s *Event) (bool, error) {
 	// No file system interface means we can't mount it even if we wanted to
 	_, ok := s.Props[dbusFilesystemInterface]
 	if !ok {
+		log.Println("Filesystem interface is missing.")
 		return false, nil
 	}
 
 	drivePath, err := s.getDrive()
 	if err != nil {
-		//log.Println("Issues while getting drive:", err)
+		log.Println("Issues while getting drive:", err)
 		return false, nil
 	}
 
 	drive := u.drives[drivePath]
 	if ok := drive.hasSystemBlockDevices(); ok {
-		//log.Println(drivePath, "which contains", s.Path, "has HintSystem set")
+		log.Println(drivePath, "which contains", s.Path, "has HintSystem set")
 		return false, nil
 	}
 
 	driveProps, ok := drive.driveInfo[dbusDriveInterface]
 	if !ok {
-		//log.Println(drivePath, "doesn't hold a Drive interface")
+		log.Println(drivePath, "doesn't hold a Drive interface")
 		return false, nil
 	}
 	if mediaRemovableVariant, ok := driveProps["MediaRemovable"]; !ok {
-		//log.Println(drivePath, "which holds", s.Path, "doesn't have MediaRemovable")
+		log.Println(drivePath, "which holds", s.Path, "doesn't have MediaRemovable")
 		return false, nil
 	} else {
 		mediaRemovable := reflect.ValueOf(mediaRemovableVariant.Value).Bool()
 		if !mediaRemovable {
-			//log.Println(drivePath, "which holds", s.Path, "is not MediaRemovable")
+			log.Println(drivePath, "which holds", s.Path, "is not MediaRemovable")
 			return false, nil
 		}
 	}
