@@ -7,49 +7,49 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ciborium\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2014-09-24 17:39-0300\n"
+"POT-Creation-Date: 2015-03-24 16:11-0300\n"
 "PO-Revision-Date: 2014-10-04 22:44+0000\n"
 "Last-Translator: Sveinn í Felli <sv1@fellsnet.is>\n"
 "Language-Team: Icelandic <is@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2015-03-24 06:12+0000\n"
+"X-Launchpad-Export-Date: 2015-03-25 06:07+0000\n"
 "X-Generator: Launchpad (build 17413)\n"
 
 #. TRANSLATORS: This is the summary of a notification bubble with a short message of
 #. success when addding a storage device.
-#: cmd/ciborium/main.go:119
+#: cmd/ciborium/main.go:123
 msgid "Storage device detected"
 msgstr "Geymslutæki fannst"
 
 #. TRANSLATORS: This is the body of a notification bubble with a short message about content
 #. being scanned when addding a storage device.
-#: cmd/ciborium/main.go:122
+#: cmd/ciborium/main.go:126
 msgid "This device will be scanned for new content"
 msgstr "Leitað verður að nýju efni á geymslutækinu"
 
 #. TRANSLATORS: This is the summary of a notification bubble with a short message of
 #. failure when adding a storage device.
-#: cmd/ciborium/main.go:128
+#: cmd/ciborium/main.go:132
 msgid "Failed to add storage device"
 msgstr "Mistókst að bæta við geymslutæki"
 
 #. TRANSLATORS: This is the body of a notification bubble with a short message with hints
 #. with regards to the failure when adding a storage device.
-#: cmd/ciborium/main.go:131
+#: cmd/ciborium/main.go:135
 msgid "Make sure the storage device is correctly formated"
 msgstr "Gakktu úr skugga um að geymslutækið sé rétt forsniðið"
 
 #. TRANSLATORS: This is the summary of a notification bubble with a short message of
 #. a storage device being removed
-#: cmd/ciborium/main.go:137
+#: cmd/ciborium/main.go:141
 msgid "Storage device has been removed"
 msgstr "Geymslutækið hefur verið fjarlægt"
 
 #. TRANSLATORS: This is the body of a notification bubble with a short message about content
 #. from the removed device no longer being available
-#: cmd/ciborium/main.go:140
+#: cmd/ciborium/main.go:144
 msgid ""
 "Content previously available on this device will no longer be accessible"
 msgstr ""
@@ -57,14 +57,14 @@ msgstr ""
 
 #. TRANSLATORS: This is the summary of a notification bubble with a short message warning on
 #. low space
-#: cmd/ciborium/main.go:229
+#: cmd/ciborium/main.go:329
 msgid "Low on disk space"
 msgstr "Lítið diskpláss eftir"
 
 #. TRANSLATORS: This is the body of a notification bubble with a short message about content
 #. reamining available space, %d is the remaining percentage of space available on internal
 #. storage
-#: cmd/ciborium/main.go:233
+#: cmd/ciborium/main.go:333
 #, c-format
 msgid "Only %d%% is available on the internal storage device"
 msgstr "Einungis %d%% eru tiltæk á innra geymslutæki"
@@ -72,64 +72,82 @@ msgstr "Einungis %d%% eru tiltæk á innra geymslutæki"
 #. TRANSLATORS: This is the body of a notification bubble with a short message about content
 #. reamining available space, %d is the remaining percentage of space available on a given
 #. external storage device
-#: cmd/ciborium/main.go:237
+#: cmd/ciborium/main.go:337
 #, c-format
 msgid "Only %d%% is available on the external storage device"
 msgstr "Einungis %d%% eru tiltæk á ytra geymslutæki"
 
-#: share/ciborium/qml/main.qml:33
-msgid "SD Card Management"
-msgstr "Meðhöndlun SD-minniskorta"
+#: share/ciborium/qml/components/SafeRemovalConfirmation.qml:12
+msgid "Unmounting"
+msgstr ""
 
-#: share/ciborium/qml/components/SafeRemoval.qml:17
-msgid "Safe to remove"
-msgstr "Öruggt að fjarlægja"
-
-#: share/ciborium/qml/components/SafeRemoval.qml:18
-msgid "You can now safely remove the device"
-msgstr "Þú getur núna fjarlægt tækið örugglega"
-
-#: share/ciborium/qml/components/SafeRemoval.qml:21
+#: share/ciborium/qml/components/SafeRemovalConfirmation.qml:17
+#: share/ciborium/qml/components/FormatConfirmation.qml:22
 msgid "Ok"
 msgstr "Í lagi"
 
-#: share/ciborium/qml/components/SafeRemoval.qml:36
-msgid "Confirm remove"
-msgstr "Staðfesta fjarlægingu"
+#: share/ciborium/qml/components/SafeRemovalConfirmation.qml:30
+#: share/ciborium/qml/components/SafeRemovalConfirmation.qml:46
+msgid "You can now safely remove the device"
+msgstr "Þú getur núna fjarlægt tækið örugglega"
 
-#: share/ciborium/qml/components/SafeRemoval.qml:37
-msgid "Files on the device can't be accessed after removing"
-msgstr "Skrár á tækinu verða ekki aðgengilegar eftir að það er fjarlægt"
+#: share/ciborium/qml/components/SafeRemovalConfirmation.qml:38
+msgid "Unmount Error"
+msgstr ""
 
-#: share/ciborium/qml/components/SafeRemoval.qml:40
-#: share/ciborium/qml/components/FormatDialog.qml:21
-msgid "Cancel"
-msgstr "Hætta við"
+#: share/ciborium/qml/components/SafeRemovalConfirmation.qml:39
+msgid "The device could not be unmounted because is busy"
+msgstr ""
 
-#: share/ciborium/qml/components/SafeRemoval.qml:44
-msgid "Continue"
-msgstr "Halda áfram"
+#: share/ciborium/qml/components/SafeRemovalConfirmation.qml:45
+msgid "Safe to remove"
+msgstr "Öruggt að fjarlægja"
 
-#: share/ciborium/qml/components/SafeRemoval.qml:59
-msgid "Safely Remove"
-msgstr "Fjarlægja á öruggan hátt"
-
-#: share/ciborium/qml/components/FormatDialog.qml:17
-#: share/ciborium/qml/components/FormatDialog.qml:59
+#: share/ciborium/qml/components/DriveDelegate.qml:45
+#: share/ciborium/qml/components/FormatDialog.qml:11
 msgid "Format"
 msgstr "Forsníða"
 
-#: share/ciborium/qml/components/FormatDialog.qml:18
+#: share/ciborium/qml/components/DriveDelegate.qml:59
+msgid "Safely Remove"
+msgstr "Fjarlægja á öruggan hátt"
+
+#: share/ciborium/qml/components/FormatConfirmation.qml:11
+msgid "Formatting"
+msgstr "Forsníðing"
+
+#: share/ciborium/qml/components/FormatConfirmation.qml:31
+msgid "There was an error when formatting the device"
+msgstr ""
+
+#: share/ciborium/qml/components/FormatDialog.qml:12
 msgid "This action will wipe the content from the device"
 msgstr "Þessi aðgerð mun hreinsa öll gögn af tækinu"
 
-#: share/ciborium/qml/components/FormatDialog.qml:25
+#: share/ciborium/qml/components/FormatDialog.qml:15
+#: share/ciborium/qml/components/SafeRemoval.qml:17
+msgid "Cancel"
+msgstr "Hætta við"
+
+#: share/ciborium/qml/components/FormatDialog.qml:19
 msgid "Continue with format"
 msgstr "Halda áfram með forsníðingu"
 
-#: share/ciborium/qml/components/FormatDialog.qml:42
-msgid "Formatting"
-msgstr "Forsníðing"
+#: share/ciborium/qml/components/SafeRemoval.qml:13
+msgid "Confirm remove"
+msgstr "Staðfesta fjarlægingu"
+
+#: share/ciborium/qml/components/SafeRemoval.qml:14
+msgid "Files on the device can't be accessed after removing"
+msgstr "Skrár á tækinu verða ekki aðgengilegar eftir að það er fjarlægt"
+
+#: share/ciborium/qml/components/SafeRemoval.qml:22
+msgid "Continue"
+msgstr "Halda áfram"
+
+#: share/ciborium/qml/main.qml:34
+msgid "SD Card Management"
+msgstr "Meðhöndlun SD-minniskorta"
 
 #: share/applications/ciborium.desktop.tr.h:1
 msgid "External Drives"

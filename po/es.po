@@ -7,37 +7,37 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ciborium\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2014-09-24 17:39-0300\n"
+"POT-Creation-Date: 2015-03-24 16:11-0300\n"
 "PO-Revision-Date: 2014-09-30 15:42+0000\n"
 "Last-Translator: Leo Arias <leo.arias@canonical.com>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2015-03-24 06:12+0000\n"
+"X-Launchpad-Export-Date: 2015-03-25 06:07+0000\n"
 "X-Generator: Launchpad (build 17413)\n"
 
 #. TRANSLATORS: This is the summary of a notification bubble with a short message of
 #. success when addding a storage device.
-#: cmd/ciborium/main.go:119
+#: cmd/ciborium/main.go:123
 msgid "Storage device detected"
 msgstr "Dispositivo de almacenamiento detectado"
 
 #. TRANSLATORS: This is the body of a notification bubble with a short message about content
 #. being scanned when addding a storage device.
-#: cmd/ciborium/main.go:122
+#: cmd/ciborium/main.go:126
 msgid "This device will be scanned for new content"
 msgstr "Se analizará este dispositivo en busca de nuevo contenido"
 
 #. TRANSLATORS: This is the summary of a notification bubble with a short message of
 #. failure when adding a storage device.
-#: cmd/ciborium/main.go:128
+#: cmd/ciborium/main.go:132
 msgid "Failed to add storage device"
 msgstr "Falló al añadir el dispositivo de almacenamiento"
 
 #. TRANSLATORS: This is the body of a notification bubble with a short message with hints
 #. with regards to the failure when adding a storage device.
-#: cmd/ciborium/main.go:131
+#: cmd/ciborium/main.go:135
 msgid "Make sure the storage device is correctly formated"
 msgstr ""
 "Asegúrese de que el dispositivo de almacenamiento está correctamente "
@@ -45,13 +45,13 @@ msgstr ""
 
 #. TRANSLATORS: This is the summary of a notification bubble with a short message of
 #. a storage device being removed
-#: cmd/ciborium/main.go:137
+#: cmd/ciborium/main.go:141
 msgid "Storage device has been removed"
 msgstr "El dispositivo de almacenamiento ha sido desconectado."
 
 #. TRANSLATORS: This is the body of a notification bubble with a short message about content
 #. from the removed device no longer being available
-#: cmd/ciborium/main.go:140
+#: cmd/ciborium/main.go:144
 msgid ""
 "Content previously available on this device will no longer be accessible"
 msgstr ""
@@ -59,14 +59,14 @@ msgstr ""
 
 #. TRANSLATORS: This is the summary of a notification bubble with a short message warning on
 #. low space
-#: cmd/ciborium/main.go:229
+#: cmd/ciborium/main.go:329
 msgid "Low on disk space"
 msgstr "Poco espacio en disco"
 
 #. TRANSLATORS: This is the body of a notification bubble with a short message about content
 #. reamining available space, %d is the remaining percentage of space available on internal
 #. storage
-#: cmd/ciborium/main.go:233
+#: cmd/ciborium/main.go:333
 #, c-format
 msgid "Only %d%% is available on the internal storage device"
 msgstr "Solo hay %d%% disponible en el disco interno"
@@ -74,65 +74,83 @@ msgstr "Solo hay %d%% disponible en el disco interno"
 #. TRANSLATORS: This is the body of a notification bubble with a short message about content
 #. reamining available space, %d is the remaining percentage of space available on a given
 #. external storage device
-#: cmd/ciborium/main.go:237
+#: cmd/ciborium/main.go:337
 #, c-format
 msgid "Only %d%% is available on the external storage device"
 msgstr "Solo hay %d%% disponible en el disco externo"
 
-#: share/ciborium/qml/main.qml:33
-msgid "SD Card Management"
-msgstr "Gestión de tarjetas SD"
+#: share/ciborium/qml/components/SafeRemovalConfirmation.qml:12
+msgid "Unmounting"
+msgstr ""
 
-#: share/ciborium/qml/components/SafeRemoval.qml:17
-msgid "Safe to remove"
-msgstr "Se puede extraer con seguridad"
-
-#: share/ciborium/qml/components/SafeRemoval.qml:18
-msgid "You can now safely remove the device"
-msgstr "Ahora ya puede extraer el dispositivo con seguridad"
-
-#: share/ciborium/qml/components/SafeRemoval.qml:21
+#: share/ciborium/qml/components/SafeRemovalConfirmation.qml:17
+#: share/ciborium/qml/components/FormatConfirmation.qml:22
 msgid "Ok"
 msgstr "Aceptar"
 
-#: share/ciborium/qml/components/SafeRemoval.qml:36
+#: share/ciborium/qml/components/SafeRemovalConfirmation.qml:30
+#: share/ciborium/qml/components/SafeRemovalConfirmation.qml:46
+msgid "You can now safely remove the device"
+msgstr "Ahora ya puede extraer el dispositivo con seguridad"
+
+#: share/ciborium/qml/components/SafeRemovalConfirmation.qml:38
+msgid "Unmount Error"
+msgstr ""
+
+#: share/ciborium/qml/components/SafeRemovalConfirmation.qml:39
+msgid "The device could not be unmounted because is busy"
+msgstr ""
+
+#: share/ciborium/qml/components/SafeRemovalConfirmation.qml:45
+msgid "Safe to remove"
+msgstr "Se puede extraer con seguridad"
+
+#: share/ciborium/qml/components/DriveDelegate.qml:45
+#: share/ciborium/qml/components/FormatDialog.qml:11
+msgid "Format"
+msgstr "Formatear"
+
+#: share/ciborium/qml/components/DriveDelegate.qml:59
+msgid "Safely Remove"
+msgstr "Extraer de forma segura"
+
+#: share/ciborium/qml/components/FormatConfirmation.qml:11
+msgid "Formatting"
+msgstr "Formateando"
+
+#: share/ciborium/qml/components/FormatConfirmation.qml:31
+msgid "There was an error when formatting the device"
+msgstr ""
+
+#: share/ciborium/qml/components/FormatDialog.qml:12
+msgid "This action will wipe the content from the device"
+msgstr "Esta acción eliminará los contenidos actuales del dispositivo"
+
+#: share/ciborium/qml/components/FormatDialog.qml:15
+#: share/ciborium/qml/components/SafeRemoval.qml:17
+msgid "Cancel"
+msgstr "Cancelar"
+
+#: share/ciborium/qml/components/FormatDialog.qml:19
+msgid "Continue with format"
+msgstr "Continuar con el formateo"
+
+#: share/ciborium/qml/components/SafeRemoval.qml:13
 msgid "Confirm remove"
 msgstr "Confirme la extracción"
 
-#: share/ciborium/qml/components/SafeRemoval.qml:37
+#: share/ciborium/qml/components/SafeRemoval.qml:14
 msgid "Files on the device can't be accessed after removing"
 msgstr ""
 "No se podrá acceder a los archivos de este dispositivo después de extraerlo"
 
-#: share/ciborium/qml/components/SafeRemoval.qml:40
-#: share/ciborium/qml/components/FormatDialog.qml:21
-msgid "Cancel"
-msgstr "Cancelar"
-
-#: share/ciborium/qml/components/SafeRemoval.qml:44
+#: share/ciborium/qml/components/SafeRemoval.qml:22
 msgid "Continue"
 msgstr "Continuar"
 
-#: share/ciborium/qml/components/SafeRemoval.qml:59
-msgid "Safely Remove"
-msgstr "Extraer de forma segura"
-
-#: share/ciborium/qml/components/FormatDialog.qml:17
-#: share/ciborium/qml/components/FormatDialog.qml:59
-msgid "Format"
-msgstr "Formatear"
-
-#: share/ciborium/qml/components/FormatDialog.qml:18
-msgid "This action will wipe the content from the device"
-msgstr "Esta acción eliminará los contenidos actuales del dispositivo"
-
-#: share/ciborium/qml/components/FormatDialog.qml:25
-msgid "Continue with format"
-msgstr "Continuar con el formateo"
-
-#: share/ciborium/qml/components/FormatDialog.qml:42
-msgid "Formatting"
-msgstr "Formateando"
+#: share/ciborium/qml/main.qml:34
+msgid "SD Card Management"
+msgstr "Gestión de tarjetas SD"
 
 #: share/applications/ciborium.desktop.tr.h:1
 msgid "External Drives"
