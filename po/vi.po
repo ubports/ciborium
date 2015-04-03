@@ -1,52 +1,51 @@
-# Swedish translation for ciborium
-# Copyright (c) 2014 Rosetta Contributors and Canonical Ltd 2014
+# Vietnamese translation for ciborium
+# Copyright (c) 2015 Rosetta Contributors and Canonical Ltd 2015
 # This file is distributed under the same license as the ciborium package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2014.
-# clone <josef.andersson@fripost.org>, 2015.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2015.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: ciborium\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2015-03-24 16:11-0300\n"
-"PO-Revision-Date: 2015-04-03 05:35+0000\n"
-"Last-Translator: Josef Andersson <Unknown>\n"
-"Language-Team: Swedish\n"
+"PO-Revision-Date: 2015-04-02 19:42+0000\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: Vietnamese <vi@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Launchpad-Export-Date: 2015-04-03 06:05+0000\n"
 "X-Generator: Launchpad (build 17413)\n"
-"Language: sv\n"
 
 #. TRANSLATORS: This is the summary of a notification bubble with a short message of
 #. success when addding a storage device.
 #: cmd/ciborium/main.go:119
 msgid "Storage device detected"
-msgstr "Lagringsenhet hittad"
+msgstr ""
 
 #. TRANSLATORS: This is the body of a notification bubble with a short message about content
 #. being scanned when addding a storage device.
 #: cmd/ciborium/main.go:122
 msgid "This device will be scanned for new content"
-msgstr "Enheten kommer att genomsökas efter nytt innehåll"
+msgstr ""
 
 #. TRANSLATORS: This is the summary of a notification bubble with a short message of
 #. failure when adding a storage device.
 #: cmd/ciborium/main.go:128
 msgid "Failed to add storage device"
-msgstr "Kunde inte ansluta lagringsenhet"
+msgstr ""
 
 #. TRANSLATORS: This is the body of a notification bubble with a short message with hints
 #. with regards to the failure when adding a storage device.
 #: cmd/ciborium/main.go:131
 msgid "Make sure the storage device is correctly formated"
-msgstr "Kontrollera att lagringsenheten är korrekt formaterad"
+msgstr ""
 
 #. TRANSLATORS: This is the summary of a notification bubble with a short message of
 #. a storage device being removed
 #: cmd/ciborium/main.go:137
 msgid "Storage device has been removed"
-msgstr "Lagringsenheten har blivit borttagen"
+msgstr ""
 
 #. TRANSLATORS: This is the body of a notification bubble with a short message about content
 #. from the removed device no longer being available
@@ -54,13 +53,12 @@ msgstr "Lagringsenheten har blivit borttagen"
 msgid ""
 "Content previously available on this device will no longer be accessible"
 msgstr ""
-"Tidigare tillgängligt innehåll på den här enheten är inte åtkomstbart"
 
 #. TRANSLATORS: This is the summary of a notification bubble with a short message warning on
 #. low space
 #: cmd/ciborium/main.go:229
 msgid "Low on disk space"
-msgstr "Dåligt med diskutrymme"
+msgstr ""
 
 #. TRANSLATORS: This is the body of a notification bubble with a short message about content
 #. reamining available space, %d is the remaining percentage of space available on internal
@@ -68,7 +66,7 @@ msgstr "Dåligt med diskutrymme"
 #: cmd/ciborium/main.go:233
 #, c-format
 msgid "Only %d%% is available on the internal storage device"
-msgstr "Endast %d%% är tillgängligt på den interna lagringsenheten"
+msgstr ""
 
 #. TRANSLATORS: This is the body of a notification bubble with a short message about content
 #. reamining available space, %d is the remaining percentage of space available on a given
@@ -76,78 +74,78 @@ msgstr "Endast %d%% är tillgängligt på den interna lagringsenheten"
 #: cmd/ciborium/main.go:237
 #, c-format
 msgid "Only %d%% is available on the external storage device"
-msgstr "Endast %d%% är tillgängligt på den externa lagringsenheten"
+msgstr ""
 
 #: share/ciborium/qml/components/SafeRemovalConfirmation.qml:12
 msgid "Unmounting"
-msgstr "Avmonterar"
+msgstr ""
 
 #: share/ciborium/qml/components/SafeRemoval.qml:21
 msgid "Ok"
-msgstr "OK"
+msgstr ""
 
 #: share/ciborium/qml/components/SafeRemoval.qml:18
 msgid "You can now safely remove the device"
-msgstr "Du kan nu ta säkert ta bort enheten"
+msgstr ""
 
 #: share/ciborium/qml/components/SafeRemovalConfirmation.qml:38
 msgid "Unmount Error"
-msgstr "Avmonteringsfel"
+msgstr ""
 
 #: share/ciborium/qml/components/SafeRemovalConfirmation.qml:39
 msgid "The device could not be unmounted because is busy"
-msgstr "Enheten kunde inte avmonteras eftersom den är upptagen"
+msgstr ""
 
 #: share/ciborium/qml/components/SafeRemoval.qml:17
 msgid "Safe to remove"
-msgstr "Säkert att ta bort"
+msgstr ""
 
 #: share/ciborium/qml/components/FormatDialog.qml:17
 #: share/ciborium/qml/components/FormatDialog.qml:59
 msgid "Format"
-msgstr "Formatera"
+msgstr ""
 
 #: share/ciborium/qml/components/SafeRemoval.qml:59
 msgid "Safely Remove"
-msgstr "Säker borttagning"
+msgstr ""
 
 #: share/ciborium/qml/components/FormatDialog.qml:42
 msgid "Formatting"
-msgstr "Formaterar"
+msgstr ""
 
 #: share/ciborium/qml/components/FormatConfirmation.qml:31
 msgid "There was an error when formatting the device"
-msgstr "Det uppstod ett fel vid formatering av enheten"
+msgstr ""
 
 #: share/ciborium/qml/components/FormatDialog.qml:18
 msgid "This action will wipe the content from the device"
-msgstr "Denna åtgärd kommer att radera innehållet på enheten"
+msgstr ""
 
 #: share/ciborium/qml/components/SafeRemoval.qml:40
 #: share/ciborium/qml/components/FormatDialog.qml:21
 msgid "Cancel"
-msgstr "Avbryt"
+msgstr ""
 
 #: share/ciborium/qml/components/FormatDialog.qml:25
 msgid "Continue with format"
-msgstr "Fortsätt med formatering"
+msgstr ""
 
 #: share/ciborium/qml/components/SafeRemoval.qml:36
 msgid "Confirm remove"
-msgstr "Bekräfta borttagning"
+msgstr ""
 
 #: share/ciborium/qml/components/SafeRemoval.qml:37
 msgid "Files on the device can't be accessed after removing"
-msgstr "Filer på enheten kan inte kommas åt efter borttagning"
+msgstr ""
 
 #: share/ciborium/qml/components/SafeRemoval.qml:44
 msgid "Continue"
-msgstr "Fortsätt"
+msgstr ""
 
 #: share/ciborium/qml/main.qml:33
 msgid "SD Card Management"
-msgstr "SD-kort hantering"
+msgstr ""
 
 #: share/applications/ciborium.desktop.tr.h:1
 msgid "External Drives"
-msgstr "Externa diskar"
+msgstr ""
