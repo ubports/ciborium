@@ -8,146 +8,144 @@ msgstr ""
 "Project-Id-Version: ciborium\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2015-03-24 16:11-0300\n"
-"PO-Revision-Date: 2015-02-14 21:47+0000\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"PO-Revision-Date: 2015-05-06 19:41+0000\n"
+"Last-Translator: Ondřej Sojka <ondrej.sojka@gmail.com>\n"
 "Language-Team: Czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2015-03-25 06:07+0000\n"
-"X-Generator: Launchpad (build 17413)\n"
+"X-Launchpad-Export-Date: 2015-05-07 05:36+0000\n"
+"X-Generator: Launchpad (build 17474)\n"
 
 #. TRANSLATORS: This is the summary of a notification bubble with a short message of
 #. success when addding a storage device.
-#: cmd/ciborium/main.go:123
+#: cmd/ciborium/main.go:119
 msgid "Storage device detected"
-msgstr ""
+msgstr "Úložné zařízení nalezeno"
 
 #. TRANSLATORS: This is the body of a notification bubble with a short message about content
 #. being scanned when addding a storage device.
-#: cmd/ciborium/main.go:126
+#: cmd/ciborium/main.go:122
 msgid "This device will be scanned for new content"
-msgstr ""
+msgstr "Zařízení bude prohledáno, zda neobsahuje nový obsah."
 
 #. TRANSLATORS: This is the summary of a notification bubble with a short message of
 #. failure when adding a storage device.
-#: cmd/ciborium/main.go:132
+#: cmd/ciborium/main.go:128
 msgid "Failed to add storage device"
-msgstr ""
+msgstr "Nepodařilo se přidat úložné zařízení"
 
 #. TRANSLATORS: This is the body of a notification bubble with a short message with hints
 #. with regards to the failure when adding a storage device.
-#: cmd/ciborium/main.go:135
+#: cmd/ciborium/main.go:131
 msgid "Make sure the storage device is correctly formated"
-msgstr ""
+msgstr "Zkontrolujte, zda je zařízení správně naformátováno"
 
 #. TRANSLATORS: This is the summary of a notification bubble with a short message of
 #. a storage device being removed
-#: cmd/ciborium/main.go:141
+#: cmd/ciborium/main.go:137
 msgid "Storage device has been removed"
-msgstr ""
+msgstr "Úložné zařízení bylo odebráno"
 
 #. TRANSLATORS: This is the body of a notification bubble with a short message about content
 #. from the removed device no longer being available
-#: cmd/ciborium/main.go:144
+#: cmd/ciborium/main.go:140
 msgid ""
 "Content previously available on this device will no longer be accessible"
-msgstr ""
+msgstr "Dříve dostupný obsah tohoto zařízení již nebude k dispozici"
 
 #. TRANSLATORS: This is the summary of a notification bubble with a short message warning on
 #. low space
-#: cmd/ciborium/main.go:329
+#: cmd/ciborium/main.go:229
 msgid "Low on disk space"
-msgstr ""
+msgstr "Nedostatek místa na disku"
 
 #. TRANSLATORS: This is the body of a notification bubble with a short message about content
 #. reamining available space, %d is the remaining percentage of space available on internal
 #. storage
-#: cmd/ciborium/main.go:333
+#: cmd/ciborium/main.go:233
 #, c-format
 msgid "Only %d%% is available on the internal storage device"
-msgstr ""
+msgstr "Interní úložné zařízení má k dispozici pouze %% %d místa"
 
 #. TRANSLATORS: This is the body of a notification bubble with a short message about content
 #. reamining available space, %d is the remaining percentage of space available on a given
 #. external storage device
-#: cmd/ciborium/main.go:337
+#: cmd/ciborium/main.go:237
 #, c-format
 msgid "Only %d%% is available on the external storage device"
-msgstr ""
+msgstr "Externí úložné zařízení má k dispozici pouze %% %d místa"
 
 #: share/ciborium/qml/components/SafeRemovalConfirmation.qml:12
 msgid "Unmounting"
-msgstr ""
+msgstr "Odpojování"
 
-#: share/ciborium/qml/components/SafeRemovalConfirmation.qml:17
-#: share/ciborium/qml/components/FormatConfirmation.qml:22
+#: share/ciborium/qml/components/SafeRemoval.qml:21
 msgid "Ok"
-msgstr ""
+msgstr "Ok"
 
-#: share/ciborium/qml/components/SafeRemovalConfirmation.qml:30
-#: share/ciborium/qml/components/SafeRemovalConfirmation.qml:46
+#: share/ciborium/qml/components/SafeRemoval.qml:18
 msgid "You can now safely remove the device"
-msgstr ""
+msgstr "Nyní můžete zařízení bezpečně odebrat."
 
 #: share/ciborium/qml/components/SafeRemovalConfirmation.qml:38
 msgid "Unmount Error"
-msgstr ""
+msgstr "Při odpojování došlo k chybě."
 
 #: share/ciborium/qml/components/SafeRemovalConfirmation.qml:39
 msgid "The device could not be unmounted because is busy"
-msgstr ""
+msgstr "Zařízení nelze odpojit, protože se používá."
 
-#: share/ciborium/qml/components/SafeRemovalConfirmation.qml:45
+#: share/ciborium/qml/components/SafeRemoval.qml:17
 msgid "Safe to remove"
-msgstr ""
+msgstr "Zařízení lze bezpečně odebrat."
 
-#: share/ciborium/qml/components/DriveDelegate.qml:45
-#: share/ciborium/qml/components/FormatDialog.qml:11
+#: share/ciborium/qml/components/FormatDialog.qml:17
+#: share/ciborium/qml/components/FormatDialog.qml:59
 msgid "Format"
-msgstr ""
+msgstr "Formátovat"
 
-#: share/ciborium/qml/components/DriveDelegate.qml:59
+#: share/ciborium/qml/components/SafeRemoval.qml:59
 msgid "Safely Remove"
-msgstr ""
+msgstr "Bezpečně odebrat"
 
-#: share/ciborium/qml/components/FormatConfirmation.qml:11
+#: share/ciborium/qml/components/FormatDialog.qml:42
 msgid "Formatting"
-msgstr ""
+msgstr "Formátuje se"
 
 #: share/ciborium/qml/components/FormatConfirmation.qml:31
 msgid "There was an error when formatting the device"
-msgstr ""
+msgstr "Při formátování zařízení došlo k chybě."
 
-#: share/ciborium/qml/components/FormatDialog.qml:12
+#: share/ciborium/qml/components/FormatDialog.qml:18
 msgid "This action will wipe the content from the device"
-msgstr ""
+msgstr "Tento krok vymaže obsah ze zařízení."
 
-#: share/ciborium/qml/components/FormatDialog.qml:15
-#: share/ciborium/qml/components/SafeRemoval.qml:17
+#: share/ciborium/qml/components/SafeRemoval.qml:40
+#: share/ciborium/qml/components/FormatDialog.qml:21
 msgid "Cancel"
-msgstr ""
+msgstr "Zrušit"
 
-#: share/ciborium/qml/components/FormatDialog.qml:19
+#: share/ciborium/qml/components/FormatDialog.qml:25
 msgid "Continue with format"
-msgstr ""
+msgstr "Pokračovat ve formátování"
 
-#: share/ciborium/qml/components/SafeRemoval.qml:13
+#: share/ciborium/qml/components/SafeRemoval.qml:36
 msgid "Confirm remove"
-msgstr ""
+msgstr "Potvrdit odebrání"
 
-#: share/ciborium/qml/components/SafeRemoval.qml:14
+#: share/ciborium/qml/components/SafeRemoval.qml:37
 msgid "Files on the device can't be accessed after removing"
-msgstr ""
+msgstr "Soubory v zařízení nebudou po jeho odebrání dostupné."
 
-#: share/ciborium/qml/components/SafeRemoval.qml:22
+#: share/ciborium/qml/components/SafeRemoval.qml:44
 msgid "Continue"
-msgstr ""
+msgstr "Pokračovat"
 
-#: share/ciborium/qml/main.qml:34
+#: share/ciborium/qml/main.qml:33
 msgid "SD Card Management"
-msgstr ""
+msgstr "Správa SD karty"
 
 #: share/applications/ciborium.desktop.tr.h:1
 msgid "External Drives"
-msgstr ""
+msgstr "Externí disky"
