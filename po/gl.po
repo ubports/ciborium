@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: ciborium\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2015-03-24 16:11-0300\n"
-"PO-Revision-Date: 2015-03-27 09:32+0000\n"
+"PO-Revision-Date: 2015-05-15 14:52+0000\n"
 "Last-Translator: Marcos Lans <Unknown>\n"
 "Language-Team: Galician <gl@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2015-03-28 05:34+0000\n"
-"X-Generator: Launchpad (build 17413)\n"
+"X-Launchpad-Export-Date: 2015-05-16 05:44+0000\n"
+"X-Generator: Launchpad (build 17493)\n"
 
 #. TRANSLATORS: This is the summary of a notification bubble with a short message of
 #. success when addding a storage device.
@@ -58,7 +58,7 @@ msgstr "Xa non poderá acceder ao contido dispoñíbel no dispositivo"
 #. low space
 #: cmd/ciborium/main.go:229
 msgid "Low on disk space"
-msgstr "Pouco espazo no disco"
+msgstr "Fica pouco espazo no disco"
 
 #. TRANSLATORS: This is the body of a notification bubble with a short message about content
 #. reamining available space, %d is the remaining percentage of space available on internal
