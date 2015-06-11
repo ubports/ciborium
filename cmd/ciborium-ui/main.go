@@ -77,7 +77,8 @@ func main() {
 	// set default logger flags to get more useful info
 	log.SetFlags(log.LstdFlags | log.Lshortfile)
 
-	qml.Init(nil)
+	// not in qml.v1
+	//qml.Init(nil)
 	engine := qml.NewEngine()
 	component, err := engine.LoadFile(mainQmlPath)
 	if err != nil {
