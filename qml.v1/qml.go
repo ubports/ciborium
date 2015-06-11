@@ -9,7 +9,7 @@ import "C"
 import (
 	"errors"
 	"fmt"
-	"gopkg.in/qml.v1/gl/glbase"
+	"launchpad.net/ciborium/qml.v1/gl/glbase"
 	"image"
 	"image/color"
 	"io"

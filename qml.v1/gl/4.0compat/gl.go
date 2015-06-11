@@ -17,7 +17,7 @@ import (
 	"reflect"
 	"unsafe"
 
-	"gopkg.in/qml.v1/gl/glbase"
+	"launchpad.net/ciborium/qml.v1/gl/glbase"
 )
 
 // API returns a value that offers methods matching the OpenGL version 4.0 API.

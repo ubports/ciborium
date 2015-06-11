@@ -15,10 +15,10 @@ import (
 	"testing"
 	"time"
 
-	. "gopkg.in/check.v1"
-	"gopkg.in/qml.v1"
-	"gopkg.in/qml.v1/cpptest"
-	"gopkg.in/qml.v1/gl/2.0"
+	. "launchpad.net/ciborium/check.v1"
+	"launchpad.net/ciborium/qml.v1"
+	"launchpad.net/ciborium/qml.v1/cpptest"
+	"launchpad.net/ciborium/qml.v1/gl/2.0"
 	"path/filepath"
 )
 
