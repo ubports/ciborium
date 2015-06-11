@@ -6,8 +6,8 @@ Files: gettext/*
 Copyright: 2012-2013 José Carlos Nieto
 License: MIT
 
-Files: qml.v0/*
-Copyright: 2013-2014, Gustavo Niemeyer <gustavo@niemeyer.net>
+Files: qml.v1/*
+Copyright: 2013-2015, Gustavo Niemeyer <gustavo@niemeyer.net> and gopkg.in/qml.v1 contributors
 License: LGPL-3
 
 Files: *
