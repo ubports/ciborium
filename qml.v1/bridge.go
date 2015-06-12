@@ -16,57 +16,68 @@ import (
 	"os"
 	"reflect"
 	"runtime"
-	"sync"
 	"sync/atomic"
 	"unsafe"
 
-	"launchpad.net/ciborium/qml.v0/tref"
+	"launchpad.net/ciborium/qml.v1/cdata"
 )
-
-var hookWaiting C.int
-
-// guiLoop runs the main GUI thread event loop in C++ land.
-func guiLoop() {
-	// This is not an option in Init to avoid forcing people to patch
-	// and recompile an application just so it runs on Ubuntu Touch.
-	deskfile := os.Getenv("DESKTOP_FILE_HINT")
-	cdeskfile := (*C.char)(nil)
-	if deskfile != "" {
-		os.Setenv("DESKTOP_FILE_HINT", "")
-		cdeskfile = C.CString("--desktop_file_hint=" + deskfile)
-	}
-
-	runtime.LockOSThread()
-	guiLoopRef = tref.Ref()
-	C.newGuiApplication(cdeskfile)
-	C.idleTimerInit(&hookWaiting)
-	guiLoopReady.Unlock()
-	C.applicationExec()
-}
 
 var (
 	guiFunc      = make(chan func())
 	guiDone      = make(chan struct{})
 	guiLock      = 0
-	guiLoopReady sync.Mutex
-	guiLoopRef   uintptr
+	guiMainRef   uintptr
 	guiPaintRef  uintptr
+	guiIdleRun   int32
+
+	initialized int32
 )
+
+func init() {
+	runtime.LockOSThread()
+	guiMainRef = cdata.Ref()
+}
+
+// Run runs the main QML event loop, runs f, and then terminates the
+// event loop once f returns.
+//
+// Most functions from the qml package block until Run is called.
+//
+// The Run function must necessarily be called from the same goroutine as
+// the main function or the application may fail when running on Mac OS.
+func Run(f func() error) error {
+	if cdata.Ref() != guiMainRef {
+		panic("Run must be called on the initial goroutine so apps are portable to Mac OS")
+	}
+	if !atomic.CompareAndSwapInt32(&initialized, 0, 1) {
+		panic("qml.Run called more than once")
+	}
+	C.newGuiApplication()
+	C.idleTimerInit((*C.int32_t)(&guiIdleRun))
+	done := make(chan error, 1)
+	go func() {
+		RunMain(func() {}) // Block until the event loop is running.
+		done <- f()
+		C.applicationExit()
+	}()
+	C.applicationExec()
+	return <-done
+}
 
 // RunMain runs f in the main QML thread and waits for f to return.
 //
-// This is meant for extensions that integrate directly with the
+// This is meant to be used by extensions that integrate directly with the
 // underlying QML logic.
 func RunMain(f func()) {
-	ref := tref.Ref()
-	if ref == guiLoopRef || ref == atomic.LoadUintptr(&guiPaintRef) {
+	ref := cdata.Ref()
+	if ref == guiMainRef || ref == atomic.LoadUintptr(&guiPaintRef) {
 		// Already within the GUI or render threads. Attempting to wait would deadlock.
 		f()
 		return
 	}
 
 	// Tell Qt we're waiting for the idle hook to be called.
-	if atomic.AddInt32((*int32)(unsafe.Pointer(&hookWaiting)), 1) == 1 {
+	if atomic.AddInt32(&guiIdleRun, 1) == 1 {
 		C.idleTimerStart()
 	}
 
@@ -161,7 +172,7 @@ func Changed(value, fieldAddr interface{}) {
 
 // hookIdleTimer is run once per iteration of the Qt event loop,
 // within the main GUI thread, but only if at least one goroutine
-// has atomically incremented hookWaiting.
+// has atomically incremented guiIdleRun.
 //
 //export hookIdleTimer
 func hookIdleTimer() {
@@ -178,7 +189,7 @@ func hookIdleTimer() {
 		}
 		f()
 		guiDone <- struct{}{}
-		atomic.AddInt32((*int32)(unsafe.Pointer(&hookWaiting)), -1)
+		atomic.AddInt32(&guiIdleRun, -1)
 	}
 }
 
@@ -217,10 +228,13 @@ func wrapGoValue(engine *Engine, gvalue interface{}, owner valueOwner) (cvalue u
 		panic("cannot hand pointer of pointer to QML logic; use a simple pointer instead")
 	}
 
-	painting := tref.Ref() == atomic.LoadUintptr(&guiPaintRef)
+	painting := cdata.Ref() == atomic.LoadUintptr(&guiPaintRef)
 
+	// Cannot reuse a jsOwner because the QML runtime may choose to destroy
+	// the value _after_ we hand it a new reference to the same value.
+	// See issue #68 for details.
 	prev, ok := engine.values[gvalue]
-	if ok && (prev.owner == owner || owner != cppOwner || painting) {
+	if ok && (prev.owner == cppOwner || painting) {
 		return prev.cvalue
 	}
 
@@ -239,11 +253,12 @@ func wrapGoValue(engine *Engine, gvalue interface{}, owner valueOwner) (cvalue u
 	}
 	fold.cvalue = C.newGoValue(unsafe.Pointer(fold), typeInfo(gvalue), parent)
 	if prev != nil {
-		prev.next = fold
-		fold.prev = prev
-	} else {
-		engine.values[gvalue] = fold
+		// Put new fold first so the single cppOwner, if any, is always the first entry.
+		fold.next = prev
+		prev.prev = fold
 	}
+	engine.values[gvalue] = fold
+
 	//fmt.Printf("[DEBUG] value alive (wrapped): cvalue=%x gvalue=%x/%#v\n", fold.cvalue, addrOf(fold.gvalue), fold.gvalue)
 	stats.valuesAlive(+1)
 	C.engineSetContextForObject(engine.addr, fold.cvalue)
@@ -426,6 +441,8 @@ func convertAndSet(to, from reflect.Value, setMethod reflect.Value) (err error) 
 	}
 	fromType := from.Type()
 	defer func() {
+		// TODO This is catching more than it should. There are calls
+		//      to custom code below that should be isolated.
 		if v := recover(); v != nil {
 			err = fmt.Errorf("cannot use %s as a %s", fromType, toType)
 		}
@@ -522,26 +539,41 @@ func convertParam(methodName string, index int, param reflect.Value, argt reflec
 	return out, nil
 }
 
+func printPaintPanic() {
+	if v := recover(); v != nil {
+		buf := make([]byte, 8192)
+		runtime.Stack(buf, false)
+		fmt.Fprintf(os.Stderr, "panic while painting: %s\n\n%s", v, buf)
+	}
+}
+
 //export hookGoValuePaint
 func hookGoValuePaint(enginep, foldp unsafe.Pointer, reflectIndex C.intptr_t) {
+	// Besides a convenience this is a workaround for http://golang.org/issue/8588
+	defer printPaintPanic()
+	defer atomic.StoreUintptr(&guiPaintRef, 0)
+
 	// The main GUI thread is mutex-locked while paint methods are called,
 	// so no two paintings should be happening at the same time.
-	atomic.StoreUintptr(&guiPaintRef, tref.Ref())
+	atomic.StoreUintptr(&guiPaintRef, cdata.Ref())
 
 	fold := ensureEngine(enginep, foldp)
+	if fold.init.IsValid() {
+		return
+	}
+
+	painter := &Painter{engine: fold.engine, obj: &Common{fold.cvalue, fold.engine}}
 	v := reflect.ValueOf(fold.gvalue)
-
-	painter := &Painter{fold.engine, &Common{fold.cvalue, fold.engine}}
-
 	method := v.Method(int(reflectIndex))
 	method.Call([]reflect.Value{reflect.ValueOf(painter)})
-
-	atomic.StoreUintptr(&guiPaintRef, 0)
 }
 
 func ensureEngine(enginep, foldp unsafe.Pointer) *valueFold {
 	fold := (*valueFold)(foldp)
 	if fold.engine != nil {
+		if fold.init.IsValid() {
+			initGoType(fold)
+		}
 		return fold
 	}
 
@@ -568,12 +600,29 @@ func ensureEngine(enginep, foldp unsafe.Pointer) *valueFold {
 	if len(typeNew) == before {
 		panic("value had no engine, but was not created by a registered type; who created the value?")
 	}
+	initGoType(fold)
+	return fold
+}
 
+func initGoType(fold *valueFold) {
+	if cdata.Ref() == atomic.LoadUintptr(&guiPaintRef) {
+		go RunMain(func() { _initGoType(fold, true) })
+	} else {
+		_initGoType(fold, false)
+	}
+}
+
+func _initGoType(fold *valueFold, schedulePaint bool) {
+	if !fold.init.IsValid() {
+		return
+	}
 	// TODO Would be good to preserve identity on the Go side. See unpackDataValue as well.
 	obj := &Common{engine: fold.engine, addr: fold.cvalue}
 	fold.init.Call([]reflect.Value{reflect.ValueOf(fold.gvalue), reflect.ValueOf(obj)})
-
-	return fold
+	fold.init = reflect.Value{}
+	if schedulePaint {
+		obj.Call("update")
+	}
 }
 
 //export hookPanic

@@ -9,6 +9,7 @@ import "C"
 import (
 	"errors"
 	"fmt"
+	"launchpad.net/ciborium/qml.v1/gl/glbase"
 	"image"
 	"image/color"
 	"io"
@@ -18,32 +19,8 @@ import (
 	"reflect"
 	"strings"
 	"sync"
-	"sync/atomic"
 	"unsafe"
 )
-
-// InitOptions holds options to initialize the qml package.
-type InitOptions struct {
-	// Reserved for coming options.
-}
-
-var initialized int32
-
-// Init initializes the qml package with the provided parameters.
-// If the options parameter is nil, default options suitable for a
-// normal graphic application will be used.
-//
-// Init must be called only once, and before any other functionality
-// from the qml package is used.
-func Init(options *InitOptions) {
-	if !atomic.CompareAndSwapInt32(&initialized, 0, 1) {
-		panic("qml.Init called more than once")
-	}
-
-	guiLoopReady.Lock()
-	go guiLoop()
-	guiLoopReady.Lock()
-}
 
 // Engine provides an environment for instantiating QML components.
 type Engine struct {
@@ -51,7 +28,7 @@ type Engine struct {
 	values    map[interface{}]*valueFold
 	destroyed bool
 
-	imageProviders map[string]*func(providerId string, width, height int) image.Image
+	imageProviders map[string]*func(imageId string, width, height int) image.Image
 }
 
 var engines = make(map[unsafe.Pointer]*Engine)
@@ -65,7 +42,7 @@ func NewEngine() *Engine {
 	RunMain(func() {
 		engine.addr = C.newEngine(nil)
 		engine.engine = engine
-		engine.imageProviders = make(map[string]*func(providerId string, width, height int) image.Image)
+		engine.imageProviders = make(map[string]*func(imageId string, width, height int) image.Image)
 		engines[engine.addr] = engine
 		stats.enginesAlive(+1)
 	})
@@ -108,30 +85,52 @@ func (e *Engine) Destroy() {
 // Once a component is loaded, component instances may be created from
 // the resulting object via its Create and CreateWindow methods.
 func (e *Engine) Load(location string, r io.Reader) (Object, error) {
-	data, err := ioutil.ReadAll(r)
-	if err != nil {
-		return nil, err
-	}
-	if colon, slash := strings.Index(location, ":"), strings.Index(location, "/"); colon == -1 || slash <= colon {
-		if filepath.IsAbs(location) {
-			location = "file:///" + filepath.ToSlash(location)
-		} else {
-			dir, err := os.Getwd()
-			if err != nil {
-				return nil, fmt.Errorf("cannot obtain absolute path: %v", err)
+	var cdata *C.char
+	var cdatalen C.int
+
+	qrc := strings.HasPrefix(location, "qrc:")
+	if qrc {
+		if r != nil {
+			return nil, fmt.Errorf("cannot load qrc resource while providing data: %s", location)
+		}
+	} else {
+		data, err := ioutil.ReadAll(r)
+		if err != nil {
+			return nil, err
+		}
+		if colon, slash := strings.Index(location, ":"), strings.Index(location, "/"); colon == -1 || slash <= colon {
+			if filepath.IsAbs(location) {
+				location = "file:///" + filepath.ToSlash(location)
+			} else {
+				dir, err := os.Getwd()
+				if err != nil {
+					return nil, fmt.Errorf("cannot obtain absolute path: %v", err)
+				}
+				location = "file:///" + filepath.ToSlash(filepath.Join(dir, location))
 			}
-			location = "file:///" + filepath.ToSlash(filepath.Join(dir, location))
 		}
 
+		// Workaround issue #84 (QTBUG-41193) by not refering to an existent file.
+		if s := strings.TrimPrefix(location, "file:///"); s != location {
+			if _, err := os.Stat(filepath.FromSlash(s)); err == nil {
+				location = location + "."
+			}
+		}
+
+		cdata, cdatalen = unsafeBytesData(data)
 	}
 
-	cdata, cdatalen := unsafeBytesData(data)
+	var err error
 	cloc, cloclen := unsafeStringData(location)
 	comp := &Common{engine: e}
 	RunMain(func() {
 		// TODO The component's parent should probably be the engine.
 		comp.addr = C.newComponent(e.addr, nilPtr)
-		C.componentSetData(comp.addr, cdata, cdatalen, cloc, cloclen)
+		if qrc {
+			C.componentLoadURL(comp.addr, cloc, cloclen)
+		} else {
+			C.componentSetData(comp.addr, cdata, cdatalen, cloc, cloclen)
+		}
 		message := C.componentErrorString(comp.addr)
 		if message != nilCharPtr {
 			err = errors.New(strings.TrimRight(C.GoString(message), "\n"))
@@ -150,6 +149,9 @@ func (e *Engine) Load(location string, r io.Reader) (Object, error) {
 // Once a component is loaded, component instances may be created from
 // the resulting object via its Create and CreateWindow methods.
 func (e *Engine) LoadFile(path string) (Object, error) {
+	if strings.HasPrefix(path, "qrc:") {
+		return e.Load(path, nil)
+	}
 	// TODO Test this.
 	f, err := os.Open(path)
 	if err != nil {
@@ -195,13 +197,19 @@ func (e *Engine) Context() *Context {
 
 // Painter is provided to Paint methods on Go types that have displayable content.
 type Painter struct {
-	enigne *Engine
+	engine *Engine
 	obj    Object
+	glctxt glbase.Context
 }
 
 // Object returns the underlying object being painted.
 func (p *Painter) Object() Object {
 	return p.obj
+}
+
+// GLContext returns the OpenGL context for this painter.
+func (p *Painter) GLContext() *glbase.Context {
+	return &p.glctxt
 }
 
 // AddImageProvider registers f to be called when an image is requested by QML code
@@ -407,7 +415,7 @@ type Map struct {
 
 // Len returns the number of pairs in the map.
 func (m *Map) Len() int {
-	return len(m.data)/2
+	return len(m.data) / 2
 }
 
 // Convert allocates a new map and copies the content of m property to it,
@@ -639,7 +647,6 @@ func (obj *Common) List(property string) *List {
 	return m
 }
 
-
 // Map returns the map value of the named property.
 // Map panics if the property is not a map.
 func (obj *Common) Map(property string) *Map {
@@ -657,13 +664,25 @@ func (obj *Common) Map(property string) *Map {
 func (obj *Common) ObjectByName(objectName string) Object {
 	cname, cnamelen := unsafeStringData(objectName)
 	var dvalue C.DataValue
+	var object Object
 	RunMain(func() {
 		qname := C.newString(cname, cnamelen)
 		defer C.delString(qname)
 		C.objectFindChild(obj.addr, qname, &dvalue)
+		// unpackDataValue will also initialize the Go type, if necessary.
+		value := unpackDataValue(&dvalue, obj.engine)
+		if dvalue.dataType == C.DTGoAddr {
+			datap := unsafe.Pointer(&dvalue.data)
+			fold := (*(**valueFold)(datap))
+			if fold.init.IsValid() {
+				panic("internal error: custom Go type not initialized")
+			}
+			object = &Common{fold.cvalue, fold.engine}
+		} else {
+			object, _ = value.(Object)
+		}
 	})
-	object, ok := unpackDataValue(&dvalue, obj.engine).(Object)
-	if !ok {
+	if object == nil {
 		panic(fmt.Sprintf("cannot find descendant with objectName == %q", objectName))
 	}
 	return object
@@ -1057,3 +1076,34 @@ func RegisterConverter(typeName string, converter func(engine *Engine, obj Objec
 }
 
 var converters = make(map[string]func(engine *Engine, obj Object) interface{})
+
+// LoadResources registers all resources in the provided resources collection,
+// making them available to be loaded by any Engine and QML file.
+// Registered resources are made available under "qrc:///some/path", where
+// "some/path" is the path the resource was added with.
+func LoadResources(r *Resources) {
+	var base unsafe.Pointer
+	if len(r.sdata) > 0 {
+		base = *(*unsafe.Pointer)(unsafe.Pointer(&r.sdata))
+	} else if len(r.bdata) > 0 {
+		base = *(*unsafe.Pointer)(unsafe.Pointer(&r.bdata))
+	}
+	tree := (*C.char)(unsafe.Pointer(uintptr(base)+uintptr(r.treeOffset)))
+	name := (*C.char)(unsafe.Pointer(uintptr(base)+uintptr(r.nameOffset)))
+	data := (*C.char)(unsafe.Pointer(uintptr(base)+uintptr(r.dataOffset)))
+	C.registerResourceData(C.int(r.version), tree, name, data)
+}
+
+// UnloadResources unregisters all previously registered resources from r.
+func UnloadResources(r *Resources) {
+	var base unsafe.Pointer
+	if len(r.sdata) > 0 {
+		base = *(*unsafe.Pointer)(unsafe.Pointer(&r.sdata))
+	} else if len(r.bdata) > 0 {
+		base = *(*unsafe.Pointer)(unsafe.Pointer(&r.bdata))
+	}
+	tree := (*C.char)(unsafe.Pointer(uintptr(base)+uintptr(r.treeOffset)))
+	name := (*C.char)(unsafe.Pointer(uintptr(base)+uintptr(r.nameOffset)))
+	data := (*C.char)(unsafe.Pointer(uintptr(base)+uintptr(r.dataOffset)))
+	C.unregisterResourceData(C.int(r.version), tree, name, data)
+}

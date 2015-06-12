@@ -25,7 +25,7 @@
 // A simple Go application that integrates with QML may perform the following steps
 // for offering a graphical interface:
 //
-//   * Initialize the qml package (see Init)
+//   * Call qml.Run from function main providing a function with the logic below
 //   * Create an engine for loading and running QML content (see NewEngine)
 //   * Make Go values and types available to QML (see Context.SetVar and RegisterType)
 //   * Load QML content (see Engine.LoadString and Engine.LoadFile)
@@ -35,8 +35,29 @@
 // Some of these topics are covered below, and may also be observed in practice
 // in the following examples:
 //
-//   https://github.com/go-qml/qml/tree/master/examples
+//   https://github.com/go-qml/qml/tree/v1/examples
 //
+//
+// Simple example
+//
+// The following logic demonstrates loading a QML file into a window:
+//
+//    func main() {
+//            err := qml.Run(run)
+//            ...
+//    }
+//
+//    func run() error {
+//            engine := qml.NewEngine()
+//            component, err := engine.LoadFile("file.qml")
+//            if err != nil {
+//                    return err
+//            }
+//            win := component.CreateWindow(nil)
+//            win.Show()
+//            win.Wait()
+//            return nil
+//    }
 //
 // Handling QML objects in Go
 //
@@ -50,9 +71,9 @@
 //
 //    win := component.CreateWindow(nil)
 //    win.On("visibleChanged", func(visible bool) {
-//        if (visible) {
-//            fmt.Println("Width:", win.Int("width"))
-//        }
+//            if (visible) {
+//                    fmt.Println("Width:", win.Int("width"))
+//            }
 //    })
 //
 // Information about the methods, properties, and signals that are available for QML
@@ -90,7 +111,7 @@
 // the following example demonstrates:
 //
 //    qml.RegisterTypes("GoExtensions", 1, 0, []qml.TypeSpec{{
-//        Init: func(p *Person, obj qml.Object) { p.Name = "<none>" },
+//            Init: func(p *Person, obj qml.Object) { p.Name = "<none>" },
 //    }})
 //
 // With this logic in place, QML code can create new instances of Person by itself:     
@@ -129,13 +150,13 @@
 // For example:
 //
 //    type Person struct {
-//        Name string
+//            Name string
 //    }
 //
 //    func (p *Person) SetName(name string) {
-//        fmt.Println("Old name is", p.Name)
-//        p.Name = name
-//        fmt.Println("New name is", p.Name)
+//            fmt.Println("Old name is", p.Name)
+//            p.Name = name
+//            fmt.Println("New name is", p.Name)
 //    }
 //
 // In the example above, whenever QML code attempts to update the Person.Name field
@@ -156,11 +177,23 @@
 // a Paint method such as:
 //
 //    func (p *Person) Paint(painter *qml.Painter) {
-//        // ... OpenGL calls with the gopkg.in/qml.v0/gl package ...
+//            // ... OpenGL calls with the launchpad.net/ciborium/qml.v1/gl/<VERSION> package ...
 //    }
 //
 // A simple example is available at:
 //
-//   https://github.com/go-qml/qml/tree/master/examples/painting
+//   https://github.com/go-qml/qml/tree/v1/examples/painting
+//
+//
+// Packing resources into the Go qml binary
+//
+// Resource files (qml code, images, etc) may be packed into the Go qml application
+// binary to simplify its handling and distribution. This is done with the genqrc tool:
+//
+//   http://launchpad.net/ciborium/qml.v1/cmd/genqrc#usage
+//
+// The following blog post provides more details:
+//
+//   http://blog.labix.org/2014/09/26/packing-resources-into-go-qml-binaries
 //
 package qml

@@ -28,7 +28,7 @@ import (
 
 	"log"
 
-	"launchpad.net/ciborium/qml.v0"
+	"launchpad.net/ciborium/qml.v1"
 	"launchpad.net/ciborium/udisks2"
 	"launchpad.net/go-dbus/v1"
 	"launchpad.net/go-xdg/v0"
@@ -77,7 +77,8 @@ func main() {
 	// set default logger flags to get more useful info
 	log.SetFlags(log.LstdFlags | log.Lshortfile)
 
-	qml.Init(nil)
+	// not in qml.v1
+	//qml.Init(nil)
 	engine := qml.NewEngine()
 	component, err := engine.LoadFile(mainQmlPath)
 	if err != nil {

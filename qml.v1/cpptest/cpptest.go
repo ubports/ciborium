@@ -13,11 +13,11 @@ import "C"
 import (
 	"unsafe"
 
-	"launchpad.net/ciborium/qml.v0"
+	"launchpad.net/ciborium/qml.v1"
 )
 
 func NewTestType(engine *qml.Engine) qml.Object {
-	var obj qml.Object
+	var obj qml.Object 
 	qml.RunMain(func() {
 		addr := C.newTestType()
 		obj = qml.CommonOf(addr, engine)

@@ -43,24 +43,25 @@ void panicf(const char *format, ...)
     hookPanic(local_strdup(ba.constData()));
 }
 
-void newGuiApplication(char *deskfile)
+void newGuiApplication()
 {
     static char empty[1] = {0};
-    static char *argv[] = {empty, empty, empty};
+    static char *argv[] = {empty, 0};
     static int argc = 1;
-    if (deskfile) {
-        argv[argc] = deskfile;
-        argc++;
-    }
     new QApplication(argc, argv);
 
-    // The event should never die.
+    // The event loop should never die.
     qApp->setQuitOnLastWindowClosed(false);
 }
 
 void applicationExec()
 {
     qApp->exec();
+}
+
+void applicationExit()
+{
+    qApp->exit(0);
 }
 
 void applicationFlushAll()
@@ -138,12 +139,15 @@ class GoImageProvider : public QQuickImageProvider {
             width = requestedSize.width();
             height = requestedSize.height();
         }
-        QImage *image = reinterpret_cast<QImage *>(hookRequestImage(imageFunc, (char*)ba.constData(), ba.size(), width, height));
-        *size = image->size();
+        QImage *ptr = reinterpret_cast<QImage *>(hookRequestImage(imageFunc, (char*)ba.constData(), ba.size(), width, height));
+        QImage image = *ptr;
+        delete ptr;
+
+        *size = image.size();
         if (requestedSize.isValid() && requestedSize != *size) {
-            *image = image->scaled(requestedSize, Qt::KeepAspectRatio);
+            image = image.scaled(requestedSize, Qt::KeepAspectRatio);
         }
-        return *image;
+        return image;
     };
 
     private:
@@ -157,6 +161,13 @@ void engineAddImageProvider(QQmlEngine_ *engine, QString_ *providerId, void *ima
     QString *qproviderId = reinterpret_cast<QString *>(providerId);
 
     qengine->addImageProvider(*qproviderId, new GoImageProvider(imageFunc));
+}
+
+void componentLoadURL(QQmlComponent_ *component, const char *url, int urlLen)
+{
+    QByteArray qurl(url, urlLen);
+    QString qsurl = QString::fromUtf8(qurl);
+    reinterpret_cast<QQmlComponent *>(component)->loadUrl(qsurl);
 }
 
 void componentSetData(QQmlComponent_ *component, const char *data, int dataLen, const char *url, int urlLen)
@@ -836,7 +847,7 @@ QQmlListProperty_ *newListProperty(GoAddr *addr, intptr_t reflectIndex, intptr_t
 void internalLogHandler(QtMsgType severity, const QMessageLogContext &context, const QString &text)
 {
     QByteArray textba = text.toUtf8();
-    int fileLength = context.file ? strlen(context.file) : 0;
+    const int fileLength = context.file ? strlen(context.file) : 0;
     LogMessage message = {severity, textba.constData(), textba.size(), context.file, fileLength, context.line};
     hookLogHandler(&message);
 }
@@ -844,6 +855,20 @@ void internalLogHandler(QtMsgType severity, const QMessageLogContext &context, c
 void installLogHandler()
 {
     qInstallMessageHandler(internalLogHandler);
+}
+
+
+extern bool qRegisterResourceData(int version, const unsigned char *tree, const unsigned char *name, const unsigned char *data);
+extern bool qUnregisterResourceData(int version, const unsigned char *tree, const unsigned char *name, const unsigned char *data);
+
+void registerResourceData(int version, char *tree, char *name, char *data)
+{
+    qRegisterResourceData(version, (unsigned char*)tree, (unsigned char*)name, (unsigned char*)data);
+}
+
+void unregisterResourceData(int version, char *tree, char *name, char *data)
+{
+    qUnregisterResourceData(version, (unsigned char*)tree, (unsigned char*)name, (unsigned char*)data);
 }
 
 // vim:ts=4:sw=4:et:ft=cpp
