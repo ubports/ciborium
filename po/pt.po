@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: ciborium\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2015-03-24 16:11-0300\n"
-"PO-Revision-Date: 2015-11-02 21:26+0000\n"
-"Last-Translator: Ivo Xavier <ivofernandes12@gmail.com>\n"
+"PO-Revision-Date: 2016-04-22 06:58+0000\n"
+"Last-Translator: Ivo Xavier <ivoxavier.8@gmail.com>\n"
 "Language-Team: Portuguese <pt@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2015-12-09 05:51+0000\n"
-"X-Generator: Launchpad (build 17862)\n"
+"X-Launchpad-Export-Date: 2016-04-23 05:36+0000\n"
+"X-Generator: Launchpad (build 17995)\n"
 
 #. TRANSLATORS: This is the summary of a notification bubble with a short message of
 #. success when addding a storage device.
@@ -53,8 +53,7 @@ msgstr "Cartão SD removido"
 msgid ""
 "Content previously available on this device will no longer be accessible"
 msgstr ""
-"O conteúdo anteriormente disponível neste dispositivo não será novamente "
-"acessível"
+"O conteúdo antes disponível neste dispositivo não será novamente acessível"
 
 #. TRANSLATORS: This is the summary of a notification bubble with a short message warning on
 #. low space
@@ -105,7 +104,7 @@ msgstr "Seguro para remover"
 #: share/ciborium/qml/components/FormatDialog.qml:17
 #: share/ciborium/qml/components/FormatDialog.qml:59
 msgid "Format"
-msgstr "Formato"
+msgstr "Formatar"
 
 #: share/ciborium/qml/components/SafeRemoval.qml:59
 msgid "Safely Remove"
@@ -130,7 +129,7 @@ msgstr "Cancelar"
 
 #: share/ciborium/qml/components/FormatDialog.qml:25
 msgid "Continue with format"
-msgstr "Continuar com o formato"
+msgstr "Continuar com a formatação"
 
 #: share/ciborium/qml/components/SafeRemoval.qml:36
 msgid "Confirm remove"
@@ -146,7 +145,7 @@ msgstr "Continuar"
 
 #: share/ciborium/qml/main.qml:33
 msgid "SD Card Management"
-msgstr "Gestão do cartão SD"
+msgstr "Gestão do Cartão SD"
 
 #: share/applications/ciborium.desktop.tr.h:1
 msgid "External Drives"
