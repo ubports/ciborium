@@ -1,3 +1,9 @@
+ciborium (0.2.12+16.04.20160519-0ubuntu1) xenial; urgency=medium
+
+  * sdcard: fix racing condition between ciborium and udisks
+
+ -- Alex Tu <ci-train-bot@canonical.com>  Thu, 19 May 2016 07:36:43 +0000
+
 ciborium (0.2.12+15.10.20150612-0ubuntu2) xenial; urgency=medium
 
   * Rebuild against Qt 5.5.1.
