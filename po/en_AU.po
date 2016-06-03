@@ -14,42 +14,42 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2015-12-09 05:51+0000\n"
-"X-Generator: Launchpad (build 17862)\n"
+"X-Launchpad-Export-Date: 2016-06-03 06:18+0000\n"
+"X-Generator: Launchpad (build 18086)\n"
 
 #. TRANSLATORS: This is the summary of a notification bubble with a short message of
 #. success when addding a storage device.
-#: cmd/ciborium/main.go:119
+#: cmd/ciborium/main.go:123
 msgid "Storage device detected"
 msgstr "Storage device detected"
 
 #. TRANSLATORS: This is the body of a notification bubble with a short message about content
 #. being scanned when addding a storage device.
-#: cmd/ciborium/main.go:122
+#: cmd/ciborium/main.go:126
 msgid "This device will be scanned for new content"
 msgstr "This device will be scanned for new content"
 
 #. TRANSLATORS: This is the summary of a notification bubble with a short message of
 #. failure when adding a storage device.
-#: cmd/ciborium/main.go:128
+#: cmd/ciborium/main.go:132
 msgid "Failed to add storage device"
 msgstr "Failed to add storage device"
 
 #. TRANSLATORS: This is the body of a notification bubble with a short message with hints
 #. with regards to the failure when adding a storage device.
-#: cmd/ciborium/main.go:131
+#: cmd/ciborium/main.go:135
 msgid "Make sure the storage device is correctly formated"
 msgstr "Make sure the storage device is correctly formated"
 
 #. TRANSLATORS: This is the summary of a notification bubble with a short message of
 #. a storage device being removed
-#: cmd/ciborium/main.go:137
+#: cmd/ciborium/main.go:141
 msgid "Storage device has been removed"
 msgstr "Storage device has been removed"
 
 #. TRANSLATORS: This is the body of a notification bubble with a short message about content
 #. from the removed device no longer being available
-#: cmd/ciborium/main.go:140
+#: cmd/ciborium/main.go:144
 msgid ""
 "Content previously available on this device will no longer be accessible"
 msgstr ""
@@ -57,14 +57,14 @@ msgstr ""
 
 #. TRANSLATORS: This is the summary of a notification bubble with a short message warning on
 #. low space
-#: cmd/ciborium/main.go:229
+#: cmd/ciborium/main.go:329
 msgid "Low on disk space"
 msgstr "Low on disk space"
 
 #. TRANSLATORS: This is the body of a notification bubble with a short message about content
 #. reamining available space, %d is the remaining percentage of space available on internal
 #. storage
-#: cmd/ciborium/main.go:233
+#: cmd/ciborium/main.go:333
 #, c-format
 msgid "Only %d%% is available on the internal storage device"
 msgstr "Only %d%% is available on the internal storage device"
@@ -72,7 +72,7 @@ msgstr "Only %d%% is available on the internal storage device"
 #. TRANSLATORS: This is the body of a notification bubble with a short message about content
 #. reamining available space, %d is the remaining percentage of space available on a given
 #. external storage device
-#: cmd/ciborium/main.go:237
+#: cmd/ciborium/main.go:337
 #, c-format
 msgid "Only %d%% is available on the external storage device"
 msgstr "Only %d%% is available on the external storage device"
@@ -81,11 +81,13 @@ msgstr "Only %d%% is available on the external storage device"
 msgid "Unmounting"
 msgstr "Unmounting"
 
-#: share/ciborium/qml/components/SafeRemoval.qml:21
+#: share/ciborium/qml/components/SafeRemovalConfirmation.qml:17
+#: share/ciborium/qml/components/FormatConfirmation.qml:22
 msgid "Ok"
 msgstr "Ok"
 
-#: share/ciborium/qml/components/SafeRemoval.qml:18
+#: share/ciborium/qml/components/SafeRemovalConfirmation.qml:30
+#: share/ciborium/qml/components/SafeRemovalConfirmation.qml:46
 msgid "You can now safely remove the device"
 msgstr "You can now safely remove the device"
 
@@ -97,20 +99,20 @@ msgstr "Unmount Error"
 msgid "The device could not be unmounted because is busy"
 msgstr "The device could not be unmounted because is busy"
 
-#: share/ciborium/qml/components/SafeRemoval.qml:17
+#: share/ciborium/qml/components/SafeRemovalConfirmation.qml:45
 msgid "Safe to remove"
 msgstr "Safe to remove"
 
-#: share/ciborium/qml/components/FormatDialog.qml:17
-#: share/ciborium/qml/components/FormatDialog.qml:59
+#: share/ciborium/qml/components/DriveDelegate.qml:45
+#: share/ciborium/qml/components/FormatDialog.qml:11
 msgid "Format"
 msgstr "Format"
 
-#: share/ciborium/qml/components/SafeRemoval.qml:59
+#: share/ciborium/qml/components/DriveDelegate.qml:59
 msgid "Safely Remove"
 msgstr "Safely Remove"
 
-#: share/ciborium/qml/components/FormatDialog.qml:42
+#: share/ciborium/qml/components/FormatConfirmation.qml:11
 msgid "Formatting"
 msgstr "Formatting"
 
@@ -118,32 +120,32 @@ msgstr "Formatting"
 msgid "There was an error when formatting the device"
 msgstr "There was an error when formatting the device"
 
-#: share/ciborium/qml/components/FormatDialog.qml:18
+#: share/ciborium/qml/components/FormatDialog.qml:12
 msgid "This action will wipe the content from the device"
 msgstr "This action will wipe the content from the device"
 
-#: share/ciborium/qml/components/SafeRemoval.qml:40
-#: share/ciborium/qml/components/FormatDialog.qml:21
+#: share/ciborium/qml/components/FormatDialog.qml:15
+#: share/ciborium/qml/components/SafeRemoval.qml:17
 msgid "Cancel"
 msgstr "Cancel"
 
-#: share/ciborium/qml/components/FormatDialog.qml:25
+#: share/ciborium/qml/components/FormatDialog.qml:19
 msgid "Continue with format"
 msgstr "Continue with format"
 
-#: share/ciborium/qml/components/SafeRemoval.qml:36
+#: share/ciborium/qml/components/SafeRemoval.qml:13
 msgid "Confirm remove"
 msgstr "Confirm remove"
 
-#: share/ciborium/qml/components/SafeRemoval.qml:37
+#: share/ciborium/qml/components/SafeRemoval.qml:14
 msgid "Files on the device can't be accessed after removing"
 msgstr "Files on the device can't be accessed after removing"
 
-#: share/ciborium/qml/components/SafeRemoval.qml:44
+#: share/ciborium/qml/components/SafeRemoval.qml:22
 msgid "Continue"
 msgstr "Continue"
 
-#: share/ciborium/qml/main.qml:33
+#: share/ciborium/qml/main.qml:34
 msgid "SD Card Management"
 msgstr "SD Card Management"
 

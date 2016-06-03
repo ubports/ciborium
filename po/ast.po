@@ -14,56 +14,56 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2015-12-09 05:50+0000\n"
-"X-Generator: Launchpad (build 17862)\n"
+"X-Launchpad-Export-Date: 2016-06-03 06:18+0000\n"
+"X-Generator: Launchpad (build 18086)\n"
 
 #. TRANSLATORS: This is the summary of a notification bubble with a short message of
 #. success when addding a storage device.
-#: cmd/ciborium/main.go:119
+#: cmd/ciborium/main.go:123
 msgid "Storage device detected"
 msgstr "Preséu d'almacenamientu deteutáu"
 
 #. TRANSLATORS: This is the body of a notification bubble with a short message about content
 #. being scanned when addding a storage device.
-#: cmd/ciborium/main.go:122
+#: cmd/ciborium/main.go:126
 msgid "This device will be scanned for new content"
 msgstr "Va escaniase'l conteníu d'esti preséu"
 
 #. TRANSLATORS: This is the summary of a notification bubble with a short message of
 #. failure when adding a storage device.
-#: cmd/ciborium/main.go:128
+#: cmd/ciborium/main.go:132
 msgid "Failed to add storage device"
 msgstr "Falló al amestar el preséu d'almacenamientu"
 
 #. TRANSLATORS: This is the body of a notification bubble with a short message with hints
 #. with regards to the failure when adding a storage device.
-#: cmd/ciborium/main.go:131
+#: cmd/ciborium/main.go:135
 msgid "Make sure the storage device is correctly formated"
 msgstr "Asegúrate de que'l preséu d'almacenamientu tea bien formatiáu"
 
 #. TRANSLATORS: This is the summary of a notification bubble with a short message of
 #. a storage device being removed
-#: cmd/ciborium/main.go:137
+#: cmd/ciborium/main.go:141
 msgid "Storage device has been removed"
 msgstr "Desconeutóse'l preséu d'almacenamientu"
 
 #. TRANSLATORS: This is the body of a notification bubble with a short message about content
 #. from the removed device no longer being available
-#: cmd/ciborium/main.go:140
+#: cmd/ciborium/main.go:144
 msgid ""
 "Content previously available on this device will no longer be accessible"
 msgstr "Los conteníos almacenaos nesti preséu yá nun van tar disponibles"
 
 #. TRANSLATORS: This is the summary of a notification bubble with a short message warning on
 #. low space
-#: cmd/ciborium/main.go:229
+#: cmd/ciborium/main.go:329
 msgid "Low on disk space"
 msgstr "Pocu espaciu en discu"
 
 #. TRANSLATORS: This is the body of a notification bubble with a short message about content
 #. reamining available space, %d is the remaining percentage of space available on internal
 #. storage
-#: cmd/ciborium/main.go:233
+#: cmd/ciborium/main.go:333
 #, c-format
 msgid "Only %d%% is available on the internal storage device"
 msgstr "Namái hai %d%% disponible nel discu internu"
@@ -71,7 +71,7 @@ msgstr "Namái hai %d%% disponible nel discu internu"
 #. TRANSLATORS: This is the body of a notification bubble with a short message about content
 #. reamining available space, %d is the remaining percentage of space available on a given
 #. external storage device
-#: cmd/ciborium/main.go:237
+#: cmd/ciborium/main.go:337
 #, c-format
 msgid "Only %d%% is available on the external storage device"
 msgstr "Namái hai %d%% disponible nel discu esternu"
@@ -80,11 +80,13 @@ msgstr "Namái hai %d%% disponible nel discu esternu"
 msgid "Unmounting"
 msgstr "Desmontando"
 
-#: share/ciborium/qml/components/SafeRemoval.qml:21
+#: share/ciborium/qml/components/SafeRemovalConfirmation.qml:17
+#: share/ciborium/qml/components/FormatConfirmation.qml:22
 msgid "Ok"
 msgstr "Aceutar"
 
-#: share/ciborium/qml/components/SafeRemoval.qml:18
+#: share/ciborium/qml/components/SafeRemovalConfirmation.qml:30
+#: share/ciborium/qml/components/SafeRemovalConfirmation.qml:46
 msgid "You can now safely remove the device"
 msgstr "Agora yá pues estrayer el preséu con seguridá"
 
@@ -96,20 +98,20 @@ msgstr "Fallu de desmontaxe"
 msgid "The device could not be unmounted because is busy"
 msgstr "Nun pudo desmontase'l preséu porque ta ocupáu"
 
-#: share/ciborium/qml/components/SafeRemoval.qml:17
+#: share/ciborium/qml/components/SafeRemovalConfirmation.qml:45
 msgid "Safe to remove"
 msgstr "Pue estrayese con seguridá"
 
-#: share/ciborium/qml/components/FormatDialog.qml:17
-#: share/ciborium/qml/components/FormatDialog.qml:59
+#: share/ciborium/qml/components/DriveDelegate.qml:45
+#: share/ciborium/qml/components/FormatDialog.qml:11
 msgid "Format"
 msgstr "Formatéu"
 
-#: share/ciborium/qml/components/SafeRemoval.qml:59
+#: share/ciborium/qml/components/DriveDelegate.qml:59
 msgid "Safely Remove"
 msgstr "Estrayer de mou seguru"
 
-#: share/ciborium/qml/components/FormatDialog.qml:42
+#: share/ciborium/qml/components/FormatConfirmation.qml:11
 msgid "Formatting"
 msgstr "Formatiando"
 
@@ -117,33 +119,33 @@ msgstr "Formatiando"
 msgid "There was an error when formatting the device"
 msgstr "Hebo un fallu entrín se formatiaba'l preséu"
 
-#: share/ciborium/qml/components/FormatDialog.qml:18
+#: share/ciborium/qml/components/FormatDialog.qml:12
 msgid "This action will wipe the content from the device"
 msgstr "Esta aición va desaniciar los conteníos actuales del preséu"
 
-#: share/ciborium/qml/components/SafeRemoval.qml:40
-#: share/ciborium/qml/components/FormatDialog.qml:21
+#: share/ciborium/qml/components/FormatDialog.qml:15
+#: share/ciborium/qml/components/SafeRemoval.qml:17
 msgid "Cancel"
 msgstr "Encaboxar"
 
-#: share/ciborium/qml/components/FormatDialog.qml:25
+#: share/ciborium/qml/components/FormatDialog.qml:19
 msgid "Continue with format"
 msgstr "Siguir col formatéu"
 
-#: share/ciborium/qml/components/SafeRemoval.qml:36
+#: share/ciborium/qml/components/SafeRemoval.qml:13
 msgid "Confirm remove"
 msgstr "Confirmar estraición"
 
-#: share/ciborium/qml/components/SafeRemoval.qml:37
+#: share/ciborium/qml/components/SafeRemoval.qml:14
 msgid "Files on the device can't be accessed after removing"
 msgstr ""
 "Nun va poder accedese a los ficheros d'esti preséu dempués d'estrayelu"
 
-#: share/ciborium/qml/components/SafeRemoval.qml:44
+#: share/ciborium/qml/components/SafeRemoval.qml:22
 msgid "Continue"
 msgstr "Siguir"
 
-#: share/ciborium/qml/main.qml:33
+#: share/ciborium/qml/main.qml:34
 msgid "SD Card Management"
 msgstr "Xestión de tarxetes SD"
 
