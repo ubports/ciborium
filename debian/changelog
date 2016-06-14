@@ -1,3 +1,10 @@
+ciborium (0.2.12+16.10.20160614-0ubuntu1) yakkety; urgency=medium
+
+  [ Michael Hudson-Doyle ]
+  * Make ciborium building on arm64. (LP: #1576233)
+
+ -- Łukasz Zemczak <lukasz.zemczak@canonical.com>  Tue, 14 Jun 2016 10:59:54 +0000
+
 ciborium (0.2.12+16.04.20160519-0ubuntu1) xenial; urgency=medium
 
   * sdcard: fix racing condition between ciborium and udisks
