@@ -77,14 +77,18 @@ func main() {
 	// set default logger flags to get more useful info
 	log.SetFlags(log.LstdFlags | log.Lshortfile)
 
-	// not in qml.v1
-	//qml.Init(nil)
-	engine := qml.NewEngine()
-	component, err := engine.LoadFile(mainQmlPath)
+	err := qml.Run(run)
 	if err != nil {
 		log.Fatal(err)
 	}
+}
 
+func run() error {
+	engine := qml.NewEngine()
+	component, err := engine.LoadFile(mainQmlPath)
+	if err != nil {
+		return err
+	}
 	context := engine.Context()
 
 	driveCtrl, err := newDriveControl()
@@ -98,6 +102,7 @@ func main() {
 
 	window.Show()
 	window.Wait()
+	return nil
 }
 
 func newDriveControl() (*driveControl, error) {
