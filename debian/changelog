@@ -1,3 +1,11 @@
+ciborium (0.2.12+16.10.20160618-0ubuntu1) yakkety; urgency=medium
+
+  [ Larry Price ]
+  * Fix crash on startup hopefully related to bug #1592421. (LP:
+    #1592421)
+
+ -- Stephen M. Webb <stephen.webb@canonical.com>  Sat, 18 Jun 2016 23:07:25 +0000
+
 ciborium (0.2.12+16.10.20160614-0ubuntu1) yakkety; urgency=medium
 
   [ Michael Hudson-Doyle ]
