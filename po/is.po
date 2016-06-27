@@ -14,8 +14,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2016-06-03 06:18+0000\n"
-"X-Generator: Launchpad (build 18086)\n"
+"X-Launchpad-Export-Date: 2016-06-23 05:39+0000\n"
+"X-Generator: Launchpad (build 18111)\n"
 
 #. TRANSLATORS: This is the summary of a notification bubble with a short message of
 #. success when addding a storage device.
@@ -79,7 +79,7 @@ msgstr "Einungis %d%% eru tiltæk á ytra geymslutæki"
 
 #: share/ciborium/qml/components/SafeRemovalConfirmation.qml:12
 msgid "Unmounting"
-msgstr ""
+msgstr "Aftengi"
 
 #: share/ciborium/qml/components/SafeRemovalConfirmation.qml:17
 #: share/ciborium/qml/components/FormatConfirmation.qml:22
@@ -93,11 +93,11 @@ msgstr "Þú getur núna fjarlægt tækið örugglega"
 
 #: share/ciborium/qml/components/SafeRemovalConfirmation.qml:38
 msgid "Unmount Error"
-msgstr ""
+msgstr "Villa við aftengingu úr skráakerfi"
 
 #: share/ciborium/qml/components/SafeRemovalConfirmation.qml:39
 msgid "The device could not be unmounted because is busy"
-msgstr ""
+msgstr "Ekki var hægt að aftengja tækið úr skráakerfi því það er upptekið"
 
 #: share/ciborium/qml/components/SafeRemovalConfirmation.qml:45
 msgid "Safe to remove"
@@ -118,7 +118,7 @@ msgstr "Forsníðing"
 
 #: share/ciborium/qml/components/FormatConfirmation.qml:31
 msgid "There was an error when formatting the device"
-msgstr ""
+msgstr "Villa kom upp við að forsníða tækið"
 
 #: share/ciborium/qml/components/FormatDialog.qml:12
 msgid "This action will wipe the content from the device"
