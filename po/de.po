@@ -8,13 +8,13 @@ msgstr ""
 "Project-Id-Version: ciborium\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2015-03-24 16:11-0300\n"
-"PO-Revision-Date: 2015-05-05 16:21+0000\n"
-"Last-Translator: Tobias Bannert <tobannert@gmail.com>\n"
+"PO-Revision-Date: 2016-07-10 09:43+0000\n"
+"Last-Translator: schuko24 <gerdsaenger@t-online.de>\n"
 "Language-Team: German <de@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2016-06-28 06:06+0000\n"
+"X-Launchpad-Export-Date: 2016-07-11 05:37+0000\n"
 "X-Generator: Launchpad (build 18115)\n"
 
 #. TRANSLATORS: This is the summary of a notification bubble with a short message of
@@ -27,7 +27,7 @@ msgstr "Speichermedium gefunden"
 #. being scanned when addding a storage device.
 #: cmd/ciborium/main.go:126
 msgid "This device will be scanned for new content"
-msgstr "Dieses Medium wird auf neue Inhalte eingelesen"
+msgstr "Dieses Medium wird auf neue Inhalte durchsucht"
 
 #. TRANSLATORS: This is the summary of a notification bubble with a short message of
 #. failure when adding a storage device.
@@ -39,7 +39,7 @@ msgstr "Medium konnte nicht hinzugefügt werden"
 #. with regards to the failure when adding a storage device.
 #: cmd/ciborium/main.go:135
 msgid "Make sure the storage device is correctly formated"
-msgstr "Bitte sicher stellen, dass das Medium richtig formatiert ist"
+msgstr "Bitte sicherstellen, dass das Medium richtig formatiert ist"
 
 #. TRANSLATORS: This is the summary of a notification bubble with a short message of
 #. a storage device being removed
@@ -53,13 +53,14 @@ msgstr "Speichermedium wurde entfernt"
 msgid ""
 "Content previously available on this device will no longer be accessible"
 msgstr ""
-"Auf den vormaligen Inhalt dieses Mediums kann nicht mehr zugegriffen werden."
+"Auf den vormaligen Inhalt dieses Mediums kann künftig nicht mehr zugegriffen "
+"werden."
 
 #. TRANSLATORS: This is the summary of a notification bubble with a short message warning on
 #. low space
 #: cmd/ciborium/main.go:329
 msgid "Low on disk space"
-msgstr "Geringer Speicherplatz"
+msgstr "Wenig Speicherplatz vorhanden"
 
 #. TRANSLATORS: This is the body of a notification bubble with a short message about content
 #. reamining available space, %d is the remaining percentage of space available on internal
@@ -89,7 +90,7 @@ msgstr "OK"
 #: share/ciborium/qml/components/SafeRemovalConfirmation.qml:30
 #: share/ciborium/qml/components/SafeRemovalConfirmation.qml:46
 msgid "You can now safely remove the device"
-msgstr "Sie können jetzt gefahrlos Ihr Gerät entfernen"
+msgstr "Sie können Ihr Gerät jetzt sicher entfernen"
 
 #: share/ciborium/qml/components/SafeRemovalConfirmation.qml:38
 msgid "Unmount Error"
@@ -114,7 +115,7 @@ msgstr "Sicher entfernen"
 
 #: share/ciborium/qml/components/FormatConfirmation.qml:11
 msgid "Formatting"
-msgstr "Formatieren läuft"
+msgstr "Formatierung läuft"
 
 #: share/ciborium/qml/components/FormatConfirmation.qml:31
 msgid "There was an error when formatting the device"
@@ -140,7 +141,7 @@ msgstr "Entfernen bestätigen"
 #: share/ciborium/qml/components/SafeRemoval.qml:14
 msgid "Files on the device can't be accessed after removing"
 msgstr ""
-"Auf Dateien, auf dem Gerät, kann nach dem Entfernen nicht mehr zugegriffen "
+"Nach dem Löschen kann auf die Dateien auf dem Gerät nicht mehr zugegriffen "
 "werden"
 
 #: share/ciborium/qml/components/SafeRemoval.qml:22
