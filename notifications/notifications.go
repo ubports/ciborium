@@ -73,6 +73,8 @@ func (n *NotificationHandler) NewStandardPushMessage(summary, body, icon string)
 				Popup:   true,
 				Persist: true,
 			},
+			RawSound: json.RawMessage(`"sounds/ubuntu/notifications/Slick.ogg"`),
+			RawVibration: json.RawMessage(`{"pattern": [100, 100], "repeat": 2}`),
 		},
 	}
 	return pm
@@ -90,6 +92,8 @@ type PushMessage struct {
 // triggered by this push message.
 type Notification struct {
 	Card *Card `json:"card,omitempty"`
+	RawSound json.RawMessage `json:"sound"`
+	RawVibration json.RawMessage `json:"vibrate"`
 }
 
 // Card is part of a notification and represents the user visible hints for
