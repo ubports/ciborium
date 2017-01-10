@@ -1,3 +1,9 @@
+ciborium (0.2.12+16.10.20160825-0ubuntu2~3) zesty; urgency=medium
+
+  * No change rebuild
+
+ -- Timo Jyrinki <timo-jyrinki@ubuntu.com>  Wed, 04 Jan 2017 08:55:27 +0200
+
 ciborium (0.2.12+16.10.20160825-0ubuntu1) yakkety; urgency=medium
 
   [ Arthur Mello ]
