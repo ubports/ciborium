@@ -1,3 +1,9 @@
+ciborium (0.2.13+ubports) xenial; urgency=medium
+
+  * Imported to UBports
+
+ -- UBports auto importer <infra@ubports.com>  Fri, 27 Oct 2017 11:30:52 +0200
+
 ciborium (0.2.12+16.10.20160825-0ubuntu2~3) zesty; urgency=medium
 
   * No change rebuild
