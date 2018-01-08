@@ -1,6 +1,6 @@
 package qml
 
-// #cgo CPPFLAGS: -I./cpp
+// #cgo CPPFLAGS: -I./cpp -isystem /usr/include/arm-linux-gnueabihf/qt5/QtCore/5.9.1 -isystem /usr/include/arm-linux-gnueabihf/qt5/QtCore/5.9.1/QtCore
 // #cgo CXXFLAGS: -std=c++0x -pedantic-errors -Wall -fno-strict-aliasing
 // #cgo LDFLAGS: -lstdc++
 // #cgo pkg-config: Qt5Core Qt5Widgets Qt5Quick
