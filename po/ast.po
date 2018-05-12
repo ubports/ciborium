@@ -6,11 +6,12 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: ciborium\n"
-"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-03-24 16:11-0300\n"
 "PO-Revision-Date: 2015-06-09 15:39+0000\n"
 "Last-Translator: enolp <enolp@softastur.org>\n"
 "Language-Team: Asturian <ast@li.org>\n"
+"Language: ast\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -138,8 +139,7 @@ msgstr "Confirmar estraición"
 
 #: share/ciborium/qml/components/SafeRemoval.qml:14
 msgid "Files on the device can't be accessed after removing"
-msgstr ""
-"Nun va poder accedese a los ficheros d'esti preséu dempués d'estrayelu"
+msgstr "Nun va poder accedese a los ficheros d'esti preséu dempués d'estrayelu"
 
 #: share/ciborium/qml/components/SafeRemoval.qml:22
 msgid "Continue"

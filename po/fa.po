@@ -6,11 +6,12 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: ciborium\n"
-"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-03-24 16:11-0300\n"
 "PO-Revision-Date: 2015-04-10 02:51+0000\n"
 "Last-Translator: Danial Behzadi <dani.behzi@gmail.com>\n"
 "Language-Team: Persian <fa@li.org>\n"
+"Language: fa\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -52,8 +53,7 @@ msgstr "دستگاه ذخیره‌سازی برداشته شد"
 #: cmd/ciborium/main.go:144
 msgid ""
 "Content previously available on this device will no longer be accessible"
-msgstr ""
-"محتوایی که پیش‌تر روی این دستگاه موجود بود دیگر قابل دست‌رسی نخواهند بود"
+msgstr "محتوایی که پیش‌تر روی این دستگاه موجود بود دیگر قابل دست‌رسی نخواهند بود"
 
 #. TRANSLATORS: This is the summary of a notification bubble with a short message warning on
 #. low space
