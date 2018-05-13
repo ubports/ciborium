@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: ciborium\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-03-24 16:11-0300\n"
-"PO-Revision-Date: 2018-05-12 20:26+0000\n"
-"Last-Translator: Daniel Frańczak <danielfranczak5@wp.pl>\n"
+"PO-Revision-Date: 2018-05-13 22:52+0000\n"
+"Last-Translator: Beton <betonn@protonmail.com>\n"
 "Language-Team: Polish "
 "<https://translate.ubports.com/projects/ubports/ciborium/pl/>\n"
 "Language: pl\n"
@@ -71,7 +71,7 @@ msgstr "Niskie zasoby wolnej pamięci"
 #: cmd/ciborium/main.go:333
 #, c-format
 msgid "Only %d%% is available on the internal storage device"
-msgstr "W pamięci urządzenia pozostało dostepnych jedynie %d%%"
+msgstr "W pamięci urządzenia pozostało dostępnych jedynie %d%%"
 
 #. TRANSLATORS: This is the body of a notification bubble with a short message about content
 #. reamining available space, %d is the remaining percentage of space available on a given
@@ -79,7 +79,7 @@ msgstr "W pamięci urządzenia pozostało dostepnych jedynie %d%%"
 #: cmd/ciborium/main.go:337
 #, c-format
 msgid "Only %d%% is available on the external storage device"
-msgstr "W pamięci zewnętrznej pozostało dostepnych jedynie %d%%"
+msgstr "W pamięci zewnętrznej pozostało dostępnych jedynie %d%%"
 
 #: share/ciborium/qml/components/SafeRemovalConfirmation.qml:12
 msgid "Unmounting"
