@@ -70,7 +70,7 @@ func init() {
 }
 
 func goSource() string {
-	return filepath.Join("launchpad.net", "ciborium")
+	return filepath.Join("github.com", "ubports", "ciborium")
 }
 
 func main() {
