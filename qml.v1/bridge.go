@@ -1,6 +1,8 @@
 package qml
 
-// #cgo CPPFLAGS: -I./cpp -isystem /usr/include/arm-linux-gnueabihf/qt5/QtCore/5.9.3 -isystem /usr/include/arm-linux-gnueabihf/qt5/QtCore/5.9.3/QtCore -isystem /usr/include/arm-linux-gnueabihf/qt5/QtCore/5.9.3
+// #cgo linux,amd64 CPPFLAGS: -I./cpp -isystem /usr/include/x86_64-linux-gnu/qt5/QtCore/5.9.3 -isystem /usr/include/x86_64-linux-gnu/qt5/QtCore/5.9.3/QtCore -isystem /usr/include/x86_64-linux-gnu/qt5/QtCore/5.9.3
+// #cgo linux,arm CPPFLAGS: -I./cpp -isystem /usr/include/arm-linux-gnueabihf/qt5/QtCore/5.9.3 -isystem /usr/include/arm-linux-gnueabihf/qt5/QtCore/5.9.3/QtCore -isystem /usr/include/arm-linux-gnueabihf/qt5/QtCore/5.9.3
+// #cgo linux,arm64 CPPFLAGS: -I./cpp -isystem /usr/include/arm-linux-gnueabihf/qt5/QtCore/5.9.3 -isystem /usr/include/arm-linux-gnueabihf/qt5/QtCore/5.9.3/QtCore -isystem /usr/include/arm-linux-gnueabihf/qt5/QtCore/5.9.3
 // #cgo CXXFLAGS: -std=c++0x -pedantic-errors -Wall -fno-strict-aliasing
 // #cgo LDFLAGS: -lstdc++
 // #cgo pkg-config: Qt5Core Qt5Widgets Qt5Quick
