@@ -21,7 +21,7 @@ import (
 	"sync/atomic"
 	"unsafe"
 
-	"launchpad.net/ciborium/qml.v1/cdata"
+	"github.com/ubports/ciborium/qml.v1/cdata"
 )
 
 var (

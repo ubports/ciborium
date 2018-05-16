@@ -28,8 +28,8 @@ import (
 
 	"log"
 
-	"launchpad.net/ciborium/qml.v1"
-	"launchpad.net/ciborium/udisks2"
+	"github.com/ubports/ciborium/qml.v1"
+	"github.com/ubports/ciborium/udisks2"
 	"launchpad.net/go-dbus/v1"
 	"launchpad.net/go-xdg/v0"
 )

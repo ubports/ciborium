@@ -3,7 +3,7 @@
 
 export DH_OPTIONS
 export DH_GOLANG_INSTALL_ALL=1
-export DH_GOPKG := launchpad.net/ciborium
+export DH_GOPKG := github.com/ubports/ciborium
 
 %:
 	dh $@ \
