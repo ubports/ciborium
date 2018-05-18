@@ -30,9 +30,9 @@ import (
 	"syscall"
 	"time"
 
-	"launchpad.net/ciborium/gettext"
-	"launchpad.net/ciborium/notifications"
-	"launchpad.net/ciborium/udisks2"
+	"github.com/ubports/ciborium/gettext"
+	"github.com/ubports/ciborium/notifications"
+	"github.com/ubports/ciborium/udisks2"
 	"launchpad.net/go-dbus/v1"
 )
 

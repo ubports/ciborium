@@ -1,6 +1,8 @@
 package qml
 
-// #cgo CPPFLAGS: -I./cpp -isystem /usr/include/arm-linux-gnueabihf/qt5/QtCore/5.9.3 -isystem /usr/include/arm-linux-gnueabihf/qt5/QtCore/5.9.3/QtCore -isystem /usr/include/arm-linux-gnueabihf/qt5/QtCore/5.9.3
+// #cgo linux,amd64 CPPFLAGS: -I./cpp -isystem /usr/include/x86_64-linux-gnu/qt5/QtCore/5.9.5 -isystem /usr/include/x86_64-linux-gnu/qt5/QtCore/5.9.5/QtCore -isystem /usr/include/x86_64-linux-gnu/qt5/QtCore/5.9.5
+// #cgo linux,arm CPPFLAGS: -I./cpp -isystem /usr/include/arm-linux-gnueabihf/qt5/QtCore/5.9.5 -isystem /usr/include/arm-linux-gnueabihf/qt5/QtCore/5.9.5/QtCore -isystem /usr/include/arm-linux-gnueabihf/qt5/QtCore/5.9.5
+// #cgo linux,arm64 CPPFLAGS: -I./cpp -isystem /usr/include/aarch64-linux-gnu/qt5/QtCore/5.9.5 -isystem /usr/include/aarch64-linux-gnu/qt5/QtCore/5.9.5/QtCore -isystem /usr/include/aarch64-linux-gnu/qt5/QtCore/5.9.5
 // #cgo CXXFLAGS: -std=c++0x -pedantic-errors -Wall -fno-strict-aliasing
 // #cgo LDFLAGS: -lstdc++
 // #cgo pkg-config: Qt5Core Qt5Widgets Qt5Quick
@@ -19,16 +21,16 @@ import (
 	"sync/atomic"
 	"unsafe"
 
-	"launchpad.net/ciborium/qml.v1/cdata"
+	"github.com/ubports/ciborium/qml.v1/cdata"
 )
 
 var (
-	guiFunc      = make(chan func())
-	guiDone      = make(chan struct{})
-	guiLock      = 0
-	guiMainRef   uintptr
-	guiPaintRef  uintptr
-	guiIdleRun   int32
+	guiFunc     = make(chan func())
+	guiDone     = make(chan struct{})
+	guiLock     = 0
+	guiMainRef  uintptr
+	guiPaintRef uintptr
+	guiIdleRun  int32
 
 	initialized int32
 )

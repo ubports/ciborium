@@ -7,7 +7,7 @@ import "C"
 import (
 	"bytes"
 	"encoding/binary"
-	"launchpad.net/ciborium/qml.v1/cdata"
+	"github.com/ubports/ciborium/qml.v1/cdata"
 	"reflect"
 	"unsafe"
 )
