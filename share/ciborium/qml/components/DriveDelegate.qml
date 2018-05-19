@@ -1,70 +1,65 @@
-import QtQuick 2.0
-import Ubuntu.Components 1.1
-import Ubuntu.Components.Popups 1.0
+import QtQuick 2.9
+import QtQuick.Layouts 1.3
+import Ubuntu.Components 1.3
+import Ubuntu.Components.Popups 1.1
 
-UbuntuShape {
-    property var onFormatClicked
-    property var onSafeRemovalClicked
-    property int driveIndex 
+ListItem {
+    id: driveDelegate
+    property int driveIndex
 
-    height: childrenRect.height + (3 *units.gu(1))
-    color: driveIndex % 2 === 0 ? "white" : "#DECAE3"
+    signal formatClicked()
+    signal safeRemovalClicked()
 
-    Icon {
-    	id: driveIcon
-        width: 24
-        height: 24
-        name: "media-memory-sd"
-        //source: "file:///usr/share/icons/Humanity/devices/48/media-memory-sd.svg"
+    width: parent.width
+    height: layout.implicitHeight
+    expansion.height: layout.implicitHeight + buttonRow.height + units.gu(3)
+    onClicked: expansion.expanded = !expansion.expanded
 
-	anchors {
-	    top: parent.top
-	    topMargin: units.gu(2)
-	    left: parent.left
-	    leftMargin: units.gu(2)
-	}
+    ListItemLayout {
+        id: layout
+        title.text: driveCtrl.driveModel(index)
+
+        Icon {
+            height: units.gu(4)
+            width: height
+            anchors {
+                left: parent.left
+                leftMargin: units.gu(2)
+                top: parent.top
+                topMargin: units.gu(2)
+            }
+            source: Qt.resolvedUrl("../../icons/memory-card.svg")
+            SlotsLayout.position: SlotsLayout.Leading
+        }
     }
 
-    Label {
-    	id: driveLabel
-        text: driveCtrl.driveModel(index)
+    RowLayout {
+        id: buttonRow
+        anchors {
+            left: parent.left
+            top: layout.bottom
+            right: parent.right
+            margins: units.gu(1)
+        }
+        height: units.gu(3)
+        spacing: units.gu(1)
 
-	anchors {
-            top: parent.top
-	    topMargin: units.gu(2)
-	    left: driveIcon.right
-	    leftMargin: units.gu(2)
-	    right: parent.right
-	    rightMargin: units.gu(2)
-	    bottom:  driveIcon.bottom
-	}
+        // Spacer to force the buttons to the right side
+        // using Layout.alignment causes weird spacing...
+        Item {
+            Layout.fillWidth: true
+        }
+
+        Button {
+            text: i18n.tr("Format")
+            color: UbuntuColors.red
+            onClicked: formatClicked()
+        }
+
+        Button {
+            text: i18n.tr("Safely Remove")
+            color: UbuntuColors.green
+            onClicked: safeRemovalClicked()
+        }
     }
-
-    Button {
-        id: formatButton
-        text: i18n.tr("Format")
-        onClicked: onFormatClicked(formatButton) 
-
-	anchors {
-	    top: driveIcon.bottom
-	    topMargin: units.gu(1)
-	    left: parent.left
-	    leftMargin: units.gu(1)
-
-	}
-    }
-
-    Button {
-        id: removalButton
-        text: i18n.tr("Safely Remove")
-        onClicked: onSafeRemovalClicked(formatButton, removalButton)
-
-	anchors {
-	    top: driveIcon.bottom
-	    topMargin: units.gu(1)
-	    left: formatButton.right
-	    leftMargin: units.gu(1)
-	}
-    }
-
 }
