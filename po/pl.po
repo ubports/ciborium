@@ -8,10 +8,10 @@ msgstr ""
 "Project-Id-Version: ciborium\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-05-19 08:38+0000\n"
-"PO-Revision-Date: 2018-05-13 22:52+0000\n"
-"Last-Translator: Beton <betonn@protonmail.com>\n"
-"Language-Team: Polish <https://translate.ubports.com/projects/ubports/"
-"ciborium/pl/>\n"
+"PO-Revision-Date: 2018-05-19 14:54+0000\n"
+"Last-Translator: Daniel Frańczak <danielfranczak5@wp.pl>\n"
+"Language-Team: Polish "
+"<https://translate.ubports.com/projects/ubports/ciborium/pl/>\n"
 "Language: pl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -152,12 +152,11 @@ msgstr "Formatowanie"
 
 #: share/ciborium/qml/components/FormatDialog.qml:87
 msgid "Format Complete"
-msgstr ""
+msgstr "Formatowanie zakończone"
 
 #: share/ciborium/qml/components/FormatDialog.qml:110
-#, fuzzy
 msgid "Format Error"
-msgstr "Format"
+msgstr "Błąd formatowania"
 
 #: share/ciborium/qml/components/FormatDialog.qml:111
 msgid "There was an error when formatting the device"
