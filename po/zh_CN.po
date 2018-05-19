@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ciborium\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-03-24 16:11-0300\n"
+"POT-Creation-Date: 2018-05-19 08:38+0000\n"
 "PO-Revision-Date: 2015-06-26 08:06+0000\n"
 "Last-Translator: xiaoxiao <golden.freeman.china@gmail.com>\n"
 "Language-Team: Chinese (Simplified) <zh_CN@li.org>\n"
@@ -77,77 +77,87 @@ msgstr "内部存储设备只剩 %d%% 空间可用"
 msgid "Only %d%% is available on the external storage device"
 msgstr "外部存储设备只剩 %d%% 空间可用"
 
-#: share/ciborium/qml/components/SafeRemovalConfirmation.qml:12
+#: share/ciborium/qml/main.qml:21
+msgid "SD Card Management"
+msgstr "SD卡管理"
+
+#: share/ciborium/qml/components/SafeRemoval.qml:11
+#: share/ciborium/qml/components/FormatDialog.qml:11
+msgid "Cancel"
+msgstr "取消"
+
+#: share/ciborium/qml/components/SafeRemoval.qml:20
+msgid "Continue"
+msgstr "继续"
+
+#: share/ciborium/qml/components/SafeRemoval.qml:56
+msgid "Confirm remove"
+msgstr "确认移除"
+
+#: share/ciborium/qml/components/SafeRemoval.qml:57
+msgid "Files on the device can't be accessed after removing"
+msgstr "设备移除后将无法访问其中的文件"
+
+#: share/ciborium/qml/components/SafeRemoval.qml:66
 msgid "Unmounting"
 msgstr "正在卸载"
 
-#: share/ciborium/qml/components/SafeRemovalConfirmation.qml:17
-#: share/ciborium/qml/components/FormatConfirmation.qml:22
+#: share/ciborium/qml/components/SafeRemoval.qml:82
+#: share/ciborium/qml/components/FormatDialog.qml:97
+#: share/ciborium/qml/components/FormatDialog.qml:120
 msgid "Ok"
 msgstr "完成"
 
-#: share/ciborium/qml/components/SafeRemovalConfirmation.qml:30
-#: share/ciborium/qml/components/SafeRemovalConfirmation.qml:46
-msgid "You can now safely remove the device"
-msgstr "现在您可将设备安全地移除"
-
-#: share/ciborium/qml/components/SafeRemovalConfirmation.qml:38
-msgid "Unmount Error"
-msgstr "卸载错误"
-
-#: share/ciborium/qml/components/SafeRemovalConfirmation.qml:39
-msgid "The device could not be unmounted because is busy"
-msgstr "此设备目前因繁忙而无法移除"
-
-#: share/ciborium/qml/components/SafeRemovalConfirmation.qml:45
+#: share/ciborium/qml/components/SafeRemoval.qml:91
 msgid "Safe to remove"
 msgstr "可安全移除"
 
-#: share/ciborium/qml/components/DriveDelegate.qml:45
-#: share/ciborium/qml/components/FormatDialog.qml:11
+#: share/ciborium/qml/components/SafeRemoval.qml:92
+msgid "You can now safely remove the device"
+msgstr "现在您可将设备安全地移除"
+
+#: share/ciborium/qml/components/SafeRemoval.qml:111
+msgid "Unmount Error"
+msgstr "卸载错误"
+
+#: share/ciborium/qml/components/SafeRemoval.qml:112
+msgid "The device could not be unmounted because is busy"
+msgstr "此设备目前因繁忙而无法移除"
+
+#: share/ciborium/qml/components/DriveDelegate.qml:54
+#: share/ciborium/qml/components/FormatDialog.qml:55
 msgid "Format"
 msgstr "格式化"
 
-#: share/ciborium/qml/components/DriveDelegate.qml:59
+#: share/ciborium/qml/components/DriveDelegate.qml:60
 msgid "Safely Remove"
 msgstr "安全卸载"
-
-#: share/ciborium/qml/components/FormatConfirmation.qml:11
-msgid "Formatting"
-msgstr "格式化中"
-
-#: share/ciborium/qml/components/FormatConfirmation.qml:31
-msgid "There was an error when formatting the device"
-msgstr "设备格式化中遭遇错误"
-
-#: share/ciborium/qml/components/FormatDialog.qml:12
-msgid "This action will wipe the content from the device"
-msgstr "该操作会清空设备的所有数据"
-
-#: share/ciborium/qml/components/FormatDialog.qml:15
-#: share/ciborium/qml/components/SafeRemoval.qml:17
-msgid "Cancel"
-msgstr "取消"
 
 #: share/ciborium/qml/components/FormatDialog.qml:19
 msgid "Continue with format"
 msgstr "继续格式化"
 
-#: share/ciborium/qml/components/SafeRemoval.qml:13
-msgid "Confirm remove"
-msgstr "确认移除"
+#: share/ciborium/qml/components/FormatDialog.qml:56
+#: share/ciborium/qml/components/FormatDialog.qml:66
+msgid "This action will wipe the content from the device"
+msgstr "该操作会清空设备的所有数据"
 
-#: share/ciborium/qml/components/SafeRemoval.qml:14
-msgid "Files on the device can't be accessed after removing"
-msgstr "设备移除后将无法访问其中的文件"
+#: share/ciborium/qml/components/FormatDialog.qml:65
+msgid "Formatting"
+msgstr "格式化中"
 
-#: share/ciborium/qml/components/SafeRemoval.qml:22
-msgid "Continue"
-msgstr "继续"
+#: share/ciborium/qml/components/FormatDialog.qml:87
+msgid "Format Complete"
+msgstr ""
 
-#: share/ciborium/qml/main.qml:34
-msgid "SD Card Management"
-msgstr "SD卡管理"
+#: share/ciborium/qml/components/FormatDialog.qml:110
+#, fuzzy
+msgid "Format Error"
+msgstr "格式化"
+
+#: share/ciborium/qml/components/FormatDialog.qml:111
+msgid "There was an error when formatting the device"
+msgstr "设备格式化中遭遇错误"
 
 #: share/applications/ciborium.desktop.tr.h:1
 msgid "External Drives"

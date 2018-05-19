@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ciborium\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-03-24 16:11-0300\n"
+"POT-Creation-Date: 2018-05-19 08:38+0000\n"
 "PO-Revision-Date: 2016-07-24 06:27+0000\n"
 "Last-Translator: karm <melo@carmu.com>\n"
 "Language-Team: Interlingua <ia@li.org>\n"
@@ -80,77 +80,87 @@ msgstr "Sol le %d%% es disponibile sur le dispositivo de immagazinage interne"
 msgid "Only %d%% is available on the external storage device"
 msgstr "Sol le %d%% es disponibile sur le dispositivo de immagazinage externe"
 
-#: share/ciborium/qml/components/SafeRemovalConfirmation.qml:12
+#: share/ciborium/qml/main.qml:21
+msgid "SD Card Management"
+msgstr "Tractamento del scheda SD"
+
+#: share/ciborium/qml/components/SafeRemoval.qml:11
+#: share/ciborium/qml/components/FormatDialog.qml:11
+msgid "Cancel"
+msgstr "Deler"
+
+#: share/ciborium/qml/components/SafeRemoval.qml:20
+msgid "Continue"
+msgstr "Continuar"
+
+#: share/ciborium/qml/components/SafeRemoval.qml:56
+msgid "Confirm remove"
+msgstr "Confirmar le remotion"
+
+#: share/ciborium/qml/components/SafeRemoval.qml:57
+msgid "Files on the device can't be accessed after removing"
+msgstr "Le files del dispositivo non potera ser accedite post le remotion"
+
+#: share/ciborium/qml/components/SafeRemoval.qml:66
 msgid "Unmounting"
 msgstr "Dis-montar"
 
-#: share/ciborium/qml/components/SafeRemovalConfirmation.qml:17
-#: share/ciborium/qml/components/FormatConfirmation.qml:22
+#: share/ciborium/qml/components/SafeRemoval.qml:82
+#: share/ciborium/qml/components/FormatDialog.qml:97
+#: share/ciborium/qml/components/FormatDialog.qml:120
 msgid "Ok"
 msgstr "OK"
 
-#: share/ciborium/qml/components/SafeRemovalConfirmation.qml:30
-#: share/ciborium/qml/components/SafeRemovalConfirmation.qml:46
-msgid "You can now safely remove the device"
-msgstr "Tu pote ora remover securmente le dispositivo"
-
-#: share/ciborium/qml/components/SafeRemovalConfirmation.qml:38
-msgid "Unmount Error"
-msgstr "Error de dismontage"
-
-#: share/ciborium/qml/components/SafeRemovalConfirmation.qml:39
-msgid "The device could not be unmounted because is busy"
-msgstr "Le dispositivo non pote esser dismontate per que es occupate"
-
-#: share/ciborium/qml/components/SafeRemovalConfirmation.qml:45
+#: share/ciborium/qml/components/SafeRemoval.qml:91
 msgid "Safe to remove"
 msgstr "Remotion secur"
 
-#: share/ciborium/qml/components/DriveDelegate.qml:45
-#: share/ciborium/qml/components/FormatDialog.qml:11
+#: share/ciborium/qml/components/SafeRemoval.qml:92
+msgid "You can now safely remove the device"
+msgstr "Tu pote ora remover securmente le dispositivo"
+
+#: share/ciborium/qml/components/SafeRemoval.qml:111
+msgid "Unmount Error"
+msgstr "Error de dismontage"
+
+#: share/ciborium/qml/components/SafeRemoval.qml:112
+msgid "The device could not be unmounted because is busy"
+msgstr "Le dispositivo non pote esser dismontate per que es occupate"
+
+#: share/ciborium/qml/components/DriveDelegate.qml:54
+#: share/ciborium/qml/components/FormatDialog.qml:55
 msgid "Format"
 msgstr "Formattar"
 
-#: share/ciborium/qml/components/DriveDelegate.qml:59
+#: share/ciborium/qml/components/DriveDelegate.qml:60
 msgid "Safely Remove"
 msgstr "Remove con securitate"
-
-#: share/ciborium/qml/components/FormatConfirmation.qml:11
-msgid "Formatting"
-msgstr "Formattante"
-
-#: share/ciborium/qml/components/FormatConfirmation.qml:31
-msgid "There was an error when formatting the device"
-msgstr "Il ha habite un error durante le formatation del dispositivo"
-
-#: share/ciborium/qml/components/FormatDialog.qml:12
-msgid "This action will wipe the content from the device"
-msgstr "Iste action essugara le contento del dispositivo"
-
-#: share/ciborium/qml/components/FormatDialog.qml:15
-#: share/ciborium/qml/components/SafeRemoval.qml:17
-msgid "Cancel"
-msgstr "Deler"
 
 #: share/ciborium/qml/components/FormatDialog.qml:19
 msgid "Continue with format"
 msgstr "Continuar a formattar"
 
-#: share/ciborium/qml/components/SafeRemoval.qml:13
-msgid "Confirm remove"
-msgstr "Confirmar le remotion"
+#: share/ciborium/qml/components/FormatDialog.qml:56
+#: share/ciborium/qml/components/FormatDialog.qml:66
+msgid "This action will wipe the content from the device"
+msgstr "Iste action essugara le contento del dispositivo"
 
-#: share/ciborium/qml/components/SafeRemoval.qml:14
-msgid "Files on the device can't be accessed after removing"
-msgstr "Le files del dispositivo non potera ser accedite post le remotion"
+#: share/ciborium/qml/components/FormatDialog.qml:65
+msgid "Formatting"
+msgstr "Formattante"
 
-#: share/ciborium/qml/components/SafeRemoval.qml:22
-msgid "Continue"
-msgstr "Continuar"
+#: share/ciborium/qml/components/FormatDialog.qml:87
+msgid "Format Complete"
+msgstr ""
 
-#: share/ciborium/qml/main.qml:34
-msgid "SD Card Management"
-msgstr "Tractamento del scheda SD"
+#: share/ciborium/qml/components/FormatDialog.qml:110
+#, fuzzy
+msgid "Format Error"
+msgstr "Formattar"
+
+#: share/ciborium/qml/components/FormatDialog.qml:111
+msgid "There was an error when formatting the device"
+msgstr "Il ha habite un error durante le formatation del dispositivo"
 
 #: share/applications/ciborium.desktop.tr.h:1
 msgid "External Drives"

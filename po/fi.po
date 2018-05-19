@@ -7,11 +7,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ciborium\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-03-24 16:11-0300\n"
+"POT-Creation-Date: 2018-05-19 08:38+0000\n"
 "PO-Revision-Date: 2018-05-12 19:48+0000\n"
 "Last-Translator: Veli-Matti Rautiainen <velraut@gmail.com>\n"
-"Language-Team: Finnish "
-"<https://translate.ubports.com/projects/ubports/ciborium/fi/>\n"
+"Language-Team: Finnish <https://translate.ubports.com/projects/ubports/"
+"ciborium/fi/>\n"
 "Language: fi\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -80,77 +80,87 @@ msgstr "Sisäistä levytilaa on jäljellä vain %d% %"
 msgid "Only %d%% is available on the external storage device"
 msgstr "Ulkoista levytilaa on jäljellä vain %d% %"
 
-#: share/ciborium/qml/components/SafeRemovalConfirmation.qml:12
+#: share/ciborium/qml/main.qml:21
+msgid "SD Card Management"
+msgstr "SD-kortin hallinta"
+
+#: share/ciborium/qml/components/SafeRemoval.qml:11
+#: share/ciborium/qml/components/FormatDialog.qml:11
+msgid "Cancel"
+msgstr "Peruuta"
+
+#: share/ciborium/qml/components/SafeRemoval.qml:20
+msgid "Continue"
+msgstr "Jatka"
+
+#: share/ciborium/qml/components/SafeRemoval.qml:56
+msgid "Confirm remove"
+msgstr "Vahvista irrottaminen"
+
+#: share/ciborium/qml/components/SafeRemoval.qml:57
+msgid "Files on the device can't be accessed after removing"
+msgstr "Irrottamisen jälkeen laitteen tiedostoja ei voi käyttää"
+
+#: share/ciborium/qml/components/SafeRemoval.qml:66
 msgid "Unmounting"
 msgstr "Irrotetaan"
 
-#: share/ciborium/qml/components/SafeRemovalConfirmation.qml:17
-#: share/ciborium/qml/components/FormatConfirmation.qml:22
+#: share/ciborium/qml/components/SafeRemoval.qml:82
+#: share/ciborium/qml/components/FormatDialog.qml:97
+#: share/ciborium/qml/components/FormatDialog.qml:120
 msgid "Ok"
 msgstr "OK"
 
-#: share/ciborium/qml/components/SafeRemovalConfirmation.qml:30
-#: share/ciborium/qml/components/SafeRemovalConfirmation.qml:46
-msgid "You can now safely remove the device"
-msgstr "Voit nyt irrottaa laitteen turvallisesti"
-
-#: share/ciborium/qml/components/SafeRemovalConfirmation.qml:38
-msgid "Unmount Error"
-msgstr "Irrotusvirhe"
-
-#: share/ciborium/qml/components/SafeRemovalConfirmation.qml:39
-msgid "The device could not be unmounted because is busy"
-msgstr "Laitetta ei voitu irrottaa, koska se on käytössä"
-
-#: share/ciborium/qml/components/SafeRemovalConfirmation.qml:45
+#: share/ciborium/qml/components/SafeRemoval.qml:91
 msgid "Safe to remove"
 msgstr "Irrottaminen on turvallista"
 
-#: share/ciborium/qml/components/DriveDelegate.qml:45
-#: share/ciborium/qml/components/FormatDialog.qml:11
+#: share/ciborium/qml/components/SafeRemoval.qml:92
+msgid "You can now safely remove the device"
+msgstr "Voit nyt irrottaa laitteen turvallisesti"
+
+#: share/ciborium/qml/components/SafeRemoval.qml:111
+msgid "Unmount Error"
+msgstr "Irrotusvirhe"
+
+#: share/ciborium/qml/components/SafeRemoval.qml:112
+msgid "The device could not be unmounted because is busy"
+msgstr "Laitetta ei voitu irrottaa, koska se on käytössä"
+
+#: share/ciborium/qml/components/DriveDelegate.qml:54
+#: share/ciborium/qml/components/FormatDialog.qml:55
 msgid "Format"
 msgstr "Alusta"
 
-#: share/ciborium/qml/components/DriveDelegate.qml:59
+#: share/ciborium/qml/components/DriveDelegate.qml:60
 msgid "Safely Remove"
 msgstr "Irrota turvallisesti"
-
-#: share/ciborium/qml/components/FormatConfirmation.qml:11
-msgid "Formatting"
-msgstr "Alustetaan"
-
-#: share/ciborium/qml/components/FormatConfirmation.qml:31
-msgid "There was an error when formatting the device"
-msgstr "Virhe laitetta alustaessa"
-
-#: share/ciborium/qml/components/FormatDialog.qml:12
-msgid "This action will wipe the content from the device"
-msgstr "Tämä toiminto tyhjentää laitteen sisällön"
-
-#: share/ciborium/qml/components/FormatDialog.qml:15
-#: share/ciborium/qml/components/SafeRemoval.qml:17
-msgid "Cancel"
-msgstr "Peruuta"
 
 #: share/ciborium/qml/components/FormatDialog.qml:19
 msgid "Continue with format"
 msgstr "Jatka alustamista"
 
-#: share/ciborium/qml/components/SafeRemoval.qml:13
-msgid "Confirm remove"
-msgstr "Vahvista irrottaminen"
+#: share/ciborium/qml/components/FormatDialog.qml:56
+#: share/ciborium/qml/components/FormatDialog.qml:66
+msgid "This action will wipe the content from the device"
+msgstr "Tämä toiminto tyhjentää laitteen sisällön"
 
-#: share/ciborium/qml/components/SafeRemoval.qml:14
-msgid "Files on the device can't be accessed after removing"
-msgstr "Irrottamisen jälkeen laitteen tiedostoja ei voi käyttää"
+#: share/ciborium/qml/components/FormatDialog.qml:65
+msgid "Formatting"
+msgstr "Alustetaan"
 
-#: share/ciborium/qml/components/SafeRemoval.qml:22
-msgid "Continue"
-msgstr "Jatka"
+#: share/ciborium/qml/components/FormatDialog.qml:87
+msgid "Format Complete"
+msgstr ""
 
-#: share/ciborium/qml/main.qml:34
-msgid "SD Card Management"
-msgstr "SD-kortin hallinta"
+#: share/ciborium/qml/components/FormatDialog.qml:110
+#, fuzzy
+msgid "Format Error"
+msgstr "Alusta"
+
+#: share/ciborium/qml/components/FormatDialog.qml:111
+msgid "There was an error when formatting the device"
+msgstr "Virhe laitetta alustaessa"
 
 #: share/applications/ciborium.desktop.tr.h:1
 msgid "External Drives"
