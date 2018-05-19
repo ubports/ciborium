@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ciborium\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-03-24 16:11-0300\n"
+"POT-Creation-Date: 2018-05-19 08:38+0000\n"
 "PO-Revision-Date: 2015-03-29 12:15+0000\n"
 "Last-Translator: Sasa Batistic <Unknown>\n"
 "Language-Team: Slovenian <sl@li.org>\n"
@@ -77,77 +77,87 @@ msgstr "V notranjem pomnilniku naprave je prosto samo še %d%%"
 msgid "Only %d%% is available on the external storage device"
 msgstr "V zunanjem pomnilniku naprave je prosto samo še %d%%"
 
-#: share/ciborium/qml/components/SafeRemovalConfirmation.qml:12
+#: share/ciborium/qml/main.qml:21
+msgid "SD Card Management"
+msgstr "Upravljanje s karticami SD"
+
+#: share/ciborium/qml/components/SafeRemoval.qml:11
+#: share/ciborium/qml/components/FormatDialog.qml:11
+msgid "Cancel"
+msgstr "Prekliči"
+
+#: share/ciborium/qml/components/SafeRemoval.qml:20
+msgid "Continue"
+msgstr "Nadaljuj"
+
+#: share/ciborium/qml/components/SafeRemoval.qml:56
+msgid "Confirm remove"
+msgstr "Potrdite odstranitev"
+
+#: share/ciborium/qml/components/SafeRemoval.qml:57
+msgid "Files on the device can't be accessed after removing"
+msgstr "Po odstranitvi naprave ni več mogoče dostopati do datotek"
+
+#: share/ciborium/qml/components/SafeRemoval.qml:66
 msgid "Unmounting"
 msgstr "Odklapljanje"
 
-#: share/ciborium/qml/components/SafeRemovalConfirmation.qml:17
-#: share/ciborium/qml/components/FormatConfirmation.qml:22
+#: share/ciborium/qml/components/SafeRemoval.qml:82
+#: share/ciborium/qml/components/FormatDialog.qml:97
+#: share/ciborium/qml/components/FormatDialog.qml:120
 msgid "Ok"
 msgstr "V redu"
 
-#: share/ciborium/qml/components/SafeRemovalConfirmation.qml:30
-#: share/ciborium/qml/components/SafeRemovalConfirmation.qml:46
-msgid "You can now safely remove the device"
-msgstr "Zdaj lahko varno odstranite napravo"
-
-#: share/ciborium/qml/components/SafeRemovalConfirmation.qml:38
-msgid "Unmount Error"
-msgstr "Napaka med odklapljanjem"
-
-#: share/ciborium/qml/components/SafeRemovalConfirmation.qml:39
-msgid "The device could not be unmounted because is busy"
-msgstr "Naprava ne more biti odklopjena, ker je zaposlena"
-
-#: share/ciborium/qml/components/SafeRemovalConfirmation.qml:45
+#: share/ciborium/qml/components/SafeRemoval.qml:91
 msgid "Safe to remove"
 msgstr "Varno za odstranitev"
 
-#: share/ciborium/qml/components/DriveDelegate.qml:45
-#: share/ciborium/qml/components/FormatDialog.qml:11
+#: share/ciborium/qml/components/SafeRemoval.qml:92
+msgid "You can now safely remove the device"
+msgstr "Zdaj lahko varno odstranite napravo"
+
+#: share/ciborium/qml/components/SafeRemoval.qml:111
+msgid "Unmount Error"
+msgstr "Napaka med odklapljanjem"
+
+#: share/ciborium/qml/components/SafeRemoval.qml:112
+msgid "The device could not be unmounted because is busy"
+msgstr "Naprava ne more biti odklopjena, ker je zaposlena"
+
+#: share/ciborium/qml/components/DriveDelegate.qml:54
+#: share/ciborium/qml/components/FormatDialog.qml:55
 msgid "Format"
 msgstr "Vrsta"
 
-#: share/ciborium/qml/components/DriveDelegate.qml:59
+#: share/ciborium/qml/components/DriveDelegate.qml:60
 msgid "Safely Remove"
 msgstr "Varno odstrani"
-
-#: share/ciborium/qml/components/FormatConfirmation.qml:11
-msgid "Formatting"
-msgstr "Formatiranje"
-
-#: share/ciborium/qml/components/FormatConfirmation.qml:31
-msgid "There was an error when formatting the device"
-msgstr "Prišlo je do napake ob formatiranju napake"
-
-#: share/ciborium/qml/components/FormatDialog.qml:12
-msgid "This action will wipe the content from the device"
-msgstr "To dejanje bo izbrisalo vso vsebino z naprave"
-
-#: share/ciborium/qml/components/FormatDialog.qml:15
-#: share/ciborium/qml/components/SafeRemoval.qml:17
-msgid "Cancel"
-msgstr "Prekliči"
 
 #: share/ciborium/qml/components/FormatDialog.qml:19
 msgid "Continue with format"
 msgstr "Nadaljuj z vrsto"
 
-#: share/ciborium/qml/components/SafeRemoval.qml:13
-msgid "Confirm remove"
-msgstr "Potrdite odstranitev"
+#: share/ciborium/qml/components/FormatDialog.qml:56
+#: share/ciborium/qml/components/FormatDialog.qml:66
+msgid "This action will wipe the content from the device"
+msgstr "To dejanje bo izbrisalo vso vsebino z naprave"
 
-#: share/ciborium/qml/components/SafeRemoval.qml:14
-msgid "Files on the device can't be accessed after removing"
-msgstr "Po odstranitvi naprave ni več mogoče dostopati do datotek"
+#: share/ciborium/qml/components/FormatDialog.qml:65
+msgid "Formatting"
+msgstr "Formatiranje"
 
-#: share/ciborium/qml/components/SafeRemoval.qml:22
-msgid "Continue"
-msgstr "Nadaljuj"
+#: share/ciborium/qml/components/FormatDialog.qml:87
+msgid "Format Complete"
+msgstr ""
 
-#: share/ciborium/qml/main.qml:34
-msgid "SD Card Management"
-msgstr "Upravljanje s karticami SD"
+#: share/ciborium/qml/components/FormatDialog.qml:110
+#, fuzzy
+msgid "Format Error"
+msgstr "Vrsta"
+
+#: share/ciborium/qml/components/FormatDialog.qml:111
+msgid "There was an error when formatting the device"
+msgstr "Prišlo je do napake ob formatiranju napake"
 
 #: share/applications/ciborium.desktop.tr.h:1
 msgid "External Drives"

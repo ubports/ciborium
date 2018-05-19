@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ciborium\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-03-24 16:11-0300\n"
+"POT-Creation-Date: 2018-05-19 08:38+0000\n"
 "PO-Revision-Date: 2015-03-27 09:35+0000\n"
 "Last-Translator: GunChleoc <Unknown>\n"
 "Language-Team: Fòram na Gàidhlig\n"
@@ -79,79 +79,89 @@ msgstr "Chan eil ach %d%% a rum saor air an stòras taobh a-staigh"
 msgid "Only %d%% is available on the external storage device"
 msgstr "Chan eil ach %d%% a rum saor air an uidheam-stòrais taobh a-muigh"
 
-#: share/ciborium/qml/components/SafeRemovalConfirmation.qml:12
-msgid "Unmounting"
-msgstr "Dì-mhunntachadh"
+#: share/ciborium/qml/main.qml:21
+msgid "SD Card Management"
+msgstr "Stiùireadh a' chairt SD"
 
-#: share/ciborium/qml/components/SafeRemovalConfirmation.qml:17
-#: share/ciborium/qml/components/FormatConfirmation.qml:22
-msgid "Ok"
-msgstr "Ceart ma-thà"
-
-#: share/ciborium/qml/components/SafeRemovalConfirmation.qml:30
-#: share/ciborium/qml/components/SafeRemovalConfirmation.qml:46
-msgid "You can now safely remove the device"
-msgstr "'S urrainn dhut an t-uidheam a thoirt air falbh gu sàbhailte a-nis"
-
-#: share/ciborium/qml/components/SafeRemovalConfirmation.qml:38
-msgid "Unmount Error"
-msgstr "Mearachd leis a' dhì-mhunntachadh"
-
-#: share/ciborium/qml/components/SafeRemovalConfirmation.qml:39
-msgid "The device could not be unmounted because is busy"
-msgstr "Cha b' urrainn dhuinn an t-uidheam dì-mhunntachadh on a tha e trang"
-
-#: share/ciborium/qml/components/SafeRemovalConfirmation.qml:45
-msgid "Safe to remove"
-msgstr "Sàbhailte a thoirt air falbh"
-
-#: share/ciborium/qml/components/DriveDelegate.qml:45
+#: share/ciborium/qml/components/SafeRemoval.qml:11
 #: share/ciborium/qml/components/FormatDialog.qml:11
-msgid "Format"
-msgstr "Fòrmataich"
-
-#: share/ciborium/qml/components/DriveDelegate.qml:59
-msgid "Safely Remove"
-msgstr "Thoir air falbh gu sàbhailte"
-
-#: share/ciborium/qml/components/FormatConfirmation.qml:11
-msgid "Formatting"
-msgstr "Fòrmatadh"
-
-#: share/ciborium/qml/components/FormatConfirmation.qml:31
-msgid "There was an error when formatting the device"
-msgstr "Thachair mearachd le fòrmatadh an uidheim"
-
-#: share/ciborium/qml/components/FormatDialog.qml:12
-msgid "This action will wipe the content from the device"
-msgstr "Glanaidh an gnìomh seo gach susbaint a tha air an uidheam air falbh"
-
-#: share/ciborium/qml/components/FormatDialog.qml:15
-#: share/ciborium/qml/components/SafeRemoval.qml:17
 msgid "Cancel"
 msgstr "Sguir dheth"
 
-#: share/ciborium/qml/components/FormatDialog.qml:19
-msgid "Continue with format"
-msgstr "Lean air adhart leis an fhòrmatadh"
+#: share/ciborium/qml/components/SafeRemoval.qml:20
+msgid "Continue"
+msgstr "Lean air adhart"
 
-#: share/ciborium/qml/components/SafeRemoval.qml:13
+#: share/ciborium/qml/components/SafeRemoval.qml:56
 msgid "Confirm remove"
 msgstr "Dearbhaich an toirt air falbh"
 
-#: share/ciborium/qml/components/SafeRemoval.qml:14
+#: share/ciborium/qml/components/SafeRemoval.qml:57
 msgid "Files on the device can't be accessed after removing"
 msgstr ""
 "Cha ghabh faidhlichean inntrigeadh air an uidheam seo nuair a bhios e air a "
 "thoirt air falbh"
 
-#: share/ciborium/qml/components/SafeRemoval.qml:22
-msgid "Continue"
-msgstr "Lean air adhart"
+#: share/ciborium/qml/components/SafeRemoval.qml:66
+msgid "Unmounting"
+msgstr "Dì-mhunntachadh"
 
-#: share/ciborium/qml/main.qml:34
-msgid "SD Card Management"
-msgstr "Stiùireadh a' chairt SD"
+#: share/ciborium/qml/components/SafeRemoval.qml:82
+#: share/ciborium/qml/components/FormatDialog.qml:97
+#: share/ciborium/qml/components/FormatDialog.qml:120
+msgid "Ok"
+msgstr "Ceart ma-thà"
+
+#: share/ciborium/qml/components/SafeRemoval.qml:91
+msgid "Safe to remove"
+msgstr "Sàbhailte a thoirt air falbh"
+
+#: share/ciborium/qml/components/SafeRemoval.qml:92
+msgid "You can now safely remove the device"
+msgstr "'S urrainn dhut an t-uidheam a thoirt air falbh gu sàbhailte a-nis"
+
+#: share/ciborium/qml/components/SafeRemoval.qml:111
+msgid "Unmount Error"
+msgstr "Mearachd leis a' dhì-mhunntachadh"
+
+#: share/ciborium/qml/components/SafeRemoval.qml:112
+msgid "The device could not be unmounted because is busy"
+msgstr "Cha b' urrainn dhuinn an t-uidheam dì-mhunntachadh on a tha e trang"
+
+#: share/ciborium/qml/components/DriveDelegate.qml:54
+#: share/ciborium/qml/components/FormatDialog.qml:55
+msgid "Format"
+msgstr "Fòrmataich"
+
+#: share/ciborium/qml/components/DriveDelegate.qml:60
+msgid "Safely Remove"
+msgstr "Thoir air falbh gu sàbhailte"
+
+#: share/ciborium/qml/components/FormatDialog.qml:19
+msgid "Continue with format"
+msgstr "Lean air adhart leis an fhòrmatadh"
+
+#: share/ciborium/qml/components/FormatDialog.qml:56
+#: share/ciborium/qml/components/FormatDialog.qml:66
+msgid "This action will wipe the content from the device"
+msgstr "Glanaidh an gnìomh seo gach susbaint a tha air an uidheam air falbh"
+
+#: share/ciborium/qml/components/FormatDialog.qml:65
+msgid "Formatting"
+msgstr "Fòrmatadh"
+
+#: share/ciborium/qml/components/FormatDialog.qml:87
+msgid "Format Complete"
+msgstr ""
+
+#: share/ciborium/qml/components/FormatDialog.qml:110
+#, fuzzy
+msgid "Format Error"
+msgstr "Fòrmataich"
+
+#: share/ciborium/qml/components/FormatDialog.qml:111
+msgid "There was an error when formatting the device"
+msgstr "Thachair mearachd le fòrmatadh an uidheim"
 
 #: share/applications/ciborium.desktop.tr.h:1
 msgid "External Drives"
