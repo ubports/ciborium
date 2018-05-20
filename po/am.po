@@ -112,7 +112,7 @@ msgstr "እሺ"
 
 #: share/ciborium/qml/components/SafeRemoval.qml:91
 msgid "Safe to remove"
-msgstr "በጥንቃቄ ማስወገጃ"
+msgstr "በ ጥንቃቄ ማስወገጃ"
 
 #: share/ciborium/qml/components/SafeRemoval.qml:92
 msgid "You can now safely remove the device"
