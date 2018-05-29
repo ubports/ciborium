@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: ciborium\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-05-19 08:38+0000\n"
-"PO-Revision-Date: 2018-05-29 11:42+0000\n"
-"Last-Translator: Flavia <flavia.efloris@gmail.com>\n"
+"PO-Revision-Date: 2018-05-29 11:43+0000\n"
+"Last-Translator: Matteo Mandis <mandismatteo@gmail.com>\n"
 "Language-Team: Sardinian "
 "<https://translate.ubports.com/projects/ubports/ciborium/sc/>\n"
 "Language: sc\n"
@@ -136,7 +136,7 @@ msgstr "Formata"
 
 #: share/ciborium/qml/components/DriveDelegate.qml:60
 msgid "Safely Remove"
-msgstr ""
+msgstr "Tira·nde·ddu de manera segura"
 
 #: share/ciborium/qml/components/FormatDialog.qml:19
 msgid "Continue with format"
