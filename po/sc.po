@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: ciborium\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-05-19 08:38+0000\n"
-"PO-Revision-Date: 2018-05-29 11:36+0000\n"
-"Last-Translator: Matteo Mandis <mandismatteo@gmail.com>\n"
+"PO-Revision-Date: 2018-05-29 11:40+0000\n"
+"Last-Translator: Flavia <flavia.efloris@gmail.com>\n"
 "Language-Team: Sardinian "
 "<https://translate.ubports.com/projects/ubports/ciborium/sc/>\n"
 "Language: sc\n"
@@ -23,31 +23,31 @@ msgstr ""
 #. success when addding a storage device.
 #: cmd/ciborium/main.go:123
 msgid "Storage device detected"
-msgstr ""
+msgstr "Est istadu rilevadu unu dispositivu de memòria"
 
 #. TRANSLATORS: This is the body of a notification bubble with a short message about content
 #. being scanned when addding a storage device.
 #: cmd/ciborium/main.go:126
 msgid "This device will be scanned for new content"
-msgstr ""
+msgstr "Custu dispositivu at a èssere analizadu pro nde rilevare su cuntenutu"
 
 #. TRANSLATORS: This is the summary of a notification bubble with a short message of
 #. failure when adding a storage device.
 #: cmd/ciborium/main.go:132
 msgid "Failed to add storage device"
-msgstr ""
+msgstr "Non s'est pòdidu agiùnghere su dispositivu de memòria"
 
 #. TRANSLATORS: This is the body of a notification bubble with a short message with hints
 #. with regards to the failure when adding a storage device.
 #: cmd/ciborium/main.go:135
 msgid "Make sure the storage device is correctly formated"
-msgstr ""
+msgstr "Assegura·ti chi su dispositivu de memòria siat formatadu bene"
 
 #. TRANSLATORS: This is the summary of a notification bubble with a short message of
 #. a storage device being removed
 #: cmd/ciborium/main.go:141
 msgid "Storage device has been removed"
-msgstr ""
+msgstr "Su dispositivu de memòria est istadu tiradu"
 
 #. TRANSLATORS: This is the body of a notification bubble with a short message about content
 #. from the removed device no longer being available
@@ -55,12 +55,14 @@ msgstr ""
 msgid ""
 "Content previously available on this device will no longer be accessible"
 msgstr ""
+"Non s'at a pòdere prus atzedere a su cuntenutu chi fiat a disponimentu in "
+"custu dispositivu "
 
 #. TRANSLATORS: This is the summary of a notification bubble with a short message warning on
 #. low space
 #: cmd/ciborium/main.go:329
 msgid "Low on disk space"
-msgstr ""
+msgstr "B'at pagu ispàtziu in su discu"
 
 #. TRANSLATORS: This is the body of a notification bubble with a short message about content
 #. reamining available space, %d is the remaining percentage of space available on internal
@@ -68,7 +70,7 @@ msgstr ""
 #: cmd/ciborium/main.go:333
 #, c-format
 msgid "Only %d%% is available on the internal storage device"
-msgstr ""
+msgstr "Isceti %d 1%% 2 est disponìbile in su dispositivu de memòria internu"
 
 #. TRANSLATORS: This is the body of a notification bubble with a short message about content
 #. reamining available space, %d is the remaining percentage of space available on a given
@@ -76,11 +78,11 @@ msgstr ""
 #: cmd/ciborium/main.go:337
 #, c-format
 msgid "Only %d%% is available on the external storage device"
-msgstr ""
+msgstr "Isceti %d 1%% 2 est disponìbile in su dispositivu de memòria esternu"
 
 #: share/ciborium/qml/main.qml:21
 msgid "SD Card Management"
-msgstr ""
+msgstr "Gestione de s'ischeda SD"
 
 #: share/ciborium/qml/components/SafeRemoval.qml:11
 #: share/ciborium/qml/components/FormatDialog.qml:11
@@ -89,29 +91,31 @@ msgstr "Annulla"
 
 #: share/ciborium/qml/components/SafeRemoval.qml:20
 msgid "Continue"
-msgstr ""
+msgstr "Sighi"
 
 #: share/ciborium/qml/components/SafeRemoval.qml:56
 msgid "Confirm remove"
-msgstr ""
+msgstr "Cunfirma s'iscotzadura"
 
 #: share/ciborium/qml/components/SafeRemoval.qml:57
 msgid "Files on the device can't be accessed after removing"
 msgstr ""
+"Non s'at a pòdere atzedere a is archìvios de su dispositivu a pustis de "
+"s'iscotzadura"
 
 #: share/ciborium/qml/components/SafeRemoval.qml:66
 msgid "Unmounting"
-msgstr ""
+msgstr "Ismontende"
 
 #: share/ciborium/qml/components/SafeRemoval.qml:82
 #: share/ciborium/qml/components/FormatDialog.qml:97
 #: share/ciborium/qml/components/FormatDialog.qml:120
 msgid "Ok"
-msgstr ""
+msgstr "AB"
 
 #: share/ciborium/qml/components/SafeRemoval.qml:91
 msgid "Safe to remove"
-msgstr ""
+msgstr "Iscotzadura segura"
 
 #: share/ciborium/qml/components/SafeRemoval.qml:92
 msgid "You can now safely remove the device"
