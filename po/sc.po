@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: ciborium\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-05-19 08:38+0000\n"
-"PO-Revision-Date: 2018-05-29 11:41+0000\n"
-"Last-Translator: Matteo Mandis <mandismatteo@gmail.com>\n"
+"PO-Revision-Date: 2018-05-29 11:42+0000\n"
+"Last-Translator: Flavia <flavia.efloris@gmail.com>\n"
 "Language-Team: Sardinian "
 "<https://translate.ubports.com/projects/ubports/ciborium/sc/>\n"
 "Language: sc\n"
@@ -119,20 +119,20 @@ msgstr "Tira de manera segura"
 
 #: share/ciborium/qml/components/SafeRemoval.qml:92
 msgid "You can now safely remove the device"
-msgstr ""
+msgstr "Immoe podes tirare su dispositivu de manera segura"
 
 #: share/ciborium/qml/components/SafeRemoval.qml:111
 msgid "Unmount Error"
-msgstr ""
+msgstr "Faddina in s'ismontare"
 
 #: share/ciborium/qml/components/SafeRemoval.qml:112
 msgid "The device could not be unmounted because is busy"
-msgstr ""
+msgstr "Non s'est pòdidu ismontare su dispositivu pro ite est impreadu"
 
 #: share/ciborium/qml/components/DriveDelegate.qml:54
 #: share/ciborium/qml/components/FormatDialog.qml:55
 msgid "Format"
-msgstr ""
+msgstr "Formata"
 
 #: share/ciborium/qml/components/DriveDelegate.qml:60
 msgid "Safely Remove"
@@ -140,28 +140,28 @@ msgstr ""
 
 #: share/ciborium/qml/components/FormatDialog.qml:19
 msgid "Continue with format"
-msgstr ""
+msgstr "Sighi cun sa formatatzione"
 
 #: share/ciborium/qml/components/FormatDialog.qml:56
 #: share/ciborium/qml/components/FormatDialog.qml:66
 msgid "This action will wipe the content from the device"
-msgstr ""
+msgstr "Custa atzione at a cantzellare su cuntenutu de su dispositivu"
 
 #: share/ciborium/qml/components/FormatDialog.qml:65
 msgid "Formatting"
-msgstr ""
+msgstr "Formatende"
 
 #: share/ciborium/qml/components/FormatDialog.qml:87
 msgid "Format Complete"
-msgstr ""
+msgstr "Su formatu est istadu cumpletadu"
 
 #: share/ciborium/qml/components/FormatDialog.qml:110
 msgid "Format Error"
-msgstr ""
+msgstr "Faddina in su formatu"
 
 #: share/ciborium/qml/components/FormatDialog.qml:111
 msgid "There was an error when formatting the device"
-msgstr ""
+msgstr "B'est istada una faddina in sa formatatzione de su dispositivu"
 
 #: share/applications/ciborium.desktop.tr.h:1
 msgid "External Drives"
