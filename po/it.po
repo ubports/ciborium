@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: ciborium\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-05-19 08:38+0000\n"
-"PO-Revision-Date: 2018-06-02 23:16+0000\n"
-"Last-Translator: Simone <19simok89@gmail.com>\n"
+"PO-Revision-Date: 2018-06-25 06:39+0000\n"
+"Last-Translator: Mike <miguel2000@livecom.it>\n"
 "Language-Team: Italian "
 "<https://translate.ubports.com/projects/ubports/ciborium/it/>\n"
 "Language: it\n"
@@ -157,7 +157,7 @@ msgstr "Formattazione completata"
 
 #: share/ciborium/qml/components/FormatDialog.qml:110
 msgid "Format Error"
-msgstr "Errore formattazione"
+msgstr "Errore di Formattazione"
 
 #: share/ciborium/qml/components/FormatDialog.qml:111
 msgid "There was an error when formatting the device"
