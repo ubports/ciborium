@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: ciborium\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-05-19 08:38+0000\n"
-"PO-Revision-Date: 2018-07-05 08:26+0000\n"
+"PO-Revision-Date: 2018-07-05 11:23+0000\n"
 "Last-Translator: konrad <kohofer@gmail.com>\n"
 "Language-Team: English (United Kingdom) "
 "<https://translate.ubports.com/projects/ubports/ciborium/en_GB/>\n"
@@ -87,7 +87,7 @@ msgstr "SD Card Management"
 #: share/ciborium/qml/components/SafeRemoval.qml:11
 #: share/ciborium/qml/components/FormatDialog.qml:11
 msgid "Cancel"
-msgstr "Annuler"
+msgstr "Cancel"
 
 #: share/ciborium/qml/components/SafeRemoval.qml:20
 msgid "Continue"
