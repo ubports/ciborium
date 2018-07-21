@@ -8,45 +8,47 @@ msgstr ""
 "Project-Id-Version: ciborium\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-05-19 08:38+0000\n"
-"PO-Revision-Date: 2016-04-30 16:03+0000\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: Albanian <sq@li.org>\n"
+"PO-Revision-Date: 2018-06-02 18:51+0000\n"
+"Last-Translator: Jeff <jeffi27@live.at>\n"
+"Language-Team: Albanian "
+"<https://translate.ubports.com/projects/ubports/ciborium/sq/>\n"
 "Language: sq\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 2.15\n"
 "X-Launchpad-Export-Date: 2017-01-17 07:08+0000\n"
-"X-Generator: Launchpad (build 18302)\n"
 
 #. TRANSLATORS: This is the summary of a notification bubble with a short message of
 #. success when addding a storage device.
 #: cmd/ciborium/main.go:123
 msgid "Storage device detected"
-msgstr ""
+msgstr "U zbulua pajisja ruajtëse"
 
 #. TRANSLATORS: This is the body of a notification bubble with a short message about content
 #. being scanned when addding a storage device.
 #: cmd/ciborium/main.go:126
 msgid "This device will be scanned for new content"
-msgstr ""
+msgstr "Kjo pajisje do të skanohet për përmbajtje të re"
 
 #. TRANSLATORS: This is the summary of a notification bubble with a short message of
 #. failure when adding a storage device.
 #: cmd/ciborium/main.go:132
 msgid "Failed to add storage device"
-msgstr ""
+msgstr "Dështoi në shtimin e pajisjes së ruajtjes"
 
 #. TRANSLATORS: This is the body of a notification bubble with a short message with hints
 #. with regards to the failure when adding a storage device.
 #: cmd/ciborium/main.go:135
 msgid "Make sure the storage device is correctly formated"
-msgstr ""
+msgstr "Sigurohuni që pajisja e ruajtjes të jetë formatuar siç duhet"
 
 #. TRANSLATORS: This is the summary of a notification bubble with a short message of
 #. a storage device being removed
 #: cmd/ciborium/main.go:141
 msgid "Storage device has been removed"
-msgstr ""
+msgstr "Pajisja ruajtëse është hequr"
 
 #. TRANSLATORS: This is the body of a notification bubble with a short message about content
 #. from the removed device no longer being available
@@ -54,12 +56,14 @@ msgstr ""
 msgid ""
 "Content previously available on this device will no longer be accessible"
 msgstr ""
+"Përmbajtja e disponueshme më parë në këtë pajisje nuk do të jetë më e "
+"disponueshme"
 
 #. TRANSLATORS: This is the summary of a notification bubble with a short message warning on
 #. low space
 #: cmd/ciborium/main.go:329
 msgid "Low on disk space"
-msgstr ""
+msgstr "Hapësira në disk e ulët"
 
 #. TRANSLATORS: This is the body of a notification bubble with a short message about content
 #. reamining available space, %d is the remaining percentage of space available on internal
@@ -68,6 +72,7 @@ msgstr ""
 #, c-format
 msgid "Only %d%% is available on the internal storage device"
 msgstr ""
+"Vetëm%d  %%  është në dispozicion në pajisjen e magazinimit të brendshëm"
 
 #. TRANSLATORS: This is the body of a notification bubble with a short message about content
 #. reamining available space, %d is the remaining percentage of space available on a given
@@ -75,7 +80,7 @@ msgstr ""
 #: cmd/ciborium/main.go:337
 #, c-format
 msgid "Only %d%% is available on the external storage device"
-msgstr ""
+msgstr "Vetëm%d%% është ende në dispozicion në ruajtjen e jashtme"
 
 #: share/ciborium/qml/main.qml:21
 msgid "SD Card Management"
@@ -84,7 +89,7 @@ msgstr "Menaxhim i Kartës SD"
 #: share/ciborium/qml/components/SafeRemoval.qml:11
 #: share/ciborium/qml/components/FormatDialog.qml:11
 msgid "Cancel"
-msgstr "Anullo"
+msgstr "Anulo"
 
 #: share/ciborium/qml/components/SafeRemoval.qml:20
 msgid "Continue"
@@ -96,7 +101,7 @@ msgstr "Konfirmo heqjen"
 
 #: share/ciborium/qml/components/SafeRemoval.qml:57
 msgid "Files on the device can't be accessed after removing"
-msgstr ""
+msgstr "Pasi të fshihen, skedarët në pajisje nuk mund të përdoren më"
 
 #: share/ciborium/qml/components/SafeRemoval.qml:66
 msgid "Unmounting"
@@ -106,15 +111,15 @@ msgstr "Duke çmontuar"
 #: share/ciborium/qml/components/FormatDialog.qml:97
 #: share/ciborium/qml/components/FormatDialog.qml:120
 msgid "Ok"
-msgstr "Ok"
+msgstr "OK"
 
 #: share/ciborium/qml/components/SafeRemoval.qml:91
 msgid "Safe to remove"
-msgstr ""
+msgstr "Të sigurt për të hequr"
 
 #: share/ciborium/qml/components/SafeRemoval.qml:92
 msgid "You can now safely remove the device"
-msgstr ""
+msgstr "Tani mund ta hiqni me siguri pajisjen tuaj"
 
 #: share/ciborium/qml/components/SafeRemoval.qml:111
 msgid "Unmount Error"
@@ -122,7 +127,7 @@ msgstr "Gabim Çmontimi"
 
 #: share/ciborium/qml/components/SafeRemoval.qml:112
 msgid "The device could not be unmounted because is busy"
-msgstr ""
+msgstr "Pajisja nuk mund të hiqet sepse është e zënë"
 
 #: share/ciborium/qml/components/DriveDelegate.qml:54
 #: share/ciborium/qml/components/FormatDialog.qml:55
@@ -135,12 +140,12 @@ msgstr "Hiqe me Siguri"
 
 #: share/ciborium/qml/components/FormatDialog.qml:19
 msgid "Continue with format"
-msgstr ""
+msgstr "Vazhdoni me formatim"
 
 #: share/ciborium/qml/components/FormatDialog.qml:56
 #: share/ciborium/qml/components/FormatDialog.qml:66
 msgid "This action will wipe the content from the device"
-msgstr ""
+msgstr "Ky veprim kërkon të fshijë përmbajtjen nga pajisja"
 
 #: share/ciborium/qml/components/FormatDialog.qml:65
 msgid "Formatting"
@@ -148,16 +153,15 @@ msgstr "Duke formatuar"
 
 #: share/ciborium/qml/components/FormatDialog.qml:87
 msgid "Format Complete"
-msgstr ""
+msgstr "Formatimi i kompletuar"
 
 #: share/ciborium/qml/components/FormatDialog.qml:110
-#, fuzzy
 msgid "Format Error"
-msgstr "Formati"
+msgstr "Formatimi gabim"
 
 #: share/ciborium/qml/components/FormatDialog.qml:111
 msgid "There was an error when formatting the device"
-msgstr ""
+msgstr "Kishte një gabim gjatë formatimit të pajisjes"
 
 #: share/applications/ciborium.desktop.tr.h:1
 msgid "External Drives"
