@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: ciborium\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-05-19 08:38+0000\n"
-"PO-Revision-Date: 2018-08-08 13:26+0000\n"
+"PO-Revision-Date: 2018-08-12 15:05+0000\n"
 "Last-Translator: ierihon <idekovets@mail.ru>\n"
 "Language-Team: Russian <https://translate.ubports.com/projects/ubports/"
 "ciborium/ru/>\n"
@@ -138,7 +138,7 @@ msgstr "Безопасное извлечение"
 
 #: share/ciborium/qml/components/FormatDialog.qml:19
 msgid "Continue with format"
-msgstr "Продолжить форматирование"
+msgstr "Подтвердите форматирование"
 
 #: share/ciborium/qml/components/FormatDialog.qml:56
 #: share/ciborium/qml/components/FormatDialog.qml:66
