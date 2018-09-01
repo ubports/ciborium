@@ -109,7 +109,7 @@ Dialog {
                 target: safeRemovalDlg
                 explicit: true
                 title: i18n.tr("Unmount Error");
-                text: i18n.tr("The device could not be unmounted because is busy");;
+                text: i18n.tr("The device could not be unmounted because is busy");
             }
             PropertyChanges {
                 target: okButton
