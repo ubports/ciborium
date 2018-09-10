@@ -90,7 +90,7 @@ func newMountwatch() *mountwatch {
 }
 
 const (
-	sdCardIcon                = "media-memory-sd"
+	sdCardIcon                = "sdcard"
 	errorIcon                 = "error"
 	homeMountpoint mountpoint = "/home"
 	freeThreshold             = 5
