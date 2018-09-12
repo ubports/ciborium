@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: ciborium\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-05-19 08:38+0000\n"
-"PO-Revision-Date: 2018-09-12 23:14+0000\n"
+"PO-Revision-Date: 2018-09-18 18:52+0000\n"
 "Last-Translator: ArashiHino <hinoaras.hi82@gmail.com>\n"
 "Language-Team: Japanese <https://translate.ubports.com/projects/ubports/"
 "ciborium/ja/>\n"
@@ -55,7 +55,7 @@ msgstr "ストレージデバイスが取り外されました"
 #: cmd/ciborium/main.go:144
 msgid ""
 "Content previously available on this device will no longer be accessible"
-msgstr "このデバイス上のコンテンツにはアクセスできなくなります。"
+msgstr "このデバイス上のコンテンツにはアクセスできなくなります"
 
 #. TRANSLATORS: This is the summary of a notification bubble with a short message warning on
 #. low space
