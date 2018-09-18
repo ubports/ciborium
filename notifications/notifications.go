@@ -17,7 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-// Notifications lives on a well-knwon bus.Address
+// Notifications lives on a well-known bus.Address
 
 package notifications
 
