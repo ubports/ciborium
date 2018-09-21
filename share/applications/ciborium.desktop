@@ -14,3 +14,4 @@ X-Ubuntu-Default-Department-ID=accessories
 X-Ubuntu-Gettext-Domain=ciborium
 X-Ubuntu-Splash-Show-Header=true
 X-Ubuntu-Splash-Title=External Drives
+X-Ubuntu-SymbolicIcon=/usr/share/icons/suru/devices/scalable/sdcard-symbolic.svg

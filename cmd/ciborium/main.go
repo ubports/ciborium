@@ -90,7 +90,7 @@ func newMountwatch() *mountwatch {
 }
 
 const (
-	sdCardIcon                = "sdcard"
+	sdCardIcon                = "/usr/share/ciborium/icons/ciborium.svg"
 	errorIcon                 = "error"
 	homeMountpoint mountpoint = "/home"
 	freeThreshold             = 5
