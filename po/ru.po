@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: ciborium\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-05-19 08:38+0000\n"
-"PO-Revision-Date: 2018-08-12 15:05+0000\n"
+"PO-Revision-Date: 2018-11-05 19:24+0000\n"
 "Last-Translator: ierihon <idekovets@mail.ru>\n"
 "Language-Team: Russian <https://translate.ubports.com/projects/ubports/"
 "ciborium/ru/>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<="
 "4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
-"X-Generator: Weblate 2.20\n"
+"X-Generator: Weblate 3.1.1\n"
 "X-Launchpad-Export-Date: 2017-01-17 07:08+0000\n"
 
 #. TRANSLATORS: This is the summary of a notification bubble with a short message of
@@ -70,7 +70,7 @@ msgstr "Заканчивается место на диске"
 #: cmd/ciborium/main.go:333
 #, c-format
 msgid "Only %d%% is available on the internal storage device"
-msgstr "Доступно только %d%% встроенной памяти."
+msgstr "Доступно только %d%% встроенной памяти"
 
 #. TRANSLATORS: This is the body of a notification bubble with a short message about content
 #. reamining available space, %d is the remaining percentage of space available on a given
@@ -78,7 +78,7 @@ msgstr "Доступно только %d%% встроенной памяти."
 #: cmd/ciborium/main.go:337
 #, c-format
 msgid "Only %d%% is available on the external storage device"
-msgstr "Доступно только %d%% внешней памяти."
+msgstr "Доступно только %d%% внешней памяти"
 
 #: share/ciborium/qml/main.qml:21
 msgid "SD Card Management"
