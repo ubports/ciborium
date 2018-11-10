@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: ciborium\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-05-19 08:38+0000\n"
-"PO-Revision-Date: 2018-08-19 01:00+0000\n"
+"PO-Revision-Date: 2018-11-12 19:13+0000\n"
 "Last-Translator: Sander <sander.k1007@kpnmail.nl>\n"
 "Language-Team: Dutch <https://translate.ubports.com/projects/ubports/"
 "ciborium/nl/>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 2.20\n"
+"X-Generator: Weblate 3.1.1\n"
 "X-Launchpad-Export-Date: 2017-01-17 07:08+0000\n"
 
 #. TRANSLATORS: This is the summary of a notification bubble with a short message of
@@ -96,12 +96,12 @@ msgstr "Doorgaan"
 
 #: share/ciborium/qml/components/SafeRemoval.qml:56
 msgid "Confirm remove"
-msgstr "Bevestig verwijderen"
+msgstr "Bevestig uitwerpen"
 
 #: share/ciborium/qml/components/SafeRemoval.qml:57
 msgid "Files on the device can't be accessed after removing"
 msgstr ""
-"Bestanden op het verwijderde opslagapparaat zullen hierna niet langer "
+"Bestanden op het uitgeworpen opslagapparaat zullen hierna niet langer "
 "toegankelijk zijn"
 
 #: share/ciborium/qml/components/SafeRemoval.qml:66
@@ -112,7 +112,7 @@ msgstr "Ontkoppelen"
 #: share/ciborium/qml/components/FormatDialog.qml:97
 #: share/ciborium/qml/components/FormatDialog.qml:120
 msgid "Ok"
-msgstr "Ok"
+msgstr "Oké"
 
 #: share/ciborium/qml/components/SafeRemoval.qml:91
 msgid "Safe to remove"
@@ -133,7 +133,7 @@ msgstr "Het opslagapparaat kon niet ontkoppeld worden omdat het in gebruik is"
 #: share/ciborium/qml/components/DriveDelegate.qml:54
 #: share/ciborium/qml/components/FormatDialog.qml:55
 msgid "Format"
-msgstr "Formaat"
+msgstr "Formatteren"
 
 #: share/ciborium/qml/components/DriveDelegate.qml:60
 msgid "Safely Remove"
@@ -154,7 +154,7 @@ msgstr "Formatteren"
 
 #: share/ciborium/qml/components/FormatDialog.qml:87
 msgid "Format Complete"
-msgstr "Formatteren klaar"
+msgstr "Formatteren voltooid"
 
 #: share/ciborium/qml/components/FormatDialog.qml:110
 msgid "Format Error"
