@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-05-19 08:38+0000\n"
 "PO-Revision-Date: 2018-12-28 09:08+0000\n"
-"Last-Translator: Håkan Palm <hakan@familjen-palm.se>\n"
+"Last-Translator: Rondy Andersson <rondarius@gmail.com>\n"
 "Language-Team: Swedish <https://translate.ubports.com/projects/ubports/"
 "ciborium/sv/>\n"
 "Language: sv\n"
@@ -108,7 +108,7 @@ msgstr "Avmonterar"
 #: share/ciborium/qml/components/FormatDialog.qml:97
 #: share/ciborium/qml/components/FormatDialog.qml:120
 msgid "Ok"
-msgstr "OK"
+msgstr "Ok"
 
 #: share/ciborium/qml/components/SafeRemoval.qml:91
 msgid "Safe to remove"
