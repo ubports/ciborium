@@ -8,16 +8,16 @@ msgstr ""
 "Project-Id-Version: ciborium\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-05-19 08:38+0000\n"
-"PO-Revision-Date: 2018-07-05 15:57+0000\n"
+"PO-Revision-Date: 2019-01-20 00:00+0000\n"
 "Last-Translator: Adrià <adriamartinmor@gmail.com>\n"
-"Language-Team: Sardinian "
-"<https://translate.ubports.com/projects/ubports/ciborium/sc/>\n"
+"Language-Team: Sardinian <https://translate.ubports.com/projects/ubports/"
+"ciborium/sc/>\n"
 "Language: sc\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 2.15\n"
+"X-Generator: Weblate 3.1.1\n"
 
 #. TRANSLATORS: This is the summary of a notification bubble with a short message of
 #. success when addding a storage device.
@@ -70,7 +70,9 @@ msgstr "B'at pagu ispàtziu in su discu"
 #: cmd/ciborium/main.go:333
 #, c-format
 msgid "Only %d%% is available on the internal storage device"
-msgstr "Isceti %d 1%% 2 est disponìbile in su dispositivu de memòria internu"
+msgstr ""
+"S'ispàtziu a disponimentu in su dispositivu de memòria internu est isceti de "
+"su %d%%"
 
 #. TRANSLATORS: This is the body of a notification bubble with a short message about content
 #. reamining available space, %d is the remaining percentage of space available on a given
@@ -78,7 +80,9 @@ msgstr "Isceti %d 1%% 2 est disponìbile in su dispositivu de memòria internu"
 #: cmd/ciborium/main.go:337
 #, c-format
 msgid "Only %d%% is available on the external storage device"
-msgstr "Isceti %d 1%% 2 est disponìbile in su dispositivu de memòria esternu"
+msgstr ""
+"S'ispàtziu a disponimentu in su dispositivu de memòria esternu est isceti de "
+"su %d%%"
 
 #: share/ciborium/qml/main.qml:21
 msgid "SD Card Management"
