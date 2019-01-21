@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: ciborium\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-05-19 08:38+0000\n"
-"PO-Revision-Date: 2018-08-19 16:11+0000\n"
+"PO-Revision-Date: 2018-11-19 03:27+0000\n"
 "Last-Translator: Jiri Grönroos <jiri.gronroos@iki.fi>\n"
 "Language-Team: Finnish <https://translate.ubports.com/projects/ubports/"
 "ciborium/fi/>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 2.20\n"
+"X-Generator: Weblate 3.1.1\n"
 "X-Launchpad-Export-Date: 2017-01-17 07:08+0000\n"
 
 #. TRANSLATORS: This is the summary of a notification bubble with a short message of
@@ -130,7 +130,7 @@ msgstr "Laitetta ei voitu irrottaa, koska se on käytössä"
 #: share/ciborium/qml/components/DriveDelegate.qml:54
 #: share/ciborium/qml/components/FormatDialog.qml:55
 msgid "Format"
-msgstr "Alusta"
+msgstr "Muoto"
 
 #: share/ciborium/qml/components/DriveDelegate.qml:60
 msgid "Safely Remove"
