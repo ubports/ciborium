@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: ciborium\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-05-19 08:38+0000\n"
-"PO-Revision-Date: 2018-12-23 00:00+0000\n"
-"Last-Translator: Max Libre <libremax@protonmail.com>\n"
+"PO-Revision-Date: 2019-02-11 20:28+0000\n"
+"Last-Translator: Anne Onyme <anneonyme017@netcourrier.com>\n"
 "Language-Team: French <https://translate.ubports.com/projects/ubports/"
 "ciborium/fr/>\n"
 "Language: fr\n"
@@ -85,7 +85,7 @@ msgstr ""
 
 #: share/ciborium/qml/main.qml:21
 msgid "SD Card Management"
-msgstr "Gestion de la carte SD"
+msgstr "Gestion de la carte mémoire"
 
 #: share/ciborium/qml/components/SafeRemoval.qml:11
 #: share/ciborium/qml/components/FormatDialog.qml:11
@@ -130,7 +130,7 @@ msgstr "Erreur lors du démontage"
 
 #: share/ciborium/qml/components/SafeRemoval.qml:112
 msgid "The device could not be unmounted because is busy"
-msgstr "Le périphérique pourrait ne pas être démonté car il est occupé"
+msgstr "Le périphérique n'a pas pu être démonté car il est occupé"
 
 #: share/ciborium/qml/components/DriveDelegate.qml:54
 #: share/ciborium/qml/components/FormatDialog.qml:55
@@ -168,4 +168,4 @@ msgstr "Il y a eu une erreur lors du formatage du périphérique"
 
 #: share/applications/ciborium.desktop.tr.h:1
 msgid "External Drives"
-msgstr "Périphériques externes"
+msgstr "Périphériques"
