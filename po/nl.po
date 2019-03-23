@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: ciborium\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-05-19 08:38+0000\n"
-"PO-Revision-Date: 2018-11-12 19:13+0000\n"
-"Last-Translator: Sander <sander.k1007@kpnmail.nl>\n"
+"PO-Revision-Date: 2019-02-12 01:53+0000\n"
+"Last-Translator: Heimen Stoffels <vistausss@outlook.com>\n"
 "Language-Team: Dutch <https://translate.ubports.com/projects/ubports/"
 "ciborium/nl/>\n"
 "Language: nl\n"
@@ -24,25 +24,25 @@ msgstr ""
 #. success when addding a storage device.
 #: cmd/ciborium/main.go:123
 msgid "Storage device detected"
-msgstr "Opslagapparaat gedetecteerd"
+msgstr "Opslagapparaat aangetroffen"
 
 #. TRANSLATORS: This is the body of a notification bubble with a short message about content
 #. being scanned when addding a storage device.
 #: cmd/ciborium/main.go:126
 msgid "This device will be scanned for new content"
-msgstr "Het opslagapparaat zal gescand worden op nieuwe inhoud"
+msgstr "Het opslagapparaat zal worden doorzocht op nieuwe inhoud"
 
 #. TRANSLATORS: This is the summary of a notification bubble with a short message of
 #. failure when adding a storage device.
 #: cmd/ciborium/main.go:132
 msgid "Failed to add storage device"
-msgstr "Kon opslagapparaat niet toevoegen"
+msgstr "Kan opslagapparaat niet toevoegen"
 
 #. TRANSLATORS: This is the body of a notification bubble with a short message with hints
 #. with regards to the failure when adding a storage device.
 #: cmd/ciborium/main.go:135
 msgid "Make sure the storage device is correctly formated"
-msgstr "Zorg ervoor dat het opslagapparaat correct geformatteerd is"
+msgstr "Zorg ervoor dat het opslagapparaat juist is geformatteerd"
 
 #. TRANSLATORS: This is the summary of a notification bubble with a short message of
 #. a storage device being removed
@@ -56,14 +56,14 @@ msgstr "Het opslagapparaat is verwijderd"
 msgid ""
 "Content previously available on this device will no longer be accessible"
 msgstr ""
-"De voorheen beschikbare inhoud op dit opslagapparaat zal hierna niet langer "
+"De voorheen beschikbare inhoud op dit opslagapparaat zal niet langer "
 "toegankelijk zijn"
 
 #. TRANSLATORS: This is the summary of a notification bubble with a short message warning on
 #. low space
 #: cmd/ciborium/main.go:329
 msgid "Low on disk space"
-msgstr "Nog maar weinig schijfruimte beschikbaar"
+msgstr "Weinig vrije schijfruimte"
 
 #. TRANSLATORS: This is the body of a notification bubble with a short message about content
 #. reamining available space, %d is the remaining percentage of space available on internal
@@ -71,7 +71,7 @@ msgstr "Nog maar weinig schijfruimte beschikbaar"
 #: cmd/ciborium/main.go:333
 #, c-format
 msgid "Only %d%% is available on the internal storage device"
-msgstr "Er is nog maar %d%% beschikbaar op het interne opslagapparaat"
+msgstr "Er is nog slechts %d%% beschikbaar op het interne opslagapparaat"
 
 #. TRANSLATORS: This is the body of a notification bubble with a short message about content
 #. reamining available space, %d is the remaining percentage of space available on a given
@@ -79,7 +79,7 @@ msgstr "Er is nog maar %d%% beschikbaar op het interne opslagapparaat"
 #: cmd/ciborium/main.go:337
 #, c-format
 msgid "Only %d%% is available on the external storage device"
-msgstr "Er is nog maar %d%% beschikbaar op het externe opslagapparaat"
+msgstr "Er is nog slechts %d%% beschikbaar op het externe opslagapparaat"
 
 #: share/ciborium/qml/main.qml:21
 msgid "SD Card Management"
@@ -88,7 +88,7 @@ msgstr "SD-kaartbeheer"
 #: share/ciborium/qml/components/SafeRemoval.qml:11
 #: share/ciborium/qml/components/FormatDialog.qml:11
 msgid "Cancel"
-msgstr "Annuleren"
+msgstr "Afbreken"
 
 #: share/ciborium/qml/components/SafeRemoval.qml:20
 msgid "Continue"
@@ -96,13 +96,11 @@ msgstr "Doorgaan"
 
 #: share/ciborium/qml/components/SafeRemoval.qml:56
 msgid "Confirm remove"
-msgstr "Bevestig uitwerpen"
+msgstr "Uitwerpen bevestigen"
 
 #: share/ciborium/qml/components/SafeRemoval.qml:57
 msgid "Files on the device can't be accessed after removing"
-msgstr ""
-"Bestanden op het uitgeworpen opslagapparaat zullen hierna niet langer "
-"toegankelijk zijn"
+msgstr "Bestanden op het opslagapparaat zullen niet langer toegankelijk zijn"
 
 #: share/ciborium/qml/components/SafeRemoval.qml:66
 msgid "Unmounting"
@@ -120,7 +118,7 @@ msgstr "Veilig om te verwijderen"
 
 #: share/ciborium/qml/components/SafeRemoval.qml:92
 msgid "You can now safely remove the device"
-msgstr "U kunt het opslagapparaat nu veilig verwijderen"
+msgstr "Je kunt het opslagapparaat nu veilig verwijderen"
 
 #: share/ciborium/qml/components/SafeRemoval.qml:111
 msgid "Unmount Error"
@@ -128,7 +126,7 @@ msgstr "Ontkoppelfout"
 
 #: share/ciborium/qml/components/SafeRemoval.qml:112
 msgid "The device could not be unmounted because is busy"
-msgstr "Het opslagapparaat kon niet ontkoppeld worden omdat het in gebruik is"
+msgstr "Het opslagapparaat kan niet worden ontkoppeld omdat het in gebruik is"
 
 #: share/ciborium/qml/components/DriveDelegate.qml:54
 #: share/ciborium/qml/components/FormatDialog.qml:55
@@ -146,11 +144,11 @@ msgstr "Doorgaan met formatteren"
 #: share/ciborium/qml/components/FormatDialog.qml:56
 #: share/ciborium/qml/components/FormatDialog.qml:66
 msgid "This action will wipe the content from the device"
-msgstr "Deze actie zal de inhoud van het opslagapparaat wissen"
+msgstr "Deze actie wist de inhoud van het apparaat"
 
 #: share/ciborium/qml/components/FormatDialog.qml:65
 msgid "Formatting"
-msgstr "Formatteren"
+msgstr "Bezig met formatteren..."
 
 #: share/ciborium/qml/components/FormatDialog.qml:87
 msgid "Format Complete"
@@ -158,7 +156,7 @@ msgstr "Formatteren voltooid"
 
 #: share/ciborium/qml/components/FormatDialog.qml:110
 msgid "Format Error"
-msgstr "Formatteer fout"
+msgstr "Formatteerfout"
 
 #: share/ciborium/qml/components/FormatDialog.qml:111
 msgid "There was an error when formatting the device"
