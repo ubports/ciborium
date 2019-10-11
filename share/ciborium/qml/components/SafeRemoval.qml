@@ -5,20 +5,11 @@ import Ubuntu.Components.Popups 1.1
 Dialog {
     id: safeRemovalDlg
     property int driveIndex
-
-    Button {
-        id: cancelButton
-        text: i18n.tr("Cancel")
-        onClicked: {
-            console.log("Safe removal action cancelled");
-            PopupUtils.close(safeRemovalDlg);
-        }
-    }
-
+    
     Button {
         id: okButton
         text: i18n.tr("Continue")
-        color: UbuntuColors.orange
+        color: UbuntuColors.green
         onClicked: {
             switch (safeRemovalDlg.state) {
             case "remove":
@@ -36,6 +27,15 @@ Dialog {
                 console.warn("Ok button clicked in wrong state: ", safeRemovalDlg.state);
                 break;
             }
+            PopupUtils.close(safeRemovalDlg);
+        }
+    }
+    
+    Button {
+        id: cancelButton
+        text: i18n.tr("Cancel")
+        onClicked: {
+            console.log("Safe removal action cancelled");
             PopupUtils.close(safeRemovalDlg);
         }
     }

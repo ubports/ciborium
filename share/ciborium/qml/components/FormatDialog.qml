@@ -6,18 +6,10 @@ Dialog {
     id: formatDlg
     property int driveIndex
 
-    Button {
-        id: cancelBtn
-        text: i18n.tr("Cancel")
-        onClicked: {
-            console.log("Format cancelled")
-            PopupUtils.close(formatDlg)
-        }
-    }
-    Button {
+Button {
         id: okBtn
         text: i18n.tr("Continue with format")
-        color: UbuntuColors.orange
+        color: UbuntuColors.red
         onClicked: {
             switch(formatDlg.state) {
             case "confirm":
@@ -38,6 +30,16 @@ Dialog {
             PopupUtils.close(formatDlg);
         }
     }
+    
+    Button {
+        id: cancelBtn
+        text: i18n.tr("Cancel")
+        onClicked: {
+            console.log("Format cancelled")
+            PopupUtils.close(formatDlg)
+        }
+    }
+    
 
     ActivityIndicator {
         id: formatActivity

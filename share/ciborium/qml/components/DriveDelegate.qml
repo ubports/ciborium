@@ -52,13 +52,12 @@ ListItem {
 
         Button {
             text: i18n.tr("Format")
-            color: UbuntuColors.red
             onClicked: formatClicked()
         }
 
         Button {
             text: i18n.tr("Safely Remove")
-            color: UbuntuColors.green
+            color: UbuntuColors.blue
             onClicked: safeRemovalClicked()
         }
     }
