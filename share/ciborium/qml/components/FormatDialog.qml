@@ -1,6 +1,6 @@
 import QtQuick 2.9
 import Ubuntu.Components 1.3
-import Ubuntu.Components.Popups 1.1
+import Ubuntu.Components.Popups 1.3
 
 Dialog {
     id: formatDlg
@@ -9,7 +9,7 @@ Dialog {
 Button {
         id: okBtn
         text: i18n.tr("Continue with format")
-        color: UbuntuColors.red
+        color: theme.palette.normal.negative
         onClicked: {
             switch(formatDlg.state) {
             case "confirm":
@@ -97,6 +97,7 @@ Button {
                 target: okBtn
                 visible: true
                 text: i18n.tr("Ok")
+                color: theme.palette.normal.positive
             }
             PropertyChanges {
                 target: formatActivity
@@ -120,6 +121,7 @@ Button {
                 target: okBtn
                 visible: true
                 text: i18n.tr("Ok")
+                color: theme.palette.normal.overlaySecondaryText
             }
             PropertyChanges {
                 target: formatActivity
