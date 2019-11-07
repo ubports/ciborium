@@ -1,6 +1,6 @@
 import QtQuick 2.9
 import Ubuntu.Components 1.3
-import Ubuntu.Components.Popups 1.1
+import Ubuntu.Components.Popups 1.3
 
 Dialog {
     id: safeRemovalDlg
@@ -9,7 +9,7 @@ Dialog {
     Button {
         id: okButton
         text: i18n.tr("Continue")
-        color: UbuntuColors.green
+        color: theme.palette.normal.positive
         onClicked: {
             switch (safeRemovalDlg.state) {
             case "remove":
@@ -115,6 +115,8 @@ Dialog {
                 target: okButton
                 explicit: true
                 visible: true
+                text: i18n.tr("Ok")
+                theme.palette.normal.overlaySecondaryText
             }
             PropertyChanges {
                 target: cancelButton
