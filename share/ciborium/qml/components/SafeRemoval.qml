@@ -116,7 +116,7 @@ Dialog {
                 explicit: true
                 visible: true
                 text: i18n.tr("Ok")
-                theme.palette.normal.overlaySecondaryText
+                color: theme.palette.normal.overlaySecondaryText
             }
             PropertyChanges {
                 target: cancelButton
