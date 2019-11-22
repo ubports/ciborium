@@ -1,24 +1,15 @@
 import QtQuick 2.9
 import Ubuntu.Components 1.3
-import Ubuntu.Components.Popups 1.1
-
+import Ubuntu.Components.Popups 1.3
+ 
 Dialog {
     id: safeRemovalDlg
     property int driveIndex
-
-    Button {
-        id: cancelButton
-        text: i18n.tr("Cancel")
-        onClicked: {
-            console.log("Safe removal action cancelled");
-            PopupUtils.close(safeRemovalDlg);
-        }
-    }
-
+    
     Button {
         id: okButton
         text: i18n.tr("Continue")
-        color: UbuntuColors.orange
+        color: theme.palette.normal.positive
         onClicked: {
             switch (safeRemovalDlg.state) {
             case "remove":
@@ -36,6 +27,15 @@ Dialog {
                 console.warn("Ok button clicked in wrong state: ", safeRemovalDlg.state);
                 break;
             }
+            PopupUtils.close(safeRemovalDlg);
+        }
+    }
+    
+    Button {
+        id: cancelButton
+        text: i18n.tr("Cancel")
+        onClicked: {
+            console.log("Safe removal action cancelled");
             PopupUtils.close(safeRemovalDlg);
         }
     }
@@ -115,6 +115,8 @@ Dialog {
                 target: okButton
                 explicit: true
                 visible: true
+                text: i18n.tr("Ok")
+                color: theme.palette.normal.overlaySecondaryText
             }
             PropertyChanges {
                 target: cancelButton
