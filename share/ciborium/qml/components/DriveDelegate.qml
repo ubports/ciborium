@@ -57,7 +57,7 @@ ListItem {
 
         Button {
             text: i18n.tr("Safely Remove")
-            color: UbuntuColors.blue
+            color: theme.palette.selected.focus
             onClicked: safeRemovalClicked()
         }
     }
