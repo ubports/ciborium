@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: ciborium\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-05-19 08:38+0000\n"
-"PO-Revision-Date: 2019-10-05 16:53+0000\n"
+"PO-Revision-Date: 2020-01-19 19:39+0000\n"
 "Last-Translator: Sami Törmänen <tormanen.sami@gmail.com>\n"
 "Language-Team: Finnish <https://translate.ubports.com/projects/ubports/"
 "ciborium/fi/>\n"
@@ -87,7 +87,7 @@ msgstr "SD-kortin hallinta"
 #: share/ciborium/qml/components/SafeRemoval.qml:11
 #: share/ciborium/qml/components/FormatDialog.qml:11
 msgid "Cancel"
-msgstr "Peruuta"
+msgstr "Keskeytä"
 
 #: share/ciborium/qml/components/SafeRemoval.qml:20
 msgid "Continue"
