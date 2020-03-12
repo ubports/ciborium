@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: ciborium\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-05-19 08:38+0000\n"
-"PO-Revision-Date: 2019-07-25 09:49+0000\n"
+"PO-Revision-Date: 2020-03-13 09:22+0000\n"
 "Last-Translator: Neutrum N <neutro@tutanota.com>\n"
 "Language-Team: Galician <https://translate.ubports.com/projects/ubports/"
 "ciborium/gl/>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 3.6.1\n"
+"X-Generator: Weblate 3.8\n"
 "X-Launchpad-Export-Date: 2017-01-17 07:08+0000\n"
 
 #. TRANSLATORS: This is the summary of a notification bubble with a short message of
@@ -30,19 +30,20 @@ msgstr "Detectouse un dispositivo de almacenamento"
 #. being scanned when addding a storage device.
 #: cmd/ciborium/main.go:126
 msgid "This device will be scanned for new content"
-msgstr "Buscaranse novos contidos no dispositivo"
+msgstr "Buscaranse contidos novos neste dispositivo"
 
 #. TRANSLATORS: This is the summary of a notification bubble with a short message of
 #. failure when adding a storage device.
 #: cmd/ciborium/main.go:132
 msgid "Failed to add storage device"
-msgstr "Produciuse un fallo ao engadir o novo dispositivo"
+msgstr "Fallou ao engadir o dispositivo de almacenamento"
 
 #. TRANSLATORS: This is the body of a notification bubble with a short message with hints
 #. with regards to the failure when adding a storage device.
 #: cmd/ciborium/main.go:135
 msgid "Make sure the storage device is correctly formated"
-msgstr "Asegúrese que o dispositivo está formatado correctamente"
+msgstr ""
+"Asegúrese de que o dispositivo de almacenamento está formatado correctamente"
 
 #. TRANSLATORS: This is the summary of a notification bubble with a short message of
 #. a storage device being removed
@@ -55,13 +56,13 @@ msgstr "Retirouse o dispositivo de almacenamento"
 #: cmd/ciborium/main.go:144
 msgid ""
 "Content previously available on this device will no longer be accessible"
-msgstr "Xa non poderá acceder ao contido dispoñíbel no dispositivo"
+msgstr "Xa non poderá acceder ao contido dispoñíbel previamente no dispositivo"
 
 #. TRANSLATORS: This is the summary of a notification bubble with a short message warning on
 #. low space
 #: cmd/ciborium/main.go:329
 msgid "Low on disk space"
-msgstr "Fica pouco espazo no disco"
+msgstr "Queda pouco espazo no disco"
 
 #. TRANSLATORS: This is the body of a notification bubble with a short message about content
 #. reamining available space, %d is the remaining percentage of space available on internal
@@ -98,7 +99,7 @@ msgstr "Confirmar a extracción"
 
 #: share/ciborium/qml/components/SafeRemoval.qml:57
 msgid "Files on the device can't be accessed after removing"
-msgstr "Non poderá acceder aos ficheiros do dispositivo despois de retiralo"
+msgstr "Non poderá acceder aos ficheiros do dispositivo despois de extraelo"
 
 #: share/ciborium/qml/components/SafeRemoval.qml:66
 msgid "Unmounting"
@@ -112,7 +113,7 @@ msgstr "Aceptar"
 
 #: share/ciborium/qml/components/SafeRemoval.qml:91
 msgid "Safe to remove"
-msgstr "A extracción é segura"
+msgstr "É seguro extraer"
 
 #: share/ciborium/qml/components/SafeRemoval.qml:92
 msgid "You can now safely remove the device"
@@ -146,20 +147,19 @@ msgstr "Esta acción borrará o contido do dispositivo"
 
 #: share/ciborium/qml/components/FormatDialog.qml:65
 msgid "Formatting"
-msgstr "Formatado"
+msgstr "Formatando"
 
 #: share/ciborium/qml/components/FormatDialog.qml:87
 msgid "Format Complete"
-msgstr ""
+msgstr "Formatado completo"
 
 #: share/ciborium/qml/components/FormatDialog.qml:110
-#, fuzzy
 msgid "Format Error"
-msgstr "Formatar"
+msgstr "Erro ao formatar"
 
 #: share/ciborium/qml/components/FormatDialog.qml:111
 msgid "There was an error when formatting the device"
-msgstr "Produciuse un erro formatando o dispositivo"
+msgstr "Houbo un erro formatando o dispositivo"
 
 #: share/applications/ciborium.desktop.tr.h:1
 msgid "External Drives"
