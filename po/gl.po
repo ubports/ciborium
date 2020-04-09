@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: ciborium\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-05-19 08:38+0000\n"
-"PO-Revision-Date: 2020-03-13 09:22+0000\n"
+"PO-Revision-Date: 2020-04-10 10:23+0000\n"
 "Last-Translator: Neutrum N <neutro@tutanota.com>\n"
 "Language-Team: Galician <https://translate.ubports.com/projects/ubports/"
 "ciborium/gl/>\n"
@@ -36,7 +36,7 @@ msgstr "Buscaranse contidos novos neste dispositivo"
 #. failure when adding a storage device.
 #: cmd/ciborium/main.go:132
 msgid "Failed to add storage device"
-msgstr "Fallou ao engadir o dispositivo de almacenamento"
+msgstr "Non se puido engadir o dispositivo de almacenamento"
 
 #. TRANSLATORS: This is the body of a notification bubble with a short message with hints
 #. with regards to the failure when adding a storage device.
@@ -99,7 +99,7 @@ msgstr "Confirmar a extracción"
 
 #: share/ciborium/qml/components/SafeRemoval.qml:57
 msgid "Files on the device can't be accessed after removing"
-msgstr "Non poderá acceder aos ficheiros do dispositivo despois de extraelo"
+msgstr "Os ficheiros do dispositivo non serán accesíbeis despois de extraelo"
 
 #: share/ciborium/qml/components/SafeRemoval.qml:66
 msgid "Unmounting"
