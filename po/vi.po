@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: ciborium\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-05-19 08:38+0000\n"
-"PO-Revision-Date: 2020-06-16 14:25+0000\n"
+"PO-Revision-Date: 2020-06-17 16:25+0000\n"
 "Last-Translator: Phu1237 <phuvip867@gmail.com>\n"
 "Language-Team: Vietnamese <https://translate.ubports.com/projects/ubports/"
 "ciborium/vi/>\n"
@@ -17,71 +17,72 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 3.8\n"
+"X-Generator: Weblate 3.11.3\n"
 "X-Launchpad-Export-Date: 2017-01-17 07:08+0000\n"
 
 #. TRANSLATORS: This is the summary of a notification bubble with a short message of
 #. success when addding a storage device.
 #: cmd/ciborium/main.go:123
 msgid "Storage device detected"
-msgstr ""
+msgstr "Phát hiện thiết bị lưu trữ"
 
 #. TRANSLATORS: This is the body of a notification bubble with a short message about content
 #. being scanned when addding a storage device.
 #: cmd/ciborium/main.go:126
 msgid "This device will be scanned for new content"
-msgstr ""
+msgstr "Thiết bị này sẽ được quét để tìm nội dung mới"
 
 #. TRANSLATORS: This is the summary of a notification bubble with a short message of
 #. failure when adding a storage device.
 #: cmd/ciborium/main.go:132
 msgid "Failed to add storage device"
-msgstr ""
+msgstr "Thêm thiết bị lưu trữ thất bại"
 
 #. TRANSLATORS: This is the body of a notification bubble with a short message with hints
 #. with regards to the failure when adding a storage device.
 #: cmd/ciborium/main.go:135
 msgid "Make sure the storage device is correctly formated"
-msgstr ""
+msgstr "Hãy chắc chắn thiết bị lưu trữ đã được định dạng chính xác"
 
 #. TRANSLATORS: This is the summary of a notification bubble with a short message of
 #. a storage device being removed
 #: cmd/ciborium/main.go:141
 msgid "Storage device has been removed"
-msgstr ""
+msgstr "Thiết bị lưu trữ đã bị gỡ bỏ"
 
 #. TRANSLATORS: This is the body of a notification bubble with a short message about content
 #. from the removed device no longer being available
 #: cmd/ciborium/main.go:144
+#, fuzzy
 msgid ""
 "Content previously available on this device will no longer be accessible"
-msgstr ""
+msgstr "Nội dung cũ không còn có thể truy cập được nữa"
 
 #. TRANSLATORS: This is the summary of a notification bubble with a short message warning on
 #. low space
 #: cmd/ciborium/main.go:329
 msgid "Low on disk space"
-msgstr ""
+msgstr "Dung lượng bộ nhớ thấp"
 
 #. TRANSLATORS: This is the body of a notification bubble with a short message about content
 #. reamining available space, %d is the remaining percentage of space available on internal
 #. storage
 #: cmd/ciborium/main.go:333
-#, c-format
+#, c-format, fuzzy
 msgid "Only %d%% is available on the internal storage device"
-msgstr ""
+msgstr "Chỉ có %d%% khả dụng trong bộ nhớ trong"
 
 #. TRANSLATORS: This is the body of a notification bubble with a short message about content
 #. reamining available space, %d is the remaining percentage of space available on a given
 #. external storage device
 #: cmd/ciborium/main.go:337
-#, c-format
+#, c-format, fuzzy
 msgid "Only %d%% is available on the external storage device"
-msgstr ""
+msgstr "Chỉ có %d%% khả dụng trong bộ nhớ ngoài"
 
 #: share/ciborium/qml/main.qml:21
 msgid "SD Card Management"
-msgstr ""
+msgstr "Quản lí thẻ SD"
 
 #: share/ciborium/qml/components/SafeRemoval.qml:11
 #: share/ciborium/qml/components/FormatDialog.qml:11
@@ -90,75 +91,76 @@ msgstr "Huỷ bỏ"
 
 #: share/ciborium/qml/components/SafeRemoval.qml:20
 msgid "Continue"
-msgstr ""
+msgstr "Tiếp tục"
 
 #: share/ciborium/qml/components/SafeRemoval.qml:56
 msgid "Confirm remove"
-msgstr ""
+msgstr "Xác nhận gỡ bỏ"
 
 #: share/ciborium/qml/components/SafeRemoval.qml:57
 msgid "Files on the device can't be accessed after removing"
-msgstr ""
+msgstr "Tập tin trên thiết bị không thể truy cập sau khi gỡ bỏ"
 
 #: share/ciborium/qml/components/SafeRemoval.qml:66
 msgid "Unmounting"
-msgstr ""
+msgstr "Đang gỡ"
 
 #: share/ciborium/qml/components/SafeRemoval.qml:82
 #: share/ciborium/qml/components/FormatDialog.qml:97
 #: share/ciborium/qml/components/FormatDialog.qml:120
+#, fuzzy
 msgid "Ok"
-msgstr ""
+msgstr "Chấp nhận"
 
 #: share/ciborium/qml/components/SafeRemoval.qml:91
 msgid "Safe to remove"
-msgstr ""
+msgstr "An toàn để gỡ bỏ"
 
 #: share/ciborium/qml/components/SafeRemoval.qml:92
 msgid "You can now safely remove the device"
-msgstr ""
+msgstr "Bây giờ bạn đã có thể gỡ thiết bị ra an toàn"
 
 #: share/ciborium/qml/components/SafeRemoval.qml:111
 msgid "Unmount Error"
-msgstr ""
+msgstr "Lỗi gỡ"
 
 #: share/ciborium/qml/components/SafeRemoval.qml:112
 msgid "The device could not be unmounted because is busy"
-msgstr ""
+msgstr "Không thể gỡ thiết bị vì thiết bị đang bận"
 
 #: share/ciborium/qml/components/DriveDelegate.qml:54
 #: share/ciborium/qml/components/FormatDialog.qml:55
 msgid "Format"
-msgstr ""
+msgstr "Định dạng"
 
 #: share/ciborium/qml/components/DriveDelegate.qml:60
 msgid "Safely Remove"
-msgstr ""
+msgstr "Gỡ an toàn"
 
 #: share/ciborium/qml/components/FormatDialog.qml:19
 msgid "Continue with format"
-msgstr ""
+msgstr "Tiếp tục định dạng"
 
 #: share/ciborium/qml/components/FormatDialog.qml:56
 #: share/ciborium/qml/components/FormatDialog.qml:66
 msgid "This action will wipe the content from the device"
-msgstr ""
+msgstr "Hành động này sẽ xoá toàn bộ dữ liệu trên thiết bị"
 
 #: share/ciborium/qml/components/FormatDialog.qml:65
 msgid "Formatting"
-msgstr ""
+msgstr "Đang định dạng"
 
 #: share/ciborium/qml/components/FormatDialog.qml:87
 msgid "Format Complete"
-msgstr ""
+msgstr "Định dạng hoàn tất"
 
 #: share/ciborium/qml/components/FormatDialog.qml:110
 msgid "Format Error"
-msgstr ""
+msgstr "Định dạng lỗi"
 
 #: share/ciborium/qml/components/FormatDialog.qml:111
 msgid "There was an error when formatting the device"
-msgstr ""
+msgstr "Xảy ra lỗi trong khi định dạng thiết bị"
 
 #: share/applications/ciborium.desktop.tr.h:1
 msgid "External Drives"
