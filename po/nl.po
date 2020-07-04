@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: ciborium\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-05-19 08:38+0000\n"
-"PO-Revision-Date: 2019-04-13 14:39+0000\n"
-"Last-Translator: Tom Dom <thomas@patoel.nl>\n"
+"PO-Revision-Date: 2020-07-04 11:35+0000\n"
+"Last-Translator: Heimen Stoffels <vistausss@outlook.com>\n"
 "Language-Team: Dutch <https://translate.ubports.com/projects/ubports/"
 "ciborium/nl/>\n"
 "Language: nl\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 3.1.1\n"
+"X-Generator: Weblate 3.11.3\n"
 "X-Launchpad-Export-Date: 2017-01-17 07:08+0000\n"
 
 #. TRANSLATORS: This is the summary of a notification bubble with a short message of
@@ -42,7 +42,7 @@ msgstr "Kan opslagapparaat niet toevoegen"
 #. with regards to the failure when adding a storage device.
 #: cmd/ciborium/main.go:135
 msgid "Make sure the storage device is correctly formated"
-msgstr "Zorg ervoor dat het opslagapparaat juist is geformatteerd"
+msgstr "Zorg er voor dat het opslagapparaat juist is geformatteerd"
 
 #. TRANSLATORS: This is the summary of a notification bubble with a short message of
 #. a storage device being removed
@@ -71,7 +71,7 @@ msgstr "Weinig vrije schijfruimte"
 #: cmd/ciborium/main.go:333
 #, c-format
 msgid "Only %d%% is available on the internal storage device"
-msgstr "Er is nog slechts %d%% beschikbaar op het interne opslagapparaat"
+msgstr "Er is slechts %d%% beschikbaar op het interne opslagapparaat"
 
 #. TRANSLATORS: This is the body of a notification bubble with a short message about content
 #. reamining available space, %d is the remaining percentage of space available on a given
@@ -79,7 +79,7 @@ msgstr "Er is nog slechts %d%% beschikbaar op het interne opslagapparaat"
 #: cmd/ciborium/main.go:337
 #, c-format
 msgid "Only %d%% is available on the external storage device"
-msgstr "Er is nog slechts %d%% beschikbaar op het externe opslagapparaat"
+msgstr "Er is slechts %d%% beschikbaar op het externe opslagapparaat"
 
 #: share/ciborium/qml/main.qml:21
 msgid "SD Card Management"
