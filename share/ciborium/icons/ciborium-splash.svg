@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg style="enable-background:new" xmlns="http://www.w3.org/2000/svg" height="1024" width="1024" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1024 1024">
+ <defs>
+  <filter id="a" style="color-interpolation-filters:sRGB">
+   <feFlood flood-color="rgb(0,0,0)" result="flood" flood-opacity=".09804"/>
+   <feComposite operator="in" result="composite1" in2="SourceGraphic" in="flood"/>
+   <feGaussianBlur stdDeviation="2" result="blur" in="composite1"/>
+   <feOffset result="offset" dx="0" dy="2"/>
+   <feComposite operator="over" result="composite2" in2="offset" in="SourceGraphic"/>
+  </filter>
+  <linearGradient id="b" x1="383.5" gradientUnits="userSpaceOnUse" y1="292.6" gradientTransform="matrix(0 -3.54 -3.579 0 1435 1873)" x2="383.2" y2="222.6">
+   <stop stop-color="#222" stop-opacity="0" offset="0"/>
+   <stop stop-opacity=".981" offset=".5"/>
+   <stop stop-color="#222" stop-opacity="0" offset="1"/>
+  </linearGradient>
+ </defs>
+ <path opacity=".3" d="m473.5 360.2c-37.97 0-56.93-0.0106-56.93 43.11v0.8856c-0.00004 0.0482-0.002 0.092-0.002 0.1401v83.32l-28.62 28.33v1.024l-0.002 0.002v112.7c0 43.15 18.98 43.11 56.93 43.11h136.6c37.97 0 57.72-0.002 56.93-43.11v-225.3c0.0265-1.39 0.0302-2.732 0.0113-4.032-0.00038-0.0283-0.002-0.0538-0.002-0.0821-0.2116-40-19.92-40.03-56.93-40.03z" stroke-width="3.897" fill="url(#b)"/>
+ <path d="m388.2 621.8v1c0 42.06 18.31 42.03 54.93 42.03h131.8c35.75 0 54.76-0.0261 54.94-39.12-0.4941 38.11-19.48 38.12-54.94 38.12h-131.8c-36.62 0-54.93 0.0348-54.93-42.03z" stroke-width="3.451" fill="#111"/>
+ <g filter="url(#a)" fill="#f9f9f9" transform="matrix(0 -3.451 -3.452 0 1871 1858)">
+  <path d="m434 405.5c0 10.61 0.003 15.91-12.18 15.91h-23.83l-8.003 8h-31.83c-12.19 0-12.18-5.303-12.18-15.91v-38.18c0-10.61 0.001-16.13 12.18-15.91h63.66c12.18-0.2226 12.18 5.303 12.18 15.91z"/>
+  <g stroke-opacity=".3353" stroke="#000" stroke-width="6.001">
+   <path style="color:#000000" d="m425.8 410.8h-12"/>
+   <path style="color:#000000" d="m427.8 400.8h-14"/>
+   <path style="color:#000000" d="m425.8 390.8h-12"/>
+   <path style="color:#000000" d="m427.8 380.8h-14"/>
+   <path style="color:#000000" d="m425.8 370.8h-12"/>
+  </g>
+ </g>
+</svg>
