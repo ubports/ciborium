@@ -14,3 +14,4 @@ X-Ubuntu-Default-Department-ID=accessories
 X-Ubuntu-Gettext-Domain=ciborium
 X-Ubuntu-Splash-Image=/usr/share/ciborium/icons/ciborium-splash.svg
 X-Ubuntu-SymbolicIcon=/usr/share/icons/suru/devices/scalable/sdcard-symbolic.svg
+X-Ubuntu-Splash-Color=#666666
