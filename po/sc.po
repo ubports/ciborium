@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: ciborium\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-05-19 08:38+0000\n"
-"PO-Revision-Date: 2019-01-20 00:00+0000\n"
-"Last-Translator: Adrià <adriamartinmor@gmail.com>\n"
+"PO-Revision-Date: 2020-09-18 15:59+0000\n"
+"Last-Translator: Adria <adriamartinmor@gmail.com>\n"
 "Language-Team: Sardinian <https://translate.ubports.com/projects/ubports/"
 "ciborium/sc/>\n"
 "Language: sc\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 3.1.1\n"
+"X-Generator: Weblate 3.11.3\n"
 
 #. TRANSLATORS: This is the summary of a notification bubble with a short message of
 #. success when addding a storage device.
@@ -35,7 +35,7 @@ msgstr "Custu dispositivu at a èssere analizadu pro nde rilevare su cuntenutu"
 #. failure when adding a storage device.
 #: cmd/ciborium/main.go:132
 msgid "Failed to add storage device"
-msgstr "Non s'est pòdidu agiùnghere su dispositivu de memòria"
+msgstr "Impossìbile agiùnghere su dispositivu de memòria"
 
 #. TRANSLATORS: This is the body of a notification bubble with a short message with hints
 #. with regards to the failure when adding a storage device.
@@ -131,7 +131,7 @@ msgstr "Faddina in s'ismontare"
 
 #: share/ciborium/qml/components/SafeRemoval.qml:112
 msgid "The device could not be unmounted because is busy"
-msgstr "Non s'est pòdidu ismontare su dispositivu pro ite est impreadu"
+msgstr "Impossìbile ismontare su dispositivu pro ite ca est ocupadu"
 
 #: share/ciborium/qml/components/DriveDelegate.qml:54
 #: share/ciborium/qml/components/FormatDialog.qml:55

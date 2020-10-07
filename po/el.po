@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: ciborium\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-05-19 08:38+0000\n"
-"PO-Revision-Date: 2019-01-27 00:00+0000\n"
-"Last-Translator: Anastopoulos Theocharis <harris.anastopoulos@gmail.com>\n"
+"PO-Revision-Date: 2020-08-15 00:04+0000\n"
+"Last-Translator: Efstathios Iosifidis <iefstathios@gmail.com>\n"
 "Language-Team: Greek <https://translate.ubports.com/projects/ubports/"
 "ciborium/el/>\n"
 "Language: el\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 3.1.1\n"
+"X-Generator: Weblate 3.11.3\n"
 "X-Launchpad-Export-Date: 2017-01-17 07:08+0000\n"
 
 #. TRANSLATORS: This is the summary of a notification bubble with a short message of
@@ -30,7 +30,7 @@ msgstr "Ανιχνεύτηκε συσκευή αποθήκευσης"
 #. being scanned when addding a storage device.
 #: cmd/ciborium/main.go:126
 msgid "This device will be scanned for new content"
-msgstr "Η συσκευή θα ελεχθεί για νέο περιεχόμενο"
+msgstr "Η συσκευή θα σαρωθεί για νέο περιεχόμενο"
 
 #. TRANSLATORS: This is the summary of a notification bubble with a short message of
 #. failure when adding a storage device.
@@ -127,7 +127,7 @@ msgstr "Σφάλμα αποπροσάρτησης"
 
 #: share/ciborium/qml/components/SafeRemoval.qml:112
 msgid "The device could not be unmounted because is busy"
-msgstr "Η συσκευή δεν αποπροσαρτήστηκε διότι είναι σε χρήση"
+msgstr "Αδυναμία αποπροσάρτησης διότι είναι σε χρήση"
 
 #: share/ciborium/qml/components/DriveDelegate.qml:54
 #: share/ciborium/qml/components/FormatDialog.qml:55
@@ -145,7 +145,7 @@ msgstr "Συνεχίστε με διαμόρφωση"
 #: share/ciborium/qml/components/FormatDialog.qml:56
 #: share/ciborium/qml/components/FormatDialog.qml:66
 msgid "This action will wipe the content from the device"
-msgstr "Αυτη η πράξη θα διαγράψει το περιεχόμενο της συσκευής"
+msgstr "Αυτή η πράξη θα διαγράψει το περιεχόμενο της συσκευής"
 
 #: share/ciborium/qml/components/FormatDialog.qml:65
 msgid "Formatting"
@@ -153,16 +153,15 @@ msgstr "Διαμόρφωση"
 
 #: share/ciborium/qml/components/FormatDialog.qml:87
 msgid "Format Complete"
-msgstr ""
+msgstr "Η διαμόρφωση ολοκληρώθηκε"
 
 #: share/ciborium/qml/components/FormatDialog.qml:110
-#, fuzzy
 msgid "Format Error"
-msgstr "Διαμόρφωση"
+msgstr "Σφάλμα διαμόρφωσης"
 
 #: share/ciborium/qml/components/FormatDialog.qml:111
 msgid "There was an error when formatting the device"
-msgstr "Συνέβη σφάλμα κατά τη μορφοποίηση της συσκευής"
+msgstr "Συνέβη σφάλμα κατά τη διαμόρφωση της συσκευής"
 
 #: share/applications/ciborium.desktop.tr.h:1
 msgid "External Drives"
