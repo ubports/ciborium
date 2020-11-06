@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: ciborium\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-05-19 08:38+0000\n"
-"PO-Revision-Date: 2020-08-31 13:14+0000\n"
+"PO-Revision-Date: 2020-11-01 12:03+0000\n"
 "Last-Translator: Milan Korecký <milan.korecky@gmail.com>\n"
 "Language-Team: Czech <https://translate.ubports.com/projects/ubports/"
 "ciborium/cs/>\n"
@@ -86,7 +86,7 @@ msgstr "Správa SD karty"
 #: share/ciborium/qml/components/SafeRemoval.qml:11
 #: share/ciborium/qml/components/FormatDialog.qml:11
 msgid "Cancel"
-msgstr "Storno"
+msgstr "Zrušit"
 
 #: share/ciborium/qml/components/SafeRemoval.qml:20
 msgid "Continue"
