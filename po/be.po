@@ -1,69 +1,67 @@
-# Arabic translation for ciborium
-# Copyright (c) 2014 Rosetta Contributors and Canonical Ltd 2014
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Canonical Ltd.
 # This file is distributed under the same license as the ciborium package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2014.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: ciborium\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-05-19 08:38+0000\n"
-"PO-Revision-Date: 2020-12-01 07:45+0000\n"
-"Last-Translator: abidin <abidin24@tutanota.com>\n"
-"Language-Team: Arabic <https://translate.ubports.com/projects/ubports/"
-"ciborium/ar/>\n"
-"Language: ar\n"
+"PO-Revision-Date: 2020-12-04 17:58+0000\n"
+"Last-Translator: Zmicer <nashtlumach@gmail.com>\n"
+"Language-Team: Belarusian <https://translate.ubports.com/projects/ubports/"
+"ciborium/be/>\n"
+"Language: be\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
-"&& n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
+"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<="
+"4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 "X-Generator: Weblate 3.11.3\n"
-"X-Launchpad-Export-Date: 2017-01-17 07:08+0000\n"
 
 #. TRANSLATORS: This is the summary of a notification bubble with a short message of
 #. success when addding a storage device.
 #: cmd/ciborium/main.go:123
 msgid "Storage device detected"
-msgstr "اُكشف جهاز تخزين"
+msgstr "Выяўлены назапашвальнік"
 
 #. TRANSLATORS: This is the body of a notification bubble with a short message about content
 #. being scanned when addding a storage device.
 #: cmd/ciborium/main.go:126
 msgid "This device will be scanned for new content"
-msgstr "سيتم فحص هذا الجهاز بحثًا عن محتوى جديد"
+msgstr "Прылада будзе адсканаваная для пошуку новага змесціва"
 
 #. TRANSLATORS: This is the summary of a notification bubble with a short message of
 #. failure when adding a storage device.
 #: cmd/ciborium/main.go:132
 msgid "Failed to add storage device"
-msgstr "فشلت إضافة جهاز التخزين"
+msgstr "Не атрымалася дадаць назапашвальнік"
 
 #. TRANSLATORS: This is the body of a notification bubble with a short message with hints
 #. with regards to the failure when adding a storage device.
 #: cmd/ciborium/main.go:135
 msgid "Make sure the storage device is correctly formated"
-msgstr "تأكد أن جهاز التخزين مُهيأ بشكل صحيح"
+msgstr "Пераканайцеся, што назапашвальнік адфарматаваны карэктна"
 
 #. TRANSLATORS: This is the summary of a notification bubble with a short message of
 #. a storage device being removed
 #: cmd/ciborium/main.go:141
 msgid "Storage device has been removed"
-msgstr "أُزيل جهاز التخزين"
+msgstr "Назапашвальнік выняты"
 
 #. TRANSLATORS: This is the body of a notification bubble with a short message about content
 #. from the removed device no longer being available
 #: cmd/ciborium/main.go:144
-#, fuzzy
 msgid ""
 "Content previously available on this device will no longer be accessible"
-msgstr "لن تتمكن من النفاذ للمحتوى الموجود على هذا الجهاز"
+msgstr "Змесціва гэтай прылады недаступна"
 
 #. TRANSLATORS: This is the summary of a notification bubble with a short message warning on
 #. low space
 #: cmd/ciborium/main.go:329
 msgid "Low on disk space"
-msgstr "مساحة القرص منخفضة"
+msgstr "Сканчаецца вольнае месца"
 
 #. TRANSLATORS: This is the body of a notification bubble with a short message about content
 #. reamining available space, %d is the remaining percentage of space available on internal
@@ -71,7 +69,7 @@ msgstr "مساحة القرص منخفضة"
 #: cmd/ciborium/main.go:333
 #, c-format
 msgid "Only %d%% is available on the internal storage device"
-msgstr "يتوفر %d%% فقط في جهاز التخزين الداخلي"
+msgstr "Даступна толькі %d%% унутранай памяці"
 
 #. TRANSLATORS: This is the body of a notification bubble with a short message about content
 #. reamining available space, %d is the remaining percentage of space available on a given
@@ -79,89 +77,89 @@ msgstr "يتوفر %d%% فقط في جهاز التخزين الداخلي"
 #: cmd/ciborium/main.go:337
 #, c-format
 msgid "Only %d%% is available on the external storage device"
-msgstr "يتوفر %d%% فقط في جهاز التخزين الخارجي"
+msgstr "На вонкавым носьбіце даступна толькі %d%% памяці"
 
 #: share/ciborium/qml/main.qml:21
 msgid "SD Card Management"
-msgstr "إدارة بطاقة الذاكرة"
+msgstr "Кіраванне SD-карткай"
 
 #: share/ciborium/qml/components/SafeRemoval.qml:11
 #: share/ciborium/qml/components/FormatDialog.qml:11
 msgid "Cancel"
-msgstr "ألغ"
+msgstr "Скасаваць"
 
 #: share/ciborium/qml/components/SafeRemoval.qml:20
 msgid "Continue"
-msgstr "تابع"
+msgstr "Працягнуць"
 
 #: share/ciborium/qml/components/SafeRemoval.qml:56
 msgid "Confirm remove"
-msgstr "أكد الإزالة"
+msgstr "Пацвердзіць выманне"
 
 #: share/ciborium/qml/components/SafeRemoval.qml:57
 msgid "Files on the device can't be accessed after removing"
-msgstr "بعد إزالة هذا الجهاز لن تتمكن من النفاذ للملفات التي فيه"
+msgstr "Пасля вымання файлы на прыладзе стануць недаступнымі"
 
 #: share/ciborium/qml/components/SafeRemoval.qml:66
 msgid "Unmounting"
-msgstr "يفصل"
+msgstr "Адмантаванне"
 
 #: share/ciborium/qml/components/SafeRemoval.qml:82
 #: share/ciborium/qml/components/FormatDialog.qml:97
 #: share/ciborium/qml/components/FormatDialog.qml:120
 msgid "Ok"
-msgstr "موافق"
+msgstr "Добра"
 
 #: share/ciborium/qml/components/SafeRemoval.qml:91
 msgid "Safe to remove"
-msgstr "آمن للإزالة"
+msgstr "Бяспечнае выманне"
 
 #: share/ciborium/qml/components/SafeRemoval.qml:92
 msgid "You can now safely remove the device"
-msgstr "يمكنك إزالة الجهاز بأمان"
+msgstr "Цяпер прыладу можна выняць"
 
 #: share/ciborium/qml/components/SafeRemoval.qml:111
 msgid "Unmount Error"
-msgstr "خطأ في الفصل"
+msgstr "Не атрымалася адмантаваць"
 
 #: share/ciborium/qml/components/SafeRemoval.qml:112
 msgid "The device could not be unmounted because is busy"
-msgstr "تعذر فصل الجهاز لأنه مشغول"
+msgstr "Немагчыма адмантаваць прыладу, бо яна занятая"
 
 #: share/ciborium/qml/components/DriveDelegate.qml:54
 #: share/ciborium/qml/components/FormatDialog.qml:55
 msgid "Format"
-msgstr "هيّء"
+msgstr "Фарматаваць"
 
 #: share/ciborium/qml/components/DriveDelegate.qml:60
 msgid "Safely Remove"
-msgstr "الإزالة الآمنة"
+msgstr "Бяспечнае выманне"
 
 #: share/ciborium/qml/components/FormatDialog.qml:19
 msgid "Continue with format"
-msgstr "تابع التهيئة"
+msgstr "Пацвердзіць фарматаванне"
 
 #: share/ciborium/qml/components/FormatDialog.qml:56
 #: share/ciborium/qml/components/FormatDialog.qml:66
 msgid "This action will wipe the content from the device"
-msgstr "هذا الإجراء سيمسح كل محتويات الجهاز"
+msgstr "Гэтае дзеянне выдаліць усё змесціва прылады"
 
 #: share/ciborium/qml/components/FormatDialog.qml:65
 msgid "Formatting"
-msgstr "يهيّء"
+msgstr "Фарматаванне"
 
 #: share/ciborium/qml/components/FormatDialog.qml:87
 msgid "Format Complete"
-msgstr "تمت التهيئة"
+msgstr "Фарматаванне завершана"
 
 #: share/ciborium/qml/components/FormatDialog.qml:110
 msgid "Format Error"
-msgstr "خطأ في التهيئة"
+msgstr "Не атрымалася адфарматаваць"
 
 #: share/ciborium/qml/components/FormatDialog.qml:111
 msgid "There was an error when formatting the device"
-msgstr "حدث خطأ أثناء تهيئة الجهاز"
+msgstr "Падчас фарматавання прылады адбылася памылка"
 
 #: share/applications/ciborium.desktop.tr.h:1
 msgid "External Drives"
-msgstr "الأجهزة الخارجية"
+msgstr "Вонкавыя носьбіты"
