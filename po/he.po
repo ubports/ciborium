@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: ciborium\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-05-19 08:38+0000\n"
-"PO-Revision-Date: 2020-09-05 00:00+0000\n"
-"Last-Translator: tamer dab <dabsantamer@yahoo.com>\n"
+"PO-Revision-Date: 2020-12-17 14:38+0000\n"
+"Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: Hebrew <https://translate.ubports.com/projects/ubports/"
 "ciborium/he/>\n"
 "Language: he\n"
@@ -87,7 +87,7 @@ msgstr "ניהול כרטיסי SD"
 #: share/ciborium/qml/components/SafeRemoval.qml:11
 #: share/ciborium/qml/components/FormatDialog.qml:11
 msgid "Cancel"
-msgstr "בטול"
+msgstr "ביטול"
 
 #: share/ciborium/qml/components/SafeRemoval.qml:20
 msgid "Continue"
