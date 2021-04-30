@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: ciborium\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-05-19 08:38+0000\n"
-"PO-Revision-Date: 2020-11-01 12:03+0000\n"
+"PO-Revision-Date: 2021-04-30 20:44+0000\n"
 "Last-Translator: Milan Korecký <milan.korecky@gmail.com>\n"
 "Language-Team: Czech <https://translate.ubports.com/projects/ubports/"
 "ciborium/cs/>\n"
@@ -69,7 +69,7 @@ msgstr "Nedostatek místa na úložišti"
 #: cmd/ciborium/main.go:333
 #, c-format
 msgid "Only %d%% is available on the internal storage device"
-msgstr "Na vestavěném úložišti zbývá už jen %d%% volného místa"
+msgstr "Ve vnitřní paměti zbývá už jen %d%% volného místa"
 
 #. TRANSLATORS: This is the body of a notification bubble with a short message about content
 #. reamining available space, %d is the remaining percentage of space available on a given
@@ -77,11 +77,11 @@ msgstr "Na vestavěném úložišti zbývá už jen %d%% volného místa"
 #: cmd/ciborium/main.go:337
 #, c-format
 msgid "Only %d%% is available on the external storage device"
-msgstr "Na externím úložišti zbývá už jen %d%% volného místa"
+msgstr "Na externí paměti zbývá už jen %d%% volného místa"
 
 #: share/ciborium/qml/main.qml:21
 msgid "SD Card Management"
-msgstr "Správa SD karty"
+msgstr "Správa SD karet"
 
 #: share/ciborium/qml/components/SafeRemoval.qml:11
 #: share/ciborium/qml/components/FormatDialog.qml:11
@@ -129,11 +129,11 @@ msgstr "Zařízení nelze odpojit, protože je zaneprázdněno"
 #: share/ciborium/qml/components/DriveDelegate.qml:54
 #: share/ciborium/qml/components/FormatDialog.qml:55
 msgid "Format"
-msgstr "Formát"
+msgstr "Formátovat"
 
 #: share/ciborium/qml/components/DriveDelegate.qml:60
 msgid "Safely Remove"
-msgstr "Bezpečně odebrat"
+msgstr "Bezpečně odpojit"
 
 #: share/ciborium/qml/components/FormatDialog.qml:19
 msgid "Continue with format"
@@ -162,4 +162,4 @@ msgstr "Při formátování zařízení došlo k chybě"
 
 #: share/applications/ciborium.desktop.tr.h:1
 msgid "External Drives"
-msgstr "Externí jednotky"
+msgstr "Externí úložiště"
